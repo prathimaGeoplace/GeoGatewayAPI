@@ -1,0 +1,2011 @@
+---
+swagger: "2.0"
+info:
+  description: The purpose of the interface is to provide a self-serve web page, using the existing services site and authentication methods.  The project will also aim to improve and extend some of the existing functionality for gathering contact and account information held in Salesforce.
+  version: 1.0.0
+  title: GeoGateway
+  contact:
+    email: Stella.Loftus@geoplace.co.uk
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: virtserver.swaggerhub.com
+basePath: /G7133/GeoGateway/1.0.0
+tags:
+- name: address
+  description: Controller for Address Landing Page
+- name: calendarEvents
+  description: Controller for Calendar Events
+- name: authorityMessages
+  description: Controller for Authority Messages
+- name: addressCoordinates
+  description: Controller for Address Coordinates
+- name: addressTertiaryClassification
+  description: Controller for Address Tertiary Classification
+- name: addressSubmission
+  description: Controller for Address Submission
+- name: addressCandidates
+  description: Controller for Address Candidates
+- name: addressComparison
+  description: Controller for Street Comparision
+- name: addressHealthCheck
+  description: Controller for Address Data Consistency
+schemes:
+- https
+paths:
+  /address/summary/{authCode}:
+    get:
+      tags:
+      - address
+      summary: Get Landing Page Details
+      description: Returns AddressLandingPageDTO
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AddressLandingPageDTO'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Address Landing Page Details not found
+  /address/stats/{authCode}:
+    get:
+      tags:
+      - address
+      summary: Get Annual Performance Statistics for Authority
+      description: Returns AddressAnnualStatistics
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AddressLevelStats'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Annual Stats not found
+      security:
+      - authorise:
+        - has_roles
+  /address/awards/{authCode}:
+    get:
+      tags:
+      - address
+      summary: Get Authority awards from Objectstore
+      description: Returns Authority Awards
+      produces:
+      - images/jpeg
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: returns all the award images belonging to that authority
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: No Images found
+      security:
+      - authorise:
+        - has_roles
+  /address/downloadReports/:
+    get:
+      tags:
+      - address
+      summary: Get Reports from Objectstore
+      description: Downloads the Reports from Objectstore
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/pdf
+      parameters:
+      - name: authCode
+        in: formData
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      - name: reportType
+        in: formData
+        description: Type of the report like IS, Pre-Brenchmark etc
+        required: true
+        type: string
+      responses:
+        "200":
+          description: downloads the specified report from the objectstore
+        "400":
+          description: Invalid Input
+        "404":
+          description: Report not found
+      security:
+      - authorise:
+        - has_roles
+  /address/downloadAwards/:
+    get:
+      tags:
+      - address
+      summary: Get Award Image from Objectstore
+      description: Downloads the Award Image from Objectstore
+      consumes:
+      - multipart/form-data
+      produces:
+      - images/jpeg
+      parameters:
+      - name: authCode
+        in: formData
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      - name: imageName
+        in: formData
+        description: Name of the image
+        required: true
+        type: string
+      responses:
+        "200":
+          description: downloads the specified image from the objectstore
+        "400":
+          description: Invalid Input
+        "404":
+          description: Image not found
+      security:
+      - authorise:
+        - has_roles
+  /address/tnlStats/{authCode}:
+    get:
+      tags:
+      - address
+      summary: Get To Next Level Stats for the Authority
+      description: Returns AddressToNextLevelStats
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AddressToNextLevelStats'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: ToNextLevel Stats not found
+      security:
+      - authorise:
+        - has_roles
+  /authorityMessages/{authCode}/{gazeetterId}:
+    get:
+      tags:
+      - authorityMessages
+      summary: Get Messages for Authority
+      description: Returns top 3 AuthorityMessages for Address/Street Home Page filtered based on authCode, gazeetterId, region, accountType and role and ordered by Priority
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      - name: gazeetterId
+        in: path
+        description: indicates Address(1) or Street(2) based on the page user is accessing
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AuthorityMessage'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Authority Messages not found
+      security:
+      - authorise:
+        - has_roles
+  /authorityMessages:
+    get:
+      tags:
+      - authorityMessages
+      summary: Get All AuthorityMessages
+      description: Returns messages from the AuthorityMessages table based on the filters selected by the user in the View Authority Mesages UI. This method should include sorting and pagination
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: formData
+        required: false
+        type: number
+      - name: region
+        in: formData
+        required: false
+        type: number
+      - name: accountType
+        in: formData
+        required: false
+        type: number
+      - name: role
+        in: formData
+        required: false
+        type: number
+      - name: priority
+        in: formData
+        required: false
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AuthorityMessage'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Authority Messages not found
+      security:
+      - authorise:
+        - has_super_admin_only
+    post:
+      tags:
+      - authorityMessages
+      summary: Creates a new Message or updates an existing authority message
+      operationId: createAuthorityMessage
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: AuthorityMessage object that has to be created or updated
+        required: true
+        schema:
+          $ref: '#/definitions/AuthorityMessage'
+      responses:
+        "200":
+          description: successful operation
+      security:
+      - authorise:
+        - has_super_admin_only
+  /authorityMessages/close/{authorityMessageId}:
+    post:
+      tags:
+      - authorityMessages
+      summary: updates the DisabledFlag column in the AuthorityMessages table so that the message will not be visible to users again
+      operationId: closeAuthorityMessage
+      parameters:
+      - name: authorityMessageId
+        in: path
+        description: ID of the message
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: successful operation
+      security:
+      - authorise:
+        - has_user_roles
+  /authorityMessages/{authorityMessageId}:
+    get:
+      tags:
+      - authorityMessages
+      summary: Get AuthorityMessage object based on ID when user clicks on Edit link
+      description: Returns AuthorityMessage
+      produces:
+      - application/json
+      parameters:
+      - name: authorityMessageId
+        in: path
+        description: ID of the selected AuthorityMessage
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AuthorityMessage'
+        "400":
+          description: Invalid authorityMessageId supplied
+        "404":
+          description: Message not found
+      security:
+      - authorise:
+        - has_super_admin_only
+    delete:
+      tags:
+      - authorityMessages
+      summary: Deletes the Authority Message
+      operationId: deleteAuthorityMessage
+      parameters:
+      - name: authorityMessageId
+        in: path
+        description: ID of the selected AuthorityMessage
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: successfully deleted
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: authority message not found
+      security:
+      - authorise:
+        - has_super_admin_only
+  /addressCoordinates/{authCode}:
+    get:
+      tags:
+      - addressCoordinates
+      summary: Get All Details for Coordinates Landing Page
+      description: Returns AddressCoordinates
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AddressCoordinates'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Address Coordinate Details not found
+      security:
+      - authorise:
+        - has_roles
+  /addressCoordinates/downloadReport/{authCode}:
+    get:
+      tags:
+      - addressCoordinates
+      summary: Generate Coordinates Report for Authority
+      description: Generates Coordinates report as a excel based on the data fetched from V_COORDINATES
+      produces:
+      - text/plain
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: downloads the address coordinates report from the objectstore
+        "400":
+          description: Invalid Input
+        "404":
+          description: Report not found
+      security:
+      - authorise:
+        - has_roles
+  /addressTertiary/{authCode}:
+    get:
+      tags:
+      - addressTertiaryClassification
+      summary: Get All Details for Tertiary Residential Classification Landing Page
+      description: Returns AddressTertiaryClassification
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AddressTertiaryClassification'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Address Tertiary Classification Details not found
+      security:
+      - authorise:
+        - has_roles
+  /addressSubmission/{authCode}:
+    get:
+      tags:
+      - addressSubmission
+      summary: Get All Details for Update Frequency Landing Page
+      description: Returns AddressSubmission
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AddressSubmission'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Address Submission Details not found
+      security:
+      - authorise:
+        - has_roles
+  /addressCandidates/{authCode}:
+    get:
+      tags:
+      - addressCandidates
+      summary: Get All Details for Address Candidates Landing Page
+      description: Returns AddressCandidates
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AddressCandidates'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Address Candidate Details not in db
+      security:
+      - authorise:
+        - has_roles
+  /calendarEvents:
+    post:
+      tags:
+      - calendarEvents
+      summary: Creates a new event or updates an existing event
+      operationId: upsertCalendarEvent
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: CalendarEvent object that has to be created or updated
+        required: true
+        schema:
+          $ref: '#/definitions/CalendarEvents'
+      responses:
+        "200":
+          description: successful operation
+      security:
+      - authorise:
+        - has_super_admin_only
+  /calendarEvents/{eventCategory}:
+    get:
+      tags:
+      - calendarEvents
+      summary: Get Calendar Events for Address/Street Home Page
+      description: Returns all the Calendar Events for Address/Street based on the eventCategory
+      produces:
+      - application/json
+      parameters:
+      - name: eventCategory
+        in: path
+        description: Address or Streets based on the page user is accessing
+        required: true
+        type: string
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CalendarEvents'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Calendar Events not found
+      security:
+      - authorise:
+        - has_roles
+  /calendarEvents/event/{calendarEventId}:
+    get:
+      tags:
+      - calendarEvents
+      summary: Get Calendar Event when user selects Edit option
+      description: Returns calendarEvent object
+      produces:
+      - application/json
+      parameters:
+      - name: calendarEventId
+        in: path
+        description: ID of the selected calendarEvent
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/CalendarEvents'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Calendar Event not found
+      security:
+      - authorise:
+        - has_super_admin_only
+    delete:
+      tags:
+      - calendarEvents
+      summary: Deletes the Calendar Event
+      operationId: deleteCalendarEvent
+      parameters:
+      - name: calendarEventId
+        in: path
+        description: ID of the selected CalendarEvent
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: successfully deleted
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Event not found
+      security:
+      - authorise:
+        - has_super_admin_only
+  /addressComparison/{authCode}:
+    get:
+      tags:
+      - addressComparison
+      summary: Get All Details for Address Street Comparison Landing Page
+      description: Returns AddressComparison
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AddressComparision'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Address Street Comparison Details not found
+      security:
+      - authorise:
+        - has_roles
+  /addressComparison/getSummaryDetails/{authCode}:
+    get:
+      tags:
+      - addressComparison
+      summary: Get Error, Warning and Recurring Error Counts for Street Comparison Landing Page
+      description: Returns StreetComparisonSummaryDTO
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetComparisonSummaryDTO'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Street Comparison Summary Details not found
+      security:
+      - authorise:
+        - has_roles
+  /addressComparison/findAllErrors:
+    get:
+      tags:
+      - addressComparison
+      summary: Get All Street Comparison errors
+      description: Returns all the errors, warning from StreetHealthCheck based on the filter criteria to populate on the Street Comparison Errors Table. This should include sorting and pagination
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: formData
+        required: true
+        type: number
+      - name: recordType
+        in: formData
+        required: false
+        type: number
+      - name: errorCode
+        in: formData
+        required: false
+        type: string
+      - name: type
+        in: formData
+        required: false
+        type: string
+      - name: recurring
+        in: formData
+        required: false
+        type: string
+      - name: errorsNextYear
+        in: formData
+        required: false
+        type: string
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/StreetHealthCheckData'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street Comparison Errors not found
+      security:
+      - authorise:
+        - has_roles
+  /addressHealthCheck/{authCode}:
+    get:
+      tags:
+      - addressHealthCheck
+      summary: Get All Details for Address Data Consistency Landing Page
+      description: Returns AddressHealthCheck
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AddressHealthCheck'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Address Health Check Details not found
+      security:
+      - authorise:
+        - has_roles
+  /addressHealthCheck/getAllCounts/{authCode}:
+    get:
+      tags:
+      - addressHealthCheck
+      summary: Get All Record Counts for Address Data Consistency Landing Page
+      description: Returns AddressHealthCheckCountsDTO
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AddressHealthCheckCountsDTO'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Address Health Check Record Counts not found
+      security:
+      - authorise:
+        - has_roles
+  /addressHealthCheck/getErrorCounts/{authCode}:
+    get:
+      tags:
+      - addressHealthCheck
+      summary: Get Error, Warning and Recurring Error Counts for Address Data Consistency Landing Page
+      description: Returns AddressHealthCheckErrorCountsDTO
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AddressHealthCheckErrorCountsDTO'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Address Health Check Error Counts not found
+      security:
+      - authorise:
+        - has_roles
+  /addressHealthCheck/findAllErrors:
+    get:
+      tags:
+      - addressHealthCheck
+      summary: Get All Address Health Check errors
+      description: Returns all the errors, warning from AddressHealthCheckErrors based on the filter criteria to populate on the Data Consistency Table. This should include sorting and pagination
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: formData
+        required: true
+        type: number
+      - name: recordType
+        in: formData
+        required: false
+        type: number
+      - name: errorCode
+        in: formData
+        required: false
+        type: string
+      - name: type
+        in: formData
+        required: false
+        type: string
+      - name: recurring
+        in: formData
+        required: false
+        type: string
+      - name: errorsNextYear
+        in: formData
+        required: false
+        type: string
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AddressHealthCheckErrors'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Authority Health Check errors not found
+      security:
+      - authorise:
+        - has_roles
+  /addressHealthCheck/generateExceptionFile:
+    post:
+      tags:
+      - addressHealthCheck
+      summary: Generates Txt file for Authorities to download that includes all the records and messages in the required format
+      operationId: generateExceptionFile
+      consumes:
+      - application/json
+      produces:
+      - text/plain
+      parameters:
+      - in: body
+        name: body
+        description: AddressExpDTO object to generate the text file
+        required: true
+        schema:
+          $ref: '#/definitions/AddressExpDTO'
+      responses:
+        "200":
+          description: successful operation
+      security:
+      - authorise:
+        - has_roles
+  /addressHealthCheck/submitExceptions:
+    post:
+      tags:
+      - addressHealthCheck
+      summary: Generates Exceptions file for Authorities and sends the file to the geoplace mail id "exceptions@geoplace.co.uk"
+      operationId: submitExceptions
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: AddressExpDTO object to generate the text file
+        required: true
+        schema:
+          $ref: '#/definitions/AddressExpDTO'
+      responses:
+        "200":
+          description: Exception File submitted to Geoplace
+      security:
+      - authorise:
+        - has_roles
+securityDefinitions:
+  authorise:
+    type: oauth2
+    tokenUrl: https://login.dev.geoplace.co.uk/login
+    flow: password
+    scopes:
+      has_roles: super_admin, authority_address_custodian, additional_authority_address_custodian, dca_authority_principal_contact
+      has_super_admin_only: super_admin
+      has_user_roles: authority_address_custodian, additional_authority_address_custodian, dca_authority_principal_contact
+definitions:
+  AddressOverall:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      overallLevel:
+        type: string
+        example: Gold
+      benchmarkLevel:
+        type: string
+        example: Gold
+      pledgeLevel:
+        type: string
+        example: Silver
+      nonContributingFlag:
+        type: boolean
+      streets:
+        type: integer
+        format: int64
+        example: 10524
+    description: refers Web_Address_Main_V View
+  AddressTertiaryClassification:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      tertiaryClassDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 01/08/2019
+      tertiaryClassTotal:
+        type: integer
+        format: int64
+        example: 86733
+      tertiaryClassCompleted:
+        type: integer
+        format: int64
+        example: 86397
+      tertiaryClassRating:
+        type: number
+        format: double
+        example: 0.99752
+      tertiaryClassRatingChange:
+        type: number
+        format: double
+        example: 0.33
+      tertiaryClassLevel:
+        type: string
+        example: Silver
+      tertiaryClassToNextLevel:
+        type: integer
+        format: int64
+        example: 128
+    description: refers Web_Address_Class_V View
+  AddressComparision:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      comparisonDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 04/02/2020
+      comparisonTotal:
+        type: integer
+        format: int64
+        example: 245
+      comparisonRecurringErrors:
+        type: integer
+        format: int64
+        example: 64
+      comparisonRating:
+        type: number
+        format: double
+        example: 2.1E-4
+      comparisonRatingChange:
+        type: number
+        format: double
+        example: 0.33
+      comparisonLevel:
+        type: string
+        example: Bronze
+      comparisonToNextLevel:
+        type: integer
+        format: int64
+        example: 109
+    description: refers Web_Address_Comparison_V View
+  AddressCoordinates:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      coordinateTotal:
+        type: integer
+        format: int64
+        example: 14576
+      coordinateReported:
+        type: integer
+        format: int64
+        example: 65
+      coordinateRating:
+        type: number
+        format: double
+        example: 0.9994
+      coordinateRatingChange:
+        type: number
+        format: double
+        example: 0.33
+      coordinateLevel:
+        type: string
+        example: Gold
+      coordinateToNextLevel:
+        type: integer
+        format: int64
+        example: 975
+      coordinateNew:
+        type: integer
+        format: int64
+        example: 230
+      coordinateOSSurveyed:
+        type: integer
+        format: int64
+        example: 13456
+      coordinate2Total:
+        type: integer
+        format: int64
+        example: 167844
+      coordinate2Reported:
+        type: integer
+        format: int64
+        example: 65
+      coordinate2Rating:
+        type: number
+        format: double
+        example: 0.9994
+      coordinate2RatingChange:
+        type: number
+        format: double
+        example: 0.22
+      coordinate2Level:
+        type: string
+        example: Gold
+      coordinate2ToNextLevel:
+        type: integer
+        format: int64
+        example: 975
+      coordinate2New:
+        type: integer
+        format: int64
+        example: 230
+      coordinate2OSSurveyed:
+        type: integer
+        format: int64
+        example: 13456
+      coordinateDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 04/02/2020
+      coordinate2Date:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 04/02/2020
+    description: refers Web_Address_Coordinate_V view
+  AddressHealthCheck:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      healthCheckDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 04/02/2020
+      healthCheckTotal:
+        type: integer
+        format: int64
+        example: 65
+      healthCheckRating:
+        type: integer
+        format: int64
+        example: 173
+      healthCheckRatingChange:
+        type: integer
+        format: int64
+        example: 24
+      healthCheckWarning:
+        type: integer
+        format: int64
+        example: 240
+      healthCheckLevel:
+        type: string
+        example: Gold
+      healthCheckToNextLevel:
+        type: integer
+        format: int64
+        example: 591
+    description: refers Web_Address_Health_Check_V view
+  AddressSubmission:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      submissionDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 01/08/2019
+      submissionWeek1:
+        type: integer
+        format: int32
+        example: 4
+      submissionWeek2:
+        type: integer
+        format: int32
+        example: 6
+      submissionWeek3:
+        type: integer
+        format: int32
+        example: 7
+      submissionWeek4:
+        type: integer
+        format: int32
+        example: 1
+      remainingAllowance:
+        type: integer
+        format: int32
+        example: 8
+      lastResyncDate:
+        type: string
+        format: date in dd/mm/yyyy
+        example: 06/12/2018
+      submissionRating:
+        type: string
+        example: Daily
+      submissionRatingChange:
+        type: string
+        example: Daily
+      submissionUpgrade:
+        type: string
+        example: Resync
+      submissionLevel:
+        type: string
+        example: Gold
+      submissionToNextLevel:
+        type: string
+        example: N/A
+    description: refers Web_Address_Submission_V view
+  ThirdParty:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      priorityObjectRating:
+        type: number
+        format: double
+        example: 0.99421
+      priorityObjectLevel:
+        type: string
+        example: Silver
+      priorityObjectToNextLevel:
+        type: integer
+        format: int64
+        example: 612
+      newVoaPafUnlinked:
+        type: integer
+        format: int64
+        example: 31
+      newVoaPafRating:
+        type: number
+        format: double
+        example: 0.9987
+      newVoaPafLevel:
+        type: string
+        example: Silver
+      newVoaPafToNextLevel:
+        type: integer
+        format: int64
+        example: 612
+      ndrRating:
+        type: number
+        format: double
+        example: 0.9934
+      ndrLevel:
+        type: string
+        example: Silver
+      ndrToNextLevel:
+        type: integer
+        format: int64
+        example: 76
+      pafRating:
+        type: number
+        format: double
+        example: 0.99324
+      pafLevel:
+        type: string
+        example: Silver
+      pafToNextLevel:
+        type: integer
+        format: int64
+        example: 544
+      ctaxRating:
+        type: number
+        format: double
+        example: 0.9913
+      ctaxLevel:
+        type: string
+        example: Silver
+      ctaxToNextLevel:
+        type: integer
+        format: int64
+        example: 32
+    description: refers Web_Address_Third_Party_V view
+  AddressLevelStats:
+    type: object
+    required:
+    - authCode
+    - reportMonth
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      reportMonth:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 01/08/2019
+      overallLevel:
+        type: string
+        example: Gold
+      coordinateLevel:
+        type: string
+        example: Gold
+      healthCheckLevel:
+        type: string
+        example: Gold
+      healthCheckRating:
+        type: number
+        example: 0.99
+      healthCheckTotal:
+        type: integer
+        example: 235
+      tertiaryClassLevel:
+        type: string
+        example: Gold
+      tertiaryClassRating:
+        type: number
+        example: 0.65
+      tertiaryClassTotal:
+        type: integer
+        example: 453
+      coordinate2Level:
+        type: string
+        example: Gold
+      coordinate2Rating:
+        type: number
+        example: 0.87
+      submissionLevel:
+        type: string
+        example: Gold
+      comparisonLevel:
+        type: string
+        example: Gold
+      comparisonTotal:
+        type: number
+        example: 234.0
+      comparisonRecurring:
+        type: number
+        example: 34.0
+      comparisonRating:
+        type: number
+        example: 0.76
+      candidateLevel:
+        type: string
+        example: Gold
+    description: refers Web_Address_Trend_V view
+  AddressCandidates:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      candidateDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 01/08/2019
+      candidateTotal:
+        type: integer
+        format: int32
+        example: 3
+      candidateProcessedOnTime:
+        type: integer
+        format: int32
+        example: 4
+      candidateTotal2:
+        type: integer
+        format: int32
+        example: 27
+      candidateProcessedOnTime2:
+        type: integer
+        format: int32
+        example: 7
+      candidateRating:
+        type: number
+        format: double
+        example: 0.333
+      candidateProcessRatingChange:
+        type: number
+        format: double
+        example: 0.333
+      candidateLevel:
+        type: string
+        example: Level 1
+    description: refers Web_Address_Candidate_V view
+  AddressLandingPageDTO:
+    type: object
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      overallLevel:
+        type: string
+        example: Gold
+      benchmarkLevel:
+        type: string
+        example: Gold
+      pledgeLevel:
+        type: string
+        example: Silver
+      nonContributingFlag:
+        type: boolean
+      coordinateRating:
+        type: number
+        format: double
+        example: 0.9994
+      coordinateLevel:
+        type: string
+        example: Gold
+      coordinateToNextLevel:
+        type: integer
+        format: int64
+        example: 975
+      coordinate2Rating:
+        type: number
+        format: double
+        example: 0.9994
+      coordinate2Level:
+        type: string
+        example: Gold
+      coordinate2ToNextLevel:
+        type: integer
+        format: int64
+        example: 975
+      healthCheckRating:
+        type: integer
+        format: int64
+        example: 173
+      healthCheckLevel:
+        type: string
+        example: Gold
+      healthCheckToNextLevel:
+        type: integer
+        format: int64
+        example: 591
+      tertiaryClassRating:
+        type: number
+        format: double
+        example: 0.99752
+      tertiaryClassLevel:
+        type: string
+        example: Silver
+      tertiaryClassToNextLevel:
+        type: integer
+        format: int64
+        example: 128
+      priorityObjectRating:
+        type: number
+        format: double
+        example: 0.99421
+      priorityObjectLevel:
+        type: string
+        example: Silver
+      priorityObjectToNextLevel:
+        type: integer
+        format: int64
+        example: 612
+      newVoaPafUnlinked:
+        type: integer
+        format: int64
+        example: 31
+      newVoaPafRating:
+        type: number
+        format: double
+        example: 0.9987
+      newVoaPafLevel:
+        type: string
+        example: Silver
+      newVoaPafToNextLevel:
+        type: integer
+        format: int64
+        example: 612
+      ndrRating:
+        type: number
+        format: double
+        example: 0.9934
+      ndrLevel:
+        type: string
+        example: Silver
+      ndrToNextLevel:
+        type: integer
+        format: int64
+        example: 76
+      pafRating:
+        type: number
+        format: double
+        example: 0.99324
+      pafLevel:
+        type: string
+        example: Silver
+      pafToNextLevel:
+        type: integer
+        format: int64
+        example: 544
+      ctaxRating:
+        type: number
+        format: double
+        example: 0.9913
+      ctaxLevel:
+        type: string
+        example: Silver
+      ctaxToNextLevel:
+        type: integer
+        format: int64
+        example: 32
+      submissionRating:
+        type: string
+        example: Daily
+      submissionLevel:
+        type: string
+        example: Gold
+      submissionToNextLevel:
+        type: string
+        example: N/A
+      comparisonRating:
+        type: number
+        format: double
+        example: 2.1E-4
+      comparisonLevel:
+        type: string
+        example: Bronze
+      comparisonToNextLevel:
+        type: integer
+        format: int64
+        example: 109
+      candidateRating:
+        type: number
+        format: double
+        example: 0.333
+      candidateLevel:
+        type: string
+        example: Level 1
+      regionalChairName:
+        type: string
+        example: Cathy Coelho
+      regionalChairEmail:
+        type: string
+        example: ccoelho@oxford.gov.uk
+    description: dto object that holds the landing page info
+  Message:
+    type: object
+    required:
+    - gazetteerId
+    - message
+    - messageId
+    - priorityRank
+    - updatedBy
+    - updatedDate
+    properties:
+      messageId:
+        type: integer
+        format: int32
+        example: 1
+      message:
+        type: string
+        example: The authority has been BNS for Update Frequency once since April
+      gazetteerId:
+        type: integer
+        format: int32
+        example: 1
+      priorityRank:
+        type: integer
+        format: int32
+        example: 1
+      updatedBy:
+        type: string
+        example: one.two@domain.com
+      updatedDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 01/05/2020
+    description: refers MESSAGES table
+  AuthorityMessage:
+    type: object
+    required:
+    - authorityMessageId
+    - messageId
+    - startDate
+    - updatedBy
+    - updatedDate
+    properties:
+      authorityMessageId:
+        type: integer
+        format: int32
+        example: 1
+      messageId:
+        $ref: '#/definitions/Message'
+      authCode:
+        type: number
+        example: 114.0
+      region:
+        type: integer
+        format: int32
+        example: 1
+      accountType:
+        type: integer
+        format: int32
+        example: 1
+      startDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 01/05/2020
+      endDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 01/06/2020
+      updatedBy:
+        type: string
+        example: one.two@domain.com
+      updatedDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 01/06/2020
+      disabledFlag:
+        type: boolean
+        example: false
+      notClosableFlag:
+        type: boolean
+        example: true
+    description: refers AUTHORITY_MESSAGES table
+  AddressToNextLevelStats:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      coordinateToLevel1:
+        type: integer
+        format: int32
+        example: -1032
+      coordinateToLevel2:
+        type: integer
+        format: int32
+        example: -541
+      coordinateToLevel3:
+        type: integer
+        format: int32
+        example: -254
+      coordinateToLevel4:
+        type: integer
+        format: int32
+        example: -103
+      coordinateToLevel5:
+        type: integer
+        format: int32
+        example: 0
+      healthCheckToLevel1:
+        type: integer
+        format: int32
+        example: -98
+      healthCheckToLevel2:
+        type: integer
+        format: int32
+        example: -48
+      healthCheckToLevel3:
+        type: integer
+        format: int32
+        example: 8
+      healthCheckToLevel4:
+        type: integer
+        format: int32
+        example: 3
+      healthCheckToLevel5:
+        type: integer
+        format: int32
+        example: 0
+      tertiaryClassToLevel1:
+        type: integer
+        format: int32
+        example: -8338
+      tertiaryClassToLevel2:
+        type: integer
+        format: int32
+        example: -5736
+      tertiaryClassToLevel3:
+        type: integer
+        format: int32
+        example: -3134
+      tertiaryClassToLevel4:
+        type: integer
+        format: int32
+        example: -572
+      tertiaryClassToLevel5:
+        type: integer
+        format: int32
+        example: 0
+      coordinate2ToLevel1:
+        type: integer
+        format: int32
+        example: 274
+      coordinate2ToLevel2:
+        type: integer
+        format: int32
+        example: -165
+      coordinate2ToLevel3:
+        type: integer
+        format: int32
+        example: -55
+      coordinate2ToLevel4:
+        type: integer
+        format: int32
+        example: -11
+      coordinate2ToLevel5:
+        type: integer
+        format: int32
+        example: 0
+      comparisonToLevel1:
+        type: integer
+        format: int32
+        example: -22
+      comparisonToLevel2:
+        type: integer
+        format: int32
+        example: -11
+      comparisonToLevel3:
+        type: integer
+        format: int32
+        example: -13
+      comparisonToLevel4:
+        type: integer
+        format: int32
+        example: 9
+      comparisonToLevel5:
+        type: integer
+        format: int32
+        example: 0
+    description: refers Web_Address_To_Level_V view
+  CalendarEvents:
+    type: object
+    required:
+    - calendarEventId
+    properties:
+      calendarEventId:
+        type: integer
+        format: int32
+        example: 1
+      title:
+        type: string
+        example: meeting with Geoplace
+      description:
+        type: string
+        example: Meeting with Geoplace on Address Submission
+      startDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 20/05/2020
+      endDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 20/05/2020
+      eventCategory:
+        type: string
+        example: Address
+      eventType:
+        type: string
+        example: Meeting
+      updatedBy:
+        type: string
+        example: abc@geoplace.co.uk
+      updatedDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 01/05/2020
+    description: refers CALENDAR_EVENTS table
+  StreetHealthCheckData:
+    type: object
+    required:
+    - authCode
+    - description
+    - eventId
+    - fileId
+    - lastUpdatedTs
+    - outputData
+    - queryCategory
+    - queryCode
+    - recordType
+    - usrn
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      description:
+        type: string
+        example: Open ESUIDs which match an open ESUID in a different authority
+      eventId:
+        type: number
+        example: 855720.0
+      fileId:
+        type: number
+        example: 909666.0
+      lastUpdatedTs:
+        type: string
+        format: data in dd/MM/yyyy format
+        example: 05/05/2020
+      outputData:
+        type: string
+        example: 15,"CALUFARIWD","","ODUTKRBPNU","CREBSLLNYD","ENG"
+      queryCategory:
+        type: string
+        example: NSG NLPG Comparison
+      queryCode:
+        type: string
+        example: NC6a
+      recordType:
+        type: string
+        example: "15"
+      usrn:
+        type: number
+        example: 4.0800005E7
+    description: refers STREET_HEALTH_DATA table
+  StreetComparisonSummaryDTO:
+    type: object
+    properties:
+      streetErrors:
+        type: integer
+        format: int32
+        example: 19
+      streetRecurringErrors:
+        type: integer
+        format: int32
+        example: 5
+      streetWarnings:
+        type: integer
+        format: int32
+        example: 13
+      streetDescriptorErrors:
+        type: integer
+        format: int32
+        example: 19
+      streetDescriptorRecurringErrors:
+        type: integer
+        format: int32
+        example: 5
+      streetDescriptorWarnings:
+        type: integer
+        format: int32
+        example: 13
+      streetCustodianName:
+        type: string
+        example: SalesForce
+      streetCustodianEmail:
+        type: string
+        example: SalesForce
+      lastAddressSubmissionDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 20/05/2020
+      lastStreetSubmissionDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 23/05/2020
+    description: dto object that holds Address StreetComparison errors, warnings and recurring error counts
+  AddressHealthCheckCountsDTO:
+    type: object
+    properties:
+      streetRecordCount:
+        type: integer
+        format: int32
+        example: 21
+      blpuRecordCount:
+        type: integer
+        format: int32
+        example: 12
+      xrefRecordCount:
+        type: integer
+        format: int32
+        example: 5
+      lpiRecordCount:
+        type: integer
+        format: int32
+        example: 1
+      blpuClassC:
+        type: integer
+        format: int32
+        example: 6
+      blpuClassL:
+        type: integer
+        format: int32
+        example: 2
+      blpuClassM:
+        type: integer
+        format: int32
+        example: 0
+      blpuClassP:
+        type: integer
+        format: int32
+        example: 3
+      blpuClassR:
+        type: integer
+        format: int32
+        example: 1
+      blpuClassX:
+        type: integer
+        format: int32
+        example: 9
+      blpuClassZ:
+        type: integer
+        format: int32
+        example: 5
+      blpuClassU:
+        type: integer
+        format: int32
+        example: 3
+      blpuClassUP:
+        type: integer
+        format: int32
+        example: 2
+      unclassifiedLiveRecords:
+        type: number
+        example: 0.0
+      blpuCountWithRPC:
+        type: integer
+        format: int32
+        example: 1
+      blpuCountWhereStateCode1:
+        type: integer
+        format: int32
+        example: 0
+      blpuCountWhereStateCode2:
+        type: integer
+        format: int32
+        example: 0
+      blpuCountWhereStateCode3:
+        type: integer
+        format: int32
+        example: 0
+      blpuCountWhereStateCode4:
+        type: integer
+        format: int32
+        example: 0
+      blpuCountWhereStateCode5:
+        type: integer
+        format: int32
+        example: 0
+      blpuCountWhereStateCode6:
+        type: integer
+        format: int32
+        example: 0
+      blpuCountWhereStateCode7:
+        type: integer
+        format: int32
+        example: 0
+      blpuCountWithCtaxOrER:
+        type: integer
+        format: int32
+        example: 1
+      blpuCountWithNoNdr:
+        type: integer
+        format: int32
+        example: 0
+    description: dto object that holds all counts related to Address Health Check
+  AddressHealthCheckErrorCountsDTO:
+    type: object
+    properties:
+      streetErrorCount:
+        type: integer
+        format: int32
+        example: 21
+      streetWarningCount:
+        type: integer
+        format: int32
+        example: 2
+      streetRecurringErrorCount:
+        type: integer
+        format: int32
+        example: 5
+      streetDescriptorErrorCount:
+        type: integer
+        format: int32
+        example: 21
+      streetDescriptorWarningCount:
+        type: integer
+        format: int32
+        example: 2
+      streetDescriptorRecurringErrorCount:
+        type: integer
+        format: int32
+        example: 5
+      blpuErrorCount:
+        type: integer
+        format: int32
+        example: 21
+      blpuWarningCount:
+        type: integer
+        format: int32
+        example: 2
+      blpuRecurringErrorCount:
+        type: integer
+        format: int32
+        example: 5
+      lpiErrorCount:
+        type: integer
+        format: int32
+        example: 21
+      lpiWarningCount:
+        type: integer
+        format: int32
+        example: 2
+      lpiRecurringErrorCount:
+        type: integer
+        format: int32
+        example: 5
+      xrefErrorCount:
+        type: integer
+        format: int32
+        example: 21
+      xrefWarningCount:
+        type: integer
+        format: int32
+        example: 2
+      xrefRecurringErrorCount:
+        type: integer
+        format: int32
+        example: 5
+    description: dto object that holds all counts related to Address Health Check errors, warnings and recurring errors
+  AddressHealthCheckErrorCodes:
+    type: object
+    required:
+    - errorCode
+    properties:
+      errorCode:
+        type: string
+        example: AAU21.64
+      errorPriority:
+        type: string
+        example: BS7666
+      errorType:
+        type: string
+        example: W
+      hcEnabled:
+        type: string
+        example: "Y"
+      message:
+        type: string
+        example: Street on USRN {0} missing Street Only BLPU record
+      recordType:
+        type: integer
+        format: int32
+        example: 11
+    description: refers to Address_Error_Codes table
+  AddressHealthCheckErrors:
+    type: object
+    required:
+    - errorId
+    properties:
+      change_type:
+        type: string
+        example: U
+      entryDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 11/05/2020
+      errorCode:
+        $ref: '#/definitions/AddressHealthCheckErrorCodes'
+      errorId:
+        type: number
+        example: 3.9574157E7
+      errorRecord:
+        type: string
+      eventId:
+        type: number
+        example: 1116835.0
+      recordType:
+        type: integer
+        format: int32
+        example: 11
+      referenceKey:
+        type: string
+        example: "8100554"
+    description: refers to Address_Errors table
+  AddressExpDTO:
+    type: object
+    properties:
+      errorCode:
+        type: string
+        example: AAU24.28
+      recordType:
+        type: integer
+        format: int32
+        example: 24
+      referenceKey:
+        type: string
+        example: 0905L000000624
+      expMessage:
+        type: string
+        example: this LPI does not belong to the UPRN
+      dtfLine:
+        type: string
+        example: 24,"I","25","110000000738","0905L000000624","ENG","1","2020-02-10","","2020-02-10","2020-02-10","","","","","","","","","","POATEXT","300516","","L","PL26 8EH","ST AUSTELL","C","","",""
+    description: dto object to submit Address Exceptions
