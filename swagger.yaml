@@ -5,7 +5,7 @@ info:
   version: 1.0.0
   title: GeoGateway
   contact:
-    email: Stella.Loftus@geoplace.co.uk
+    email: prathima.prahallada@geoplace.co.uk
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -13,7 +13,7 @@ host: virtserver.swaggerhub.com
 basePath: /G7133/GeoGateway/1.0.0
 tags:
 - name: address
-  description: Controller for Address Landing Page
+  description: Controller for Address Home Page
 - name: calendarEvents
   description: Controller for Calendar Events
 - name: authorityMessages
@@ -30,10 +30,20 @@ tags:
   description: Controller for Street Comparision
 - name: addressHealthCheck
   description: Controller for Address Data Consistency
+- name: sreeets
+  description: Controller for Street Home Page
+- name: sreeetClassifiedNetworks
+  description: Controller for Street Classified Network
+- name: streetSubmission
+  description: Controller for Street New Content and Street Update Timeliness
+- name: streetHealthCheck
+  description: Controller for Street Health Check 1 and Health Check 2
+- name: streetLifeCycle
+  description: Controller for Missing Streets and Under Construction
 schemes:
 - https
 paths:
-  /address/summary/{authCode}:
+  /api/ggw/address/summary/{authCode}:
     get:
       tags:
       - address
@@ -56,7 +66,10 @@ paths:
           description: Invalid AuthCode supplied
         "404":
           description: Address Landing Page Details not found
-  /address/stats/{authCode}:
+      security:
+      - authorise:
+        - has_roles
+  /api/ggw/address/stats/{authCode}:
     get:
       tags:
       - address
@@ -84,11 +97,11 @@ paths:
       security:
       - authorise:
         - has_roles
-  /address/awards/{authCode}:
+  /api/ggw/address/awards/{authCode}:
     get:
       tags:
       - address
-      summary: Get Authority awards from Objectstore
+      summary: Get the list of Authority awards from Objectstore
       description: Returns Authority Awards
       produces:
       - images/jpeg
@@ -100,7 +113,7 @@ paths:
         type: number
       responses:
         "200":
-          description: returns all the award images belonging to that authority
+          description: returns all the award images belonging to that authority as a List of String
         "400":
           description: Invalid AuthCode supplied
         "404":
@@ -108,7 +121,7 @@ paths:
       security:
       - authorise:
         - has_roles
-  /address/downloadReports/:
+  /api/ggw/address/downloadReports/:
     get:
       tags:
       - address
@@ -139,7 +152,7 @@ paths:
       security:
       - authorise:
         - has_roles
-  /address/downloadAwards/:
+  /api/ggw/address/downloadAwards/:
     get:
       tags:
       - address
@@ -170,7 +183,7 @@ paths:
       security:
       - authorise:
         - has_roles
-  /address/tnlStats/{authCode}:
+  /api/ggw/address/tnlStats/{authCode}:
     get:
       tags:
       - address
@@ -196,7 +209,7 @@ paths:
       security:
       - authorise:
         - has_roles
-  /authorityMessages/{authCode}/{gazeetterId}:
+  /api/ggw/authorityMessages/{authCode}/{gazeetterId}:
     get:
       tags:
       - authorityMessages
@@ -229,7 +242,7 @@ paths:
       security:
       - authorise:
         - has_roles
-  /authorityMessages:
+  /api/ggw/authorityMessages:
     get:
       tags:
       - authorityMessages
@@ -296,7 +309,7 @@ paths:
       security:
       - authorise:
         - has_super_admin_only
-  /authorityMessages/close/{authorityMessageId}:
+  /api/ggw/authorityMessages/close/{authorityMessageId}:
     post:
       tags:
       - authorityMessages
@@ -313,8 +326,8 @@ paths:
           description: successful operation
       security:
       - authorise:
-        - has_user_roles
-  /authorityMessages/{authorityMessageId}:
+        - has_roles
+  /api/ggw/authorityMessages/{authorityMessageId}:
     get:
       tags:
       - authorityMessages
@@ -361,7 +374,7 @@ paths:
       security:
       - authorise:
         - has_super_admin_only
-  /addressCoordinates/{authCode}:
+  /api/ggw/addressCoordinates/{authCode}:
     get:
       tags:
       - addressCoordinates
@@ -387,7 +400,7 @@ paths:
       security:
       - authorise:
         - has_roles
-  /addressCoordinates/downloadReport/{authCode}:
+  /api/ggw/addressCoordinates/downloadReport/{authCode}:
     get:
       tags:
       - addressCoordinates
@@ -411,7 +424,7 @@ paths:
       security:
       - authorise:
         - has_roles
-  /addressTertiary/{authCode}:
+  /api/ggw/addressTertiary/{authCode}:
     get:
       tags:
       - addressTertiaryClassification
@@ -437,7 +450,7 @@ paths:
       security:
       - authorise:
         - has_roles
-  /addressSubmission/{authCode}:
+  /api/ggw/addressSubmission/{authCode}:
     get:
       tags:
       - addressSubmission
@@ -463,7 +476,7 @@ paths:
       security:
       - authorise:
         - has_roles
-  /addressCandidates/{authCode}:
+  /api/ggw/addressCandidates/{authCode}:
     get:
       tags:
       - addressCandidates
@@ -489,7 +502,7 @@ paths:
       security:
       - authorise:
         - has_roles
-  /calendarEvents:
+  /api/ggw/calendarEvents:
     post:
       tags:
       - calendarEvents
@@ -512,7 +525,7 @@ paths:
       security:
       - authorise:
         - has_super_admin_only
-  /calendarEvents/{eventCategory}:
+  /api/ggw/calendarEvents/{eventCategory}:
     get:
       tags:
       - calendarEvents
@@ -540,7 +553,7 @@ paths:
       security:
       - authorise:
         - has_roles
-  /calendarEvents/event/{calendarEventId}:
+  /api/ggw/calendarEvents/event/{calendarEventId}:
     get:
       tags:
       - calendarEvents
@@ -587,7 +600,7 @@ paths:
       security:
       - authorise:
         - has_super_admin_only
-  /addressComparison/{authCode}:
+  /api/ggw/addressComparison/{authCode}:
     get:
       tags:
       - addressComparison
@@ -613,7 +626,7 @@ paths:
       security:
       - authorise:
         - has_roles
-  /addressComparison/getSummaryDetails/{authCode}:
+  /api/ggw/addressComparison/getSummaryDetails/{authCode}:
     get:
       tags:
       - addressComparison
@@ -639,7 +652,7 @@ paths:
       security:
       - authorise:
         - has_roles
-  /addressComparison/findAllErrors:
+  /api/ggw/addressComparison/errors:
     get:
       tags:
       - addressComparison
@@ -688,7 +701,7 @@ paths:
       security:
       - authorise:
         - has_roles
-  /addressHealthCheck/{authCode}:
+  /api/ggw/addressHealthCheck/{authCode}:
     get:
       tags:
       - addressHealthCheck
@@ -714,7 +727,7 @@ paths:
       security:
       - authorise:
         - has_roles
-  /addressHealthCheck/getAllCounts/{authCode}:
+  /api/ggw/addressHealthCheck/getAllCounts/{authCode}:
     get:
       tags:
       - addressHealthCheck
@@ -740,7 +753,7 @@ paths:
       security:
       - authorise:
         - has_roles
-  /addressHealthCheck/getErrorCounts/{authCode}:
+  /api/ggw/addressHealthCheck/getErrorCounts/{authCode}:
     get:
       tags:
       - addressHealthCheck
@@ -766,7 +779,7 @@ paths:
       security:
       - authorise:
         - has_roles
-  /addressHealthCheck/findAllErrors:
+  /api/ggw/addressHealthCheck/hcErrors:
     get:
       tags:
       - addressHealthCheck
@@ -815,7 +828,7 @@ paths:
       security:
       - authorise:
         - has_roles
-  /addressHealthCheck/generateExceptionFile:
+  /api/ggw/addressHealthCheck/generateExceptionFile:
     post:
       tags:
       - addressHealthCheck
@@ -831,14 +844,16 @@ paths:
         description: AddressExpDTO object to generate the text file
         required: true
         schema:
-          $ref: '#/definitions/AddressExpDTO'
+          type: array
+          items:
+            $ref: '#/definitions/AddressExpDTO'
       responses:
         "200":
           description: successful operation
       security:
       - authorise:
         - has_roles
-  /addressHealthCheck/submitExceptions:
+  /api/ggw/addressHealthCheck/submitExceptions:
     post:
       tags:
       - addressHealthCheck
@@ -852,13 +867,432 @@ paths:
         description: AddressExpDTO object to generate the text file
         required: true
         schema:
-          $ref: '#/definitions/AddressExpDTO'
+          type: array
+          items:
+            $ref: '#/definitions/AddressExpDTO'
       responses:
         "200":
           description: Exception File submitted to Geoplace
       security:
       - authorise:
         - has_roles
+  /api/ggw/streets/summary/{authCode}:
+    get:
+      tags:
+      - streets
+      summary: Retrive all the Improvement schedule levels for all Criteria and Indicators for the Street home page
+      description: Returns StreetLandingPageDTO
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetLandingPageDTO'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Street Landing Page Details not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streets/stats/{authCode}:
+    get:
+      tags:
+      - streets
+      summary: Retrieve all the details for the Annual Performance Statistics graph
+      description: Returns StreetLevelStats
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/StreetLevelStats'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Streets Annual Stats not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streets/awards/{authCode}:
+    get:
+      tags:
+      - streets
+      summary: Get the list of Authority awards for Streets from Objectstore
+      description: Returns Authority Awards
+      produces:
+      - images/jpeg
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: returns all the street award images belonging to that authority as a List of String
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: No Images found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streets/downloadReports/:
+    get:
+      tags:
+      - streets
+      summary: Get Street Reports from Objectstore
+      description: Download the Street Reports from Objectstore
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/pdf
+      parameters:
+      - name: authCode
+        in: formData
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      - name: reportType
+        in: formData
+        description: Type of the report like IS, Pre-Brenchmark etc
+        required: true
+        type: string
+      responses:
+        "200":
+          description: downloads the specified report from the objectstore
+        "400":
+          description: Invalid Input
+        "404":
+          description: Report not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streets/downloadAwards/:
+    get:
+      tags:
+      - streets
+      summary: Get Award Image from Objectstore
+      description: Downloads the Street Award Image from Objectstore
+      consumes:
+      - multipart/form-data
+      produces:
+      - images/jpeg
+      parameters:
+      - name: authCode
+        in: formData
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      - name: imageName
+        in: formData
+        description: Name of the image
+        required: true
+        type: string
+      responses:
+        "200":
+          description: downloads the specified image from the objectstore
+        "400":
+          description: Invalid Input
+        "404":
+          description: Image not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streets/tnlStats/{authCode}:
+    get:
+      tags:
+      - streets
+      summary: Get To Next Level Stats for the Authority
+      description: Returns StreetToNextLevelStats
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetToNextLevelStats'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: ToNextLevel Stats not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetClassifiedNetworks/{authCode}:
+    get:
+      tags:
+      - streetClassifiedNetworks
+      summary: Retrieve all the Improvement schedule levels and other declaration details for Classified Networks page
+      description: Returns StreetClassifiedNetwork
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetClassifiedNetwork'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Street Classified Networks Details not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetLifeCycle/{authCode}:
+    get:
+      tags:
+      - streetLifeCycle
+      summary: Retrieve all the Improvement schedule levels and other declaration details for Missing Streets and Under Construction
+      description: Returns StreetLifeCycle
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetLifeCycle'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Street Life Cycle Details not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetLifeCycle/errors/{authCode}:
+    get:
+      tags:
+      - streetLifeCycle
+      summary: Get All errors of the specified authCode for Missing Streets
+      description: Returns all the errors of the error code SR113 from the Street Health Check Data
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/StreetHealthCheckData'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street Health check Errors not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetLifeCycle/submitExceptions:
+    post:
+      tags:
+      - streetLifeCycle
+      summary: Creates a salesforce case to log exceptions
+      operationId: submitStreetExceptions
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: List of StreetsHealthCheckData objects
+        required: true
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/StreetHealthCheckData'
+      responses:
+        "200":
+          description: Salesforce case created.
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetSubmission/{authCode}:
+    get:
+      tags:
+      - streetSubmission
+      summary: Retrieve all the Improvement schedule levels details for New Content and Update Timeliness
+      description: Returns StreetSubmission
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetSubmission'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Street Submission Details not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetHealthCheck/{authCode}:
+    get:
+      tags:
+      - streetHealthCheck
+      summary: Retrieve all the Improvement schedule levels details for Street health check 1 and health check 2
+      description: Returns StreetHealthCheckDetails
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetHealthCheckDetails'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Street Health Check Details not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetHealthCheck/hc1Errors:
+    get:
+      tags:
+      - streetHealthCheck
+      summary: Get All errors of the specified authCode for Street Health Check 1
+      description: Returns all the errors, warning from StreetHealthCheck based on the filter criteria to populate on the Street Health Check 1. The errors should belong to the one of these error codes (CR502,CR503,CR504,CR505,CR506,CR507,ER307,HD804,HD805,HW701,HW702,HW703,HW704,IR406,IR413,IR414,IR415,IR416,IR417,IR418,IR419,OD901,SD203,SD211,SP604,SP605,SP608,SP609,SP610,SP611,SP612,SP613,SP614,SPSR001,SPSR002,SR108). This should include sorting and pagination
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: formData
+        required: true
+        type: number
+      - name: recordType
+        in: formData
+        required: false
+        type: number
+      - name: errorCode
+        in: formData
+        required: false
+        type: string
+      - name: type
+        in: formData
+        required: false
+        type: string
+      - name: recurring
+        in: formData
+        required: false
+        type: string
+      - name: errorsNextYear
+        in: formData
+        required: false
+        type: string
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/StreetHealthCheckData'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street Health check Errors not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetHealthCheck/hc2Errors:
+    get:
+      tags:
+      - streetHealthCheck
+      summary: Get All errors of the specified authCode for Street Health Check 2
+      description: Returns all the errors, warning from StreetHealthCheck based on the filter criteria to populate on the Street Health Check 2. The errors should belong to the one of these error codes (HD801,HD802,IR410,IR411,SD204,SD206,SD207,SD210,SD213). This should include sorting and pagination
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: formData
+        required: true
+        type: number
+      - name: recordType
+        in: formData
+        required: false
+        type: number
+      - name: errorCode
+        in: formData
+        required: false
+        type: string
+      - name: type
+        in: formData
+        required: false
+        type: string
+      - name: recurring
+        in: formData
+        required: false
+        type: string
+      - name: errorsNextYear
+        in: formData
+        required: false
+        type: string
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/StreetHealthCheckData'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street Health Check Errors not found
+      security:
+      - authorise:
+        - has_street_roles
 securityDefinitions:
   authorise:
     type: oauth2
@@ -867,7 +1301,7 @@ securityDefinitions:
     scopes:
       has_roles: super_admin, authority_address_custodian, additional_authority_address_custodian, dca_authority_principal_contact
       has_super_admin_only: super_admin
-      has_user_roles: authority_address_custodian, additional_authority_address_custodian, dca_authority_principal_contact
+      has_street_roles: super_admin, authority_street_custodian, additional_authority_street_custodian, dca_authority_principal_contact
 definitions:
   AddressOverall:
     type: object
@@ -887,11 +1321,23 @@ definitions:
         type: string
         example: Silver
       nonContributingFlag:
-        type: boolean
+        type: string
+        format: enum
+        example: "N"
       streets:
         type: integer
         format: int64
         example: 10524
+      regionalChairName:
+        type: string
+        example: Craig Wilkins
+      regionalChairEmail:
+        type: string
+        example: craig.wilkins@sedgemoor.gov.uk
+      regionalDeputyChairFlag:
+        type: string
+        format: enum
+        example: "N"
     description: refers Web_Address_Main_V View
   AddressTertiaryClassification:
     type: object
@@ -1234,9 +1680,6 @@ definitions:
       tertiaryClassRating:
         type: number
         example: 0.65
-      tertiaryClassTotal:
-        type: integer
-        example: 453
       coordinate2Level:
         type: string
         example: Gold
@@ -1319,6 +1762,7 @@ definitions:
         example: Silver
       nonContributingFlag:
         type: boolean
+        example: false
       coordinateRating:
         type: number
         format: double
@@ -1531,11 +1975,13 @@ definitions:
         format: date in dd/MM/yyyy
         example: 01/06/2020
       disabledFlag:
-        type: boolean
-        example: false
+        type: string
+        format: enum
+        example: "N"
       notClosableFlag:
-        type: boolean
-        example: true
+        type: string
+        format: enum
+        example: "Y"
     description: refers AUTHORITY_MESSAGES table
   AddressToNextLevelStats:
     type: object
@@ -1547,103 +1993,103 @@ definitions:
         example: 114.0
       coordinateToLevel1:
         type: integer
-        format: int32
+        format: int64
         example: -1032
       coordinateToLevel2:
         type: integer
-        format: int32
+        format: int64
         example: -541
       coordinateToLevel3:
         type: integer
-        format: int32
+        format: int64
         example: -254
       coordinateToLevel4:
         type: integer
-        format: int32
+        format: int64
         example: -103
       coordinateToLevel5:
         type: integer
-        format: int32
+        format: int64
         example: 0
       healthCheckToLevel1:
         type: integer
-        format: int32
+        format: int64
         example: -98
       healthCheckToLevel2:
         type: integer
-        format: int32
+        format: int64
         example: -48
       healthCheckToLevel3:
         type: integer
-        format: int32
+        format: int64
         example: 8
       healthCheckToLevel4:
         type: integer
-        format: int32
+        format: int64
         example: 3
       healthCheckToLevel5:
         type: integer
-        format: int32
+        format: int64
         example: 0
       tertiaryClassToLevel1:
         type: integer
-        format: int32
+        format: int64
         example: -8338
       tertiaryClassToLevel2:
         type: integer
-        format: int32
+        format: int64
         example: -5736
       tertiaryClassToLevel3:
         type: integer
-        format: int32
+        format: int64
         example: -3134
       tertiaryClassToLevel4:
         type: integer
-        format: int32
+        format: int64
         example: -572
       tertiaryClassToLevel5:
         type: integer
-        format: int32
+        format: int64
         example: 0
       coordinate2ToLevel1:
         type: integer
-        format: int32
+        format: int64
         example: 274
       coordinate2ToLevel2:
         type: integer
-        format: int32
+        format: int64
         example: -165
       coordinate2ToLevel3:
         type: integer
-        format: int32
+        format: int64
         example: -55
       coordinate2ToLevel4:
         type: integer
-        format: int32
+        format: int64
         example: -11
       coordinate2ToLevel5:
         type: integer
-        format: int32
+        format: int64
         example: 0
       comparisonToLevel1:
         type: integer
-        format: int32
+        format: int64
         example: -22
       comparisonToLevel2:
         type: integer
-        format: int32
+        format: int64
         example: -11
       comparisonToLevel3:
         type: integer
-        format: int32
+        format: int64
         example: -13
       comparisonToLevel4:
         type: integer
-        format: int32
+        format: int64
         example: 9
       comparisonToLevel5:
         type: integer
-        format: int32
+        format: int64
         example: 0
     description: refers Web_Address_To_Level_V view
   CalendarEvents:
@@ -2009,3 +2455,1011 @@ definitions:
         type: string
         example: 24,"I","25","110000000738","0905L000000624","ENG","1","2020-02-10","","2020-02-10","2020-02-10","","","","","","","","","","POATEXT","300516","","L","PL26 8EH","ST AUSTELL","C","","",""
     description: dto object to submit Address Exceptions
+  StreetOverall:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      overallLevel:
+        type: string
+        example: Gold
+      benchmarkLevel:
+        type: string
+        example: Silver
+      PledgeLevel:
+        type: string
+        example: Silver
+      nonContributingFlag:
+        type: string
+        format: enum
+        example: "Y"
+      streets:
+        type: integer
+        format: int64
+        example: 12343
+      regionalChairName:
+        type: string
+        example: Craig Wilkins
+      regionalChairEmail:
+        type: string
+        example: craig.wilkins@sedgemoor.gov.uk
+      regionalDeputyChairFlag:
+        type: string
+        format: enum
+        example: "N"
+    description: refers to WEB_STREET_MAIN_V table
+  StreetHealthCheckDetails:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      healthCheckDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 05/06/2020
+      healthCheckTotal:
+        type: integer
+        format: int64
+        example: 232
+      healthCheckRecurring:
+        type: integer
+        format: int64
+        example: 65
+      healthCheckRating:
+        type: number
+        format: double
+        example: 0.54
+      healthCheckRatingChange:
+        type: number
+        format: double
+        example: 0.03
+      healthCheckLevel:
+        type: string
+        example: Gold
+      healthCheckToNextLevel:
+        type: integer
+        format: int64
+        example: 65
+      healthCehckwarnings:
+        type: integer
+        format: int64
+      healthCheck2Date:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 05/06/2020
+      healthCheck2Total:
+        type: integer
+        format: int64
+        example: 232
+      healthCheck2Recurring:
+        type: integer
+        format: int64
+        example: 65
+      healthCheck2Rating:
+        type: number
+        format: double
+        example: 0.54
+      healthCheck2RatingChange:
+        type: number
+        format: double
+        example: 0.03
+      healthCheck2Level:
+        type: string
+        example: Gold
+      healthCheck2ToNextLevel:
+        type: integer
+        format: int64
+        example: 65
+      healthCheck2warnings:
+        type: integer
+        format: int64
+    description: refers to WEB_STREET_HEALTH_CHECK_V table
+  StreetLifeCycle:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      underConstructionDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/06/2020
+      underConstructionTotal:
+        type: integer
+        format: int64
+        example: 987
+      underConstructionRating:
+        type: number
+        format: double
+        example: 0.98
+      underConstructionRatingChange:
+        type: number
+        format: double
+        example: 0.04
+      underConstructionLevel:
+        type: string
+        example: Silver
+      underConstructionToNextLevel:
+        type: integer
+        format: int64
+        example: 454
+      missingStreetDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 08/05/2020
+      missingStreetTotal:
+        type: integer
+        format: int64
+        example: 987
+      missingStreetRating:
+        type: number
+        format: double
+        example: 0.98
+      missingStreetRatingChange:
+        type: number
+        format: double
+        example: 0.04
+      missingStreetLevel:
+        type: string
+        example: Silver
+      missingStreetToNextLevel:
+        type: integer
+        format: int64
+        example: 454
+    description: refers to WEB_STREET_LIFE_CYCLE_V table
+  StreetComparison:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      comparisonDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 12/06/2020
+      comparisonTotal:
+        type: integer
+        format: int64
+        example: 434
+      comparisonRecurring:
+        type: integer
+        format: int64
+        example: 34
+      comparisonRating:
+        type: number
+        format: double
+        example: 0.65
+      comparisonRatingChange:
+        type: number
+        format: double
+        example: 0.33
+      comparisonLevel:
+        type: string
+        example: Bronze
+      comparisonToNextLevel:
+        type: integer
+        format: int64
+        example: 209
+    description: refers to WEB_STREET_COMPARISON_V table
+  StreetPrimaryRouteNetworks:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      prnDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/05/2020
+      prnIncludedLength:
+        type: number
+        format: double
+        example: 22.45
+      prnDeclaredLength:
+        type: number
+        format: double
+        example: 65.9
+      prnRating:
+        type: number
+        format: double
+        example: 0.98
+      prnRatingChange:
+        type: number
+        format: double
+        example: 0.33
+      prnLevel:
+        type: string
+        example: Gold
+    description: refers to WEB_STREET_PRN_V table
+  StreetSEDStructure:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      sedStructureDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/05/2020
+      sedIncludedLength:
+        type: number
+        format: double
+        example: 22.45
+      sedDeclaredLength:
+        type: number
+        format: double
+        example: 65.9
+      structureIncludedLength:
+        type: number
+        format: double
+        example: 22.45
+      structureDeclaredLength:
+        type: number
+        format: double
+        example: 65.9
+      sedStructureRating:
+        type: number
+        format: double
+        example: 0.98
+      sedStructureRatingChange:
+        type: number
+        format: double
+        example: 0.33
+      sedStructureLevel:
+        type: string
+        example: Gold
+    description: refers to WEB_STREET_SED_STRUCTURE_V table
+  StreetClassifiedNetwork:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      classifiedNetworkDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 15/06/2020
+      aRoadIncludedLength:
+        type: number
+        format: double
+        example: 22.45
+      aRoadDeclaredLength:
+        type: number
+        format: double
+        example: 65.9
+      aRoadLevel:
+        type: string
+        example: Silver
+      bRoadIncludedLength:
+        type: number
+        format: double
+        example: 22.45
+      bRoadDeclaredLength:
+        type: number
+        format: double
+        example: 65.9
+      bRoadLevel:
+        type: string
+        example: Silver
+      cRoadIncludedLength:
+        type: number
+        format: double
+        example: 22.45
+      cRoadDeclaredLength:
+        type: number
+        format: double
+        example: 65.9
+      cRoadLevel:
+        type: string
+        example: Silver
+      classifiedNetworkLevel:
+        type: string
+        example: Silver
+    description: refers to WEB_STREET_CLASSIFIED_NETWORK_V table
+  StreetSubmission:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      firstSubmissionDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 06/06/2020
+      submissionRating:
+        type: number
+        format: double
+        example: 0.89
+      submissionRatingChange:
+        type: number
+        format: double
+        example: 0.2
+      submissionLevel:
+        type: string
+        example: Silver
+      submissions:
+        type: integer
+        format: int64
+        example: 876
+      latestTestSubmissionStatus:
+        type: string
+        example: Success
+      latestSubmissionDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 17/06/2020
+      newContentRating:
+        type: number
+        format: double
+        example: 0.89
+      newContentRatingChange:
+        type: number
+        format: double
+        example: 0.2
+      newContentLevel:
+        type: string
+        example: Silver
+      latestNewContentDate:
+        type: string
+        format: date in dd/MM/yyyy format
+        example: 06/04/2020
+    description: refers to WEB_STREET_SUBMISSION_V table
+  StreetMotorway:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      motorwayDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/05/2020
+      motorwayIncludedLength:
+        type: number
+        format: double
+        example: 22.45
+      motorwayDeclaredLength:
+        type: number
+        format: double
+        example: 65.9
+      motorwayRating:
+        type: number
+        format: double
+        example: 0.98
+      motorwayRatingChange:
+        type: number
+        format: double
+        example: 0.33
+      motorwayLevel:
+        type: string
+        example: Gold
+    description: refers to WEB_STREET_MOTORWAY_V table
+  StreetMaintenance:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      maintenanceDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/05/2020
+      type1Streets:
+        type: integer
+        format: int64
+        example: 434
+      maintenanceTotal:
+        type: integer
+        format: int64
+        example: 656
+      maintenanceRating:
+        type: number
+        format: double
+        example: 0.87
+      maintenanceRatingChange:
+        type: number
+        format: double
+        example: 0.43
+      maintenanceLevel:
+        type: string
+        example: Gold
+    description: refers to WEB_STREET_MAINTENANCE_V table
+  StreetPublicRightsofWay:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      prowDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/05/2020
+      prowIncludedLength:
+        type: number
+        format: double
+        example: 22.45
+      prowDeclaredLength:
+        type: number
+        format: double
+        example: 65.9
+      prowRating:
+        type: number
+        format: double
+        example: 0.98
+      prowRatingChange:
+        type: number
+        format: double
+        example: 0.33
+      prowLevel:
+        type: string
+        example: Gold
+    description: refers to WEB_STREET_PROW_V table
+  StreetNationalCycleRoutes:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      ncrDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/05/2020
+      ncrIncludedLength:
+        type: number
+        format: double
+        example: 22.45
+      ncrDeclaredLength:
+        type: number
+        format: double
+        example: 65.9
+      ncrRating:
+        type: number
+        format: double
+        example: 0.98
+      ncrRatingChange:
+        type: number
+        format: double
+        example: 0.33
+      ncrLevel:
+        type: string
+        example: Gold
+    description: refers to WEB_STREET_NCR_V table
+  StreetHGVRoute:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      hgvRouteDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/05/2020
+      hgvRouteIncludedLength:
+        type: number
+        format: double
+        example: 22.45
+      hgvRouteDeclaredLength:
+        type: number
+        format: double
+        example: 65.9
+      hgvRouteRating:
+        type: number
+        format: double
+        example: 0.98
+      hgvRouteRatingChange:
+        type: number
+        format: double
+        example: 0.33
+      hgvRouteLevel:
+        type: string
+        example: Gold
+    description: refers to WEB_STREET_HGV_ROUTE_V table
+  StreetWinterRoute:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      winterRouteDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/05/2020
+      winterRouteIncludedLength:
+        type: number
+        format: double
+        example: 22.45
+      winterRouteDeclaredLength:
+        type: number
+        format: double
+        example: 65.9
+      winterRouteRating:
+        type: number
+        format: double
+        example: 0.98
+      winterRouteRatingChange:
+        type: number
+        format: double
+        example: 0.33
+      winterRouteLevel:
+        type: string
+        example: Gold
+    description: refers to WEB_STREET_WINTER_ROUTE_V table
+  StreetPedestrianCrossing:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      pedestrianCrossingDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/05/2020
+      pedestrianCrossingIncludedLength:
+        type: number
+        format: double
+        example: 22.45
+      pedestrianCrossingDeclaredLength:
+        type: number
+        format: double
+        example: 65.9
+      pedestrianCrossingRating:
+        type: number
+        format: double
+        example: 0.98
+      pedestrianCrossingRatingChange:
+        type: number
+        format: double
+        example: 0.33
+      pedestrianCrossingLevel:
+        type: string
+        example: Gold
+    description: refers to WEB_STREET_PEDESTRIAN_CROSSING_V table
+  StreetESUExtremityPoint:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      esuExtremityPointDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/05/2020
+      esuExtremityPointTotal:
+        type: integer
+        format: int64
+        example: 897
+      esuExtremityPointRating:
+        type: number
+        format: double
+        example: 0.765
+      esuExtremityPointRatingChange:
+        type: number
+        format: double
+        example: 0.21
+      esuExtremityPointLevel:
+        type: string
+        example: Silver
+    description: refers to WEB_STREET_ESU_EXTREMITY_POINT_V table
+  StreetToNextLevelStats:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      healthCheckToLevel1:
+        type: integer
+        format: int64
+        example: 98
+      healthCheckToLevel2:
+        type: integer
+        format: int64
+        example: 545
+      healthCheckToLevel3:
+        type: integer
+        format: int64
+        example: 65
+      healthCheckToLevel4:
+        type: integer
+        format: int64
+        example: 33
+      healthCheckToLevel5:
+        type: integer
+        format: int64
+        example: 123
+      missingStreetToLevel1:
+        type: integer
+        format: int64
+        example: 98
+      missingStreetToLevel2:
+        type: integer
+        format: int64
+        example: 545
+      missingStreetToLevel3:
+        type: integer
+        format: int64
+        example: 65
+      missingStreetToLevel4:
+        type: integer
+        format: int64
+        example: 33
+      missingStreetToLevel5:
+        type: integer
+        format: int64
+        example: 123
+      comparisonToLevel1:
+        type: integer
+        format: int64
+        example: 98
+      comparisonToLevel2:
+        type: integer
+        format: int64
+        example: 545
+      comparisonToLevel3:
+        type: integer
+        format: int64
+        example: 65
+      comparisonToLevel4:
+        type: integer
+        format: int64
+        example: 33
+      comparisonToLevel5:
+        type: integer
+        format: int64
+        example: 123
+    description: refers to WEB_STREET_TO_LEVEL_V table
+  StreetLevelStats:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      reportMonth:
+        type: string
+        format: date in dd/MM/yyyy
+      streets:
+        type: integer
+        format: int64
+        example: 12345
+      overallLevel:
+        type: string
+        example: Gold
+      healthCheckTotal:
+        type: integer
+        format: int64
+        example: 345
+      healthCehckRecurring:
+        type: integer
+        format: int64
+        example: 76
+      healthCheckRating:
+        type: number
+        format: double
+        example: 0.67
+      healthCheckLevel:
+        type: string
+        example: Silver
+      prnLevel:
+        type: string
+        example: Gold
+      underConstructionTotal:
+        type: integer
+        format: int64
+        example: 654
+      underConstructionRating:
+        type: number
+        format: double
+        example: 0.75
+      underConstructionLevel:
+        type: string
+        example: Gold
+      missingStreetTotal:
+        type: integer
+        format: int64
+        example: 876
+      missingStreetRating:
+        type: number
+        format: double
+        example: 0.88
+      missingStreetLevel:
+        type: string
+        example: Gold
+      comparisonTotal:
+        type: integer
+        format: int64
+        example: 544
+      comparisonRecurring:
+        type: integer
+        format: int64
+        example: 34
+      comparisonRating:
+        type: number
+        format: double
+        example: 0.85
+      comparisonLevel:
+        type: string
+        example: Silver
+      classifiedNetworkLevel:
+        type: string
+        example: Silver
+      sedStructureLevel:
+        type: string
+        example: Silver
+      submissionRating:
+        type: number
+        format: double
+        example: 0.99
+      submissionLevel:
+        type: string
+        example: Gold
+      newContentLevel:
+        type: string
+        example: Gold
+    description: refers to WEB_STREET_TO_LEVEL_V table
+  StreetLandingPageDTO:
+    type: object
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      overallLevel:
+        type: string
+        example: Gold
+      benchmarkLevel:
+        type: string
+        example: Silver
+      pledgeLevel:
+        type: string
+        example: Silver
+      nonContributingFlag:
+        type: string
+        format: enum
+        example: "Y"
+      healthCheckDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/06/2020
+      healthCheckRating:
+        type: number
+        format: double
+        example: 0.98
+      healthCheckLevel:
+        type: string
+        example: Silver
+      healthCheckToNextLevel:
+        type: integer
+        format: int64
+        example: 987
+      healthCheck2Date:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/06/2020
+      healthCheck2Rating:
+        type: number
+        format: double
+        example: 0.98
+      healthCheck2Level:
+        type: string
+        example: Silver
+      healthCheck2ToNextLevel:
+        type: integer
+        format: int64
+        example: 987
+      underConstructionDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/06/2020
+      underConstructionRating:
+        type: number
+        format: double
+        example: 0.98
+      underConstructionLevel:
+        type: string
+        example: Silver
+      underConstructionToNextLevel:
+        type: integer
+        format: int64
+        example: 543
+      missingStreetDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/06/2020
+      missingStreetRating:
+        type: number
+        format: double
+        example: 0.98
+      missingStreetLevel:
+        type: string
+        example: Silver
+      missingStreetToNextLevel:
+        type: integer
+        format: int64
+        example: 543
+      comparisonDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/06/2020
+      comparisonRating:
+        type: number
+        format: double
+        example: 0.98
+      comparisonLevel:
+        type: string
+        example: Silver
+      comparisonToNextLevel:
+        type: integer
+        format: int64
+        example: 543
+      prnDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/06/2020
+      prnRating:
+        type: number
+        format: double
+        example: 0.98
+      prnLevel:
+        type: string
+        example: Silver
+      sedStructureDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/06/2020
+      sedStructureRating:
+        type: number
+        format: double
+        example: 0.98
+      sedStructureLevel:
+        type: string
+        example: Silver
+      classifiedNetworkDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/06/2020
+      classifiedNetworkLevel:
+        type: string
+        example: Silver
+      submissionLevel:
+        type: string
+        example: Gold
+      submissionRating:
+        type: number
+        format: double
+        example: 0.89
+      latestSubmissionDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 06/06/2020
+      newContentLevel:
+        type: string
+        example: Gold
+      newContentRating:
+        type: number
+        format: double
+        example: 0.89
+      motorwayDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 06/06/2020
+      motorwayLevel:
+        type: string
+        example: Gold
+      motorwayRating:
+        type: number
+        format: double
+        example: 0.89
+      maintenanceDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 06/06/2020
+      maintenanceLevel:
+        type: string
+        example: Gold
+      maintenanceRating:
+        type: number
+        format: double
+        example: 0.89
+      prowDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 06/06/2020
+      prowLevel:
+        type: string
+        example: Gold
+      prowRating:
+        type: number
+        format: double
+        example: 0.89
+      ncrDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 06/06/2020
+      ncrLevel:
+        type: string
+        example: Gold
+      ncrRating:
+        type: number
+        format: double
+        example: 0.89
+      hgvRouteDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 06/06/2020
+      hgvRouteLevel:
+        type: string
+        example: Gold
+      hgvRouteRating:
+        type: number
+        format: double
+        example: 0.89
+      winterRouteDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 06/06/2020
+      winterRouteLevel:
+        type: string
+        example: Gold
+      winterRouteRating:
+        type: number
+        format: double
+        example: 0.89
+      pedestrianCrossingDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 06/06/2020
+      pedestrianCrossingLevel:
+        type: string
+        example: Gold
+      pedestrianCrossingRating:
+        type: number
+        format: double
+        example: 0.89
+      esuExtremityPointDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 06/06/2020
+      esuExtremityPointLevel:
+        type: string
+        example: Gold
+      esuExtremityPointRating:
+        type: number
+        format: double
+        example: 0.89
+    description: dto object that holds the landing page info for Streets
