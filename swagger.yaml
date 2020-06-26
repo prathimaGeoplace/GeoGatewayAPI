@@ -30,9 +30,9 @@ tags:
   description: Controller for Street Comparision
 - name: addressHealthCheck
   description: Controller for Address Data Consistency
-- name: sreeets
+- name: streets
   description: Controller for Street Home Page
-- name: sreeetClassifiedNetworks
+- name: streetClassifiedNetworks
   description: Controller for Street Classified Network
 - name: streetSubmission
   description: Controller for Street New Content and Street Update Timeliness
