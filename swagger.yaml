@@ -880,7 +880,7 @@ paths:
     get:
       tags:
       - streets
-      summary: Retrive all the Improvement schedule levels for all Criteria and Indicators for the Street home page
+      summary: Retrieve all the Improvement schedule levels for all Criteria and Indicators for the Street home page
       description: Returns StreetLandingPageDTO
       produces:
       - application/json
@@ -1959,6 +1959,8 @@ definitions:
         type: integer
         format: int32
         example: 1
+      roleId:
+        $ref: '#/definitions/AuthorityRoles'
       startDate:
         type: string
         format: date in dd/MM/yyyy
@@ -1978,11 +1980,24 @@ definitions:
         type: string
         format: enum
         example: "N"
-      notClosableFlag:
+      closableFlag:
         type: string
         format: enum
         example: "Y"
     description: refers AUTHORITY_MESSAGES table
+  AuthorityRoles:
+    type: object
+    required:
+    - roleId
+    properties:
+      roleId:
+        type: integer
+        format: int32
+        example: 19
+      description:
+        type: string
+        example: Authority Address Custodian
+    description: refers CUSTOMERS.CONTACT_ROLE_CODES table
   AddressToNextLevelStats:
     type: object
     required:
@@ -2129,6 +2144,32 @@ definitions:
         format: date in dd/MM/yyyy
         example: 01/05/2020
     description: refers CALENDAR_EVENTS table
+  StreetHealthCheckCodes:
+    type: object
+    required:
+    - queryCode
+    properties:
+      queryCode:
+        type: string
+        example: NC6a
+      categoryCode:
+        type: string
+        example: "2"
+      description:
+        type: string
+        example: Open Type 1 and 2 ASG street records that do not exist in the NSG
+      recordType:
+        type: integer
+        format: int32
+        example: 15
+      checkType:
+        type: string
+        example: PRIORITY
+      priorityNextYearFlag:
+        type: string
+        format: enum
+        example: "N"
+    description: refers STREET_HEALTH_CHECK table
   StreetHealthCheckData:
     type: object
     required:
@@ -2166,8 +2207,7 @@ definitions:
         type: string
         example: NSG NLPG Comparison
       queryCode:
-        type: string
-        example: NC6a
+        $ref: '#/definitions/StreetHealthCheckCodes'
       recordType:
         type: string
         example: "15"
@@ -2404,6 +2444,10 @@ definitions:
         type: integer
         format: int32
         example: 11
+      errorsNextYear:
+        type: string
+        format: enum
+        example: "N"
     description: refers to Address_Error_Codes table
   AddressHealthCheckErrors:
     type: object
