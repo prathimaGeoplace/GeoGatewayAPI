@@ -209,22 +209,29 @@ paths:
       security:
       - authorise:
         - has_roles
-  /api/ggw/authorityMessages/{authCode}/{gazeetterId}:
+  /api/ggw/authorityMessages:
     get:
       tags:
       - authorityMessages
       summary: Get Messages for Authority
       description: Returns top 3 AuthorityMessages for Address/Street Home Page filtered based on authCode, gazeetterId, region, accountType and role and ordered by Priority
+      consumes:
+      - multipart/form-data
       produces:
       - application/json
       parameters:
       - name: authCode
-        in: path
+        in: formData
         description: Authcode of the logged in user
         required: true
         type: number
+      - name: contactId
+        in: formData
+        description: Contact Id of the logged in user
+        required: true
+        type: number
       - name: gazeetterId
-        in: path
+        in: formData
         description: indicates Address(1) or Street(2) based on the page user is accessing
         required: true
         type: integer
@@ -242,7 +249,29 @@ paths:
       security:
       - authorise:
         - has_roles
-  /api/ggw/authorityMessages:
+    post:
+      tags:
+      - authorityMessages
+      summary: Creates a new Message or updates an existing authority message
+      operationId: createAuthorityMessage
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: AuthorityMessage object that has to be created or updated
+        required: true
+        schema:
+          $ref: '#/definitions/AuthorityMessage'
+      responses:
+        "200":
+          description: successful operation
+      security:
+      - authorise:
+        - has_super_admin_only
+  /api/ggw/authorityMessages/allMessages:
     get:
       tags:
       - authorityMessages
@@ -284,28 +313,6 @@ paths:
           description: Invalid Input parameters supplied
         "404":
           description: Authority Messages not found
-      security:
-      - authorise:
-        - has_super_admin_only
-    post:
-      tags:
-      - authorityMessages
-      summary: Creates a new Message or updates an existing authority message
-      operationId: createAuthorityMessage
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - in: body
-        name: body
-        description: AuthorityMessage object that has to be created or updated
-        required: true
-        schema:
-          $ref: '#/definitions/AuthorityMessage'
-      responses:
-        "200":
-          description: successful operation
       security:
       - authorise:
         - has_super_admin_only
@@ -623,32 +630,6 @@ paths:
           description: Invalid AuthCode supplied
         "404":
           description: Address Street Comparison Details not found
-      security:
-      - authorise:
-        - has_roles
-  /api/ggw/addressComparison/getSummaryDetails/{authCode}:
-    get:
-      tags:
-      - addressComparison
-      summary: Get Error, Warning and Recurring Error Counts for Street Comparison Landing Page
-      description: Returns StreetComparisonSummaryDTO
-      produces:
-      - application/json
-      parameters:
-      - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
-        type: number
-      responses:
-        "200":
-          description: successful operation
-          schema:
-            $ref: '#/definitions/StreetComparisonSummaryDTO'
-        "400":
-          description: Invalid AuthCode supplied
-        "404":
-          description: Street Comparison Summary Details not found
       security:
       - authorise:
         - has_roles
@@ -1578,7 +1559,7 @@ definitions:
         type: string
         example: N/A
     description: refers Web_Address_Submission_V view
-  ThirdParty:
+  AddressThirdParty:
     type: object
     required:
     - authCode
@@ -1586,6 +1567,10 @@ definitions:
       authCode:
         type: number
         example: 114.0
+      priorityObjectDate:
+        type: string
+        format: date in dd/mm/yyyy
+        example: 09/06/2020
       priorityObjectRating:
         type: number
         format: double
@@ -1597,6 +1582,10 @@ definitions:
         type: integer
         format: int64
         example: 612
+      newVoaPafDate:
+        type: string
+        format: date in dd/mm/yyyy
+        example: 09/06/2020
       newVoaPafUnlinked:
         type: integer
         format: int64
@@ -1612,6 +1601,10 @@ definitions:
         type: integer
         format: int64
         example: 612
+      ndrDate:
+        type: string
+        format: date in dd/mm/yyyy
+        example: 09/06/2020
       ndrRating:
         type: number
         format: double
@@ -1623,6 +1616,10 @@ definitions:
         type: integer
         format: int64
         example: 76
+      pafDate:
+        type: string
+        format: date in dd/mm/yyyy
+        example: 09/06/2020
       pafRating:
         type: number
         format: double
@@ -1634,6 +1631,10 @@ definitions:
         type: integer
         format: int64
         example: 544
+      ctaxDate:
+        type: string
+        format: date in dd/mm/yyyy
+        example: 09/06/2020
       ctaxRating:
         type: number
         format: double
@@ -2215,48 +2216,6 @@ definitions:
         type: number
         example: 4.0800005E7
     description: refers STREET_HEALTH_DATA table
-  StreetComparisonSummaryDTO:
-    type: object
-    properties:
-      streetErrors:
-        type: integer
-        format: int32
-        example: 19
-      streetRecurringErrors:
-        type: integer
-        format: int32
-        example: 5
-      streetWarnings:
-        type: integer
-        format: int32
-        example: 13
-      streetDescriptorErrors:
-        type: integer
-        format: int32
-        example: 19
-      streetDescriptorRecurringErrors:
-        type: integer
-        format: int32
-        example: 5
-      streetDescriptorWarnings:
-        type: integer
-        format: int32
-        example: 13
-      streetCustodianName:
-        type: string
-        example: SalesForce
-      streetCustodianEmail:
-        type: string
-        example: SalesForce
-      lastAddressSubmissionDate:
-        type: string
-        format: date in dd/MM/yyyy
-        example: 20/05/2020
-      lastStreetSubmissionDate:
-        type: string
-        format: date in dd/MM/yyyy
-        example: 23/05/2020
-    description: dto object that holds Address StreetComparison errors, warnings and recurring error counts
   AddressHealthCheckCountsDTO:
     type: object
     properties:
@@ -2865,6 +2824,13 @@ definitions:
         type: string
         format: date in dd/MM/yyyy format
         example: 06/04/2020
+      countdownDays:
+        type: integer
+        format: int32
+        example: 3
+      countdownLevel:
+        type: string
+        example: Silver
     description: refers to WEB_STREET_SUBMISSION_V table
   StreetMotorway:
     type: object
@@ -3506,4 +3472,11 @@ definitions:
         type: number
         format: double
         example: 0.89
+      countdownDays:
+        type: integer
+        format: int32
+        example: 3
+      countdownLevel:
+        type: string
+        example: Silver
     description: dto object that holds the landing page info for Streets
