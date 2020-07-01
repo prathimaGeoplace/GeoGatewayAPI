@@ -633,6 +633,32 @@ paths:
       security:
       - authorise:
         - has_roles
+  /api/ggw/addressComparison/custodianDetails/{authCode}:
+    get:
+      tags:
+      - addressComparison
+      summary: Retrieve the Street Custodian Details for Address-Street Comparison UI
+      description: Returns AddressStreetCustodian
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AddressStreetCustodian'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Street Custodian Details not found
+      security:
+      - authorise:
+        - has_roles
   /api/ggw/addressComparison/errors:
     get:
       tags:
@@ -2171,6 +2197,25 @@ definitions:
         format: enum
         example: "N"
     description: refers STREET_HEALTH_CHECK table
+  AddressStreetCustodian:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      streetCustodianName:
+        type: string
+        example: Martin Laker
+      streetCustodianEmail:
+        type: string
+        example: martin_laker@bathnes.gov.uk
+      isAdditionalCustodianFlag:
+        type: string
+        format: enum
+        example: "N"
+    description: refers WEB_ADDRESS_STREET_CUSTODIAN_V table
   StreetHealthCheckData:
     type: object
     required:
