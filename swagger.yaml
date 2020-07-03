@@ -9,8 +9,8 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-host: virtserver.swaggerhub.com
-basePath: /G7133/GeoGateway/1.0.0
+host: services-ui.dev.geoplace.co.uk
+basePath: /api/ggw/
 tags:
 - name: address
   description: Controller for Address Home Page
@@ -27,7 +27,7 @@ tags:
 - name: addressCandidates
   description: Controller for Address Candidates
 - name: addressComparison
-  description: Controller for Street Comparision
+  description: Controller for Street Comparision on Address
 - name: addressHealthCheck
   description: Controller for Address Data Consistency
 - name: streets
@@ -40,6 +40,12 @@ tags:
   description: Controller for Street Health Check 1 and Health Check 2
 - name: streetLifeCycle
   description: Controller for Missing Streets and Under Construction
+- name: streetSedStructure
+  description: Controller for Street SEDs & Structure
+- name: streetPrn
+  description: Controller for Streets Primary Route Network
+- name: streetComparison
+  description: Controller for Street Comparison on Street
 schemes:
 - https
 paths:
@@ -883,6 +889,61 @@ paths:
       security:
       - authorise:
         - has_roles
+  /api/ggw/addressHealthCheck/exceptionsReport/{authCode}:
+    get:
+      tags:
+      - addressHealthCheck
+      summary: Generates csv file for the submitted address exceptions by the authority until date
+      description: Returns csv file
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: Downloads the report successfully
+        "400":
+          description: Invalid AuthCode supplied
+      security:
+      - authorise:
+        - has_roles
+  /api/ggw/addressHealthCheck/summaryCounts/{authCode}/{recordType}:
+    get:
+      tags:
+      - addressHealthCheck
+      summary: Get Error, Warning and Recurring Error Counts for each distinct error code for Address Data Consistency Landing Page
+      description: Returns AddressHealthCheckSummaryCountsDTO
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      - name: recordType
+        in: path
+        description: Record Type
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AddressHealthCheckSummaryCountsDTO'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Address Health Check Summary Counts not found
+      security:
+      - authorise:
+        - has_roles
   /api/ggw/streets/summary/{authCode}:
     get:
       tags:
@@ -1101,7 +1162,7 @@ paths:
       security:
       - authorise:
         - has_street_roles
-  /api/ggw/streetLifeCycle/errors/{authCode}:
+  /api/ggw/streetLifeCycle/missingStreet/errors/{authCode}:
     get:
       tags:
       - streetLifeCycle
@@ -1123,7 +1184,33 @@ paths:
         "400":
           description: Invalid Input parameters supplied
         "404":
-          description: Street Health check Errors not found
+          description: Street Health check Errors for Missing Street not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetLifeCycle/underConstruction/errors/{authCode}:
+    get:
+      tags:
+      - streetLifeCycle
+      summary: Get All errors of the specified authCode for Under Construction
+      description: Returns all the errors of the error code SR112 from the Street Health Check Data
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/StreetHealthCheckData'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street Health check Errors for Under Construction not found
       security:
       - authorise:
         - has_street_roles
@@ -1300,15 +1387,152 @@ paths:
       security:
       - authorise:
         - has_street_roles
+  /api/ggw/streetHealthCheck/summaryCounts/{authCode}/{hcType}:
+    get:
+      tags:
+      - streetHealthCheck
+      summary: Get the total counts for each record type for hc 1 and 2
+      description: returns the total error counts, review counts and info counts for street health check 1 and 2 summary counts table
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: AuthCode of the logged in user
+        required: true
+        type: number
+      - name: hcType
+        in: path
+        description: hc1 or hc2 depending on the UI page user is accessing
+        required: true
+        type: string
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/StreetHCErrorCountsDTO'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street Health Check Error Counts not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetSedStructure/{authCode}:
+    get:
+      tags:
+      - streetSedStructure
+      summary: Get Improvement Schedule level details and length details for SEDs and Structure
+      description: Returns StreetSEDStructure
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetSEDStructure'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street SEDs and Structure details not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetPrn/{authCode}:
+    get:
+      tags:
+      - streetPrn
+      summary: Retrieve all the Improvement schedule levels details and length details for Primary Route Network
+      description: Returns StreetPrimaryRouteNetworks
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetPrimaryRouteNetworks'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Street Primary Route Network Details not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetPrn/prnData/{authCode}:
+    get:
+      tags:
+      - streetPrn
+      summary: Retrieve the USRN details necessary for Primary Route Network
+      description: Returns StreetPrimaryRouteNetworks
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/StreetPrnData'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: USRN Details not found for Primary Route Network
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetComparison/custodianDetails/{authCode}:
+    get:
+      tags:
+      - streetComparison
+      summary: Retrieve the Address Custodian Details for Street Comparison UI
+      description: Returns StreetAddressCustodian
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetAddressCustodian'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Address Custodian Details not found
+      security:
+      - authorise:
+        - has_street_roles
 securityDefinitions:
   authorise:
     type: oauth2
     tokenUrl: https://login.dev.geoplace.co.uk/login
     flow: password
     scopes:
-      has_roles: super_admin, authority_address_custodian, additional_authority_address_custodian, dca_authority_principal_contact
-      has_super_admin_only: super_admin
-      has_street_roles: super_admin, authority_street_custodian, additional_authority_street_custodian, dca_authority_principal_contact
+      has_roles: super_user, authority_address_custodian, additional_authority_address_custodian, dca_authority_principal_contact
+      has_super_admin_only: super_user
+      has_street_roles: super_user, authority_street_custodian, additional_authority_street_custodian, dca_authority_principal_contact
 definitions:
   AddressOverall:
     type: object
@@ -2211,6 +2435,9 @@ definitions:
       streetCustodianEmail:
         type: string
         example: martin_laker@bathnes.gov.uk
+      streetCustodianPhone:
+        type: string
+        example: "76547580475"
       isAdditionalCustodianFlag:
         type: string
         format: enum
@@ -2483,6 +2710,32 @@ definitions:
         type: string
         example: "8100554"
     description: refers to Address_Errors table
+  AddressHealthCheckSummaryCountsDTO:
+    type: object
+    properties:
+      errorCode:
+        type: string
+        example: AAU21.64
+      description:
+        type: string
+        example: Street on USRN {0} missing Street Only BLPU record
+      recordType:
+        type: integer
+        format: int32
+        example: 11
+      totalErrorCount:
+        type: integer
+        format: int64
+        example: 65
+      totalWarningCount:
+        type: integer
+        format: int64
+        example: 33
+      totalRecurringErrorCount:
+        type: integer
+        format: int64
+        example: 12
+    description: dto object to hold the address health check counts for each error code
   AddressExpDTO:
     type: object
     properties:
@@ -2503,6 +2756,36 @@ definitions:
         type: string
         example: 24,"I","25","110000000738","0905L000000624","ENG","1","2020-02-10","","2020-02-10","2020-02-10","","","","","","","","","","POATEXT","300516","","L","PL26 8EH","ST AUSTELL","C","","",""
     description: dto object to submit Address Exceptions
+  AddressExceptions:
+    type: object
+    properties:
+      authCode:
+        type: number
+        example: 119.0
+      recordType:
+        type: integer
+        format: int64
+        example: 15
+      referenceKey:
+        type: string
+        example: "48015898"
+      uniqueKey:
+        type: string
+        example: 3725L000075614
+      errorCode:
+        type: string
+        example: AAU15.10
+      reason:
+        type: string
+        example: Town name is correct and matches the Royal Mail address for properties on this street
+      entryDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/07/2020
+      fileName:
+        type: string
+        example: 0119_01.txt
+    description: refers ADDRESS.EXCEPTIONS_LIST table
   StreetOverall:
     type: object
     required:
@@ -3525,3 +3808,70 @@ definitions:
         type: string
         example: Silver
     description: dto object that holds the landing page info for Streets
+  StreetHCErrorCountsDTO:
+    type: object
+    properties:
+      recordType:
+        type: string
+        example: Interest Record
+      totalErrorCount:
+        type: integer
+        format: int64
+        example: 43
+      totalReviewCount:
+        type: integer
+        format: int64
+        example: 22
+      totalInfoCount:
+        type: integer
+        format: int64
+        example: 6
+    description: dto that holds the summary counts for street health check 1 and 2
+  StreetPrnData:
+    type: object
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      usrn:
+        type: number
+        example: 4518569.0
+      streetDescription:
+        type: string
+        example: BATH BRIDGE ROUNDABOUT
+      roadNumberList:
+        type: string
+        example: A6077, B6130, B6232
+      usrnLength:
+        type: number
+        format: double
+        example: 323.805
+    description: refers to the WEB_STREET_PRN_DATA_V
+  StreetAddressCustodian:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      addressAuthorityName:
+        type: string
+        example: John Smith
+      addressAuthCode:
+        type: number
+        example: 114.0
+      addressCustodianName:
+        type: string
+        example: John Smith
+      addressCustodianEmail:
+        type: string
+        example: john@email.co.uk
+      addressCustodianPhone:
+        type: string
+        example: "7787879799"
+      additionalAddressCustodianFlag:
+        type: string
+        format: enum
+        example: "N"
+    description: refers WEB_STREET_ADDRESS_CUSTODIAN_V table
