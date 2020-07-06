@@ -670,7 +670,7 @@ paths:
       tags:
       - addressComparison
       summary: Get All Street Comparison errors
-      description: Returns all the errors, warning from StreetHealthCheck based on the filter criteria to populate on the Street Comparison Errors Table. This should include sorting and pagination
+      description: Returns all the errors, warning from AddressComparisonData based on the filter criteria to populate on the Street Comparison Errors Table. This should include sorting and pagination
       consumes:
       - multipart/form-data
       produces:
@@ -684,11 +684,11 @@ paths:
         in: formData
         required: false
         type: number
-      - name: errorCode
+      - name: queryCode
         in: formData
         required: false
         type: string
-      - name: type
+      - name: checkType
         in: formData
         required: false
         type: string
@@ -706,7 +706,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/StreetHealthCheckData'
+              $ref: '#/definitions/AddressComparisonData'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -2421,6 +2421,39 @@ definitions:
         format: enum
         example: "N"
     description: refers STREET_HEALTH_CHECK table
+  AddressComparisonData:
+    type: object
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      checkType:
+        type: string
+        example: PRIORITY
+      recordType:
+        type: string
+        example: "15"
+      queryCode:
+        type: string
+        example: NC6a
+      description:
+        type: string
+        example: Open Type 1 and 2 ASG street records that do not exist in the NSG
+      reccurringFlag:
+        type: string
+        format: enum
+        example: "N"
+      errorNextYearFlag:
+        type: string
+        format: enum
+        example: "N"
+      reference:
+        type: number
+        example: 4.7900068E7
+      dtfLine:
+        type: string
+        example: 15,"CALUFARIWD","","ODUTKRBPNU","CREBSLLNYD","ENG"
+    description: refers to WEB_ADDRESS_COMPARISON_DATA_V
   AddressStreetCustodian:
     type: object
     required:
