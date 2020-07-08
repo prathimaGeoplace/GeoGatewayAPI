@@ -46,6 +46,22 @@ tags:
   description: Controller for Streets Primary Route Network
 - name: streetComparison
   description: Controller for Street Comparison on Street
+- name: streetEsu
+  description: Controller for Street ESU extremity points
+- name: streetHgvRoute
+  description: Controller for Street HGV Approved Routes
+- name: streetMaintenance
+  description: Controller for Street Maintenance
+- name: streetMotorway
+  description: Controller for Street Motorway
+- name: streetNcr
+  description: Controller for Street National Cycle Routes
+- name: streetPedestrian
+  description: Controller for Street Pedestrian Crossing
+- name: streetProw
+  description: Controller for Street Public Rights of Way
+- name: streetWinterRoute
+  description: Controller for Street Winter Route
 schemes:
 - https
 paths:
@@ -1475,7 +1491,7 @@ paths:
       tags:
       - streetPrn
       summary: Retrieve the USRN details necessary for Primary Route Network
-      description: Returns StreetPrimaryRouteNetworks
+      description: Returns List of StreetPrimaryRouteNetworks
       produces:
       - application/json
       parameters:
@@ -1521,6 +1537,331 @@ paths:
           description: Invalid AuthCode supplied
         "404":
           description: Address Custodian Details not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetComparison/errors:
+    get:
+      tags:
+      - streetComparison
+      summary: Get All Street Comparison errors
+      description: Returns all the errors, warning from StreetComparisonData based on the filter criteria to populate on the Street Comparison Errors Table. This should include sorting and pagination
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: formData
+        required: true
+        type: number
+      - name: recordType
+        in: formData
+        required: false
+        type: number
+      - name: queryCode
+        in: formData
+        required: false
+        type: string
+      - name: checkType
+        in: formData
+        required: false
+        type: string
+      - name: recurring
+        in: formData
+        required: false
+        type: string
+      - name: errorsNextYear
+        in: formData
+        required: false
+        type: string
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/StreetComparisonData'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street Comparison Errors not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetEsu/{authCode}:
+    get:
+      tags:
+      - streetEsu
+      summary: Get Improvement Schedule level details and length details for ESU Extremity Points
+      description: Returns StreetESUExtremityPoint
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetESUExtremityPoint'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street ESU Extremity Point details not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetHgvRoute/{authCode}:
+    get:
+      tags:
+      - streetHgvRoute
+      summary: Get Improvement Schedule level details and length details for HGV Approved Routes
+      description: Returns StreetHGVRoute
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetHGVRoute'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street HGV Route details not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetHgvRoute/hgvData/{authCode}:
+    get:
+      tags:
+      - streetHgvRoute
+      summary: Retrieve the USRN details necessary for HGV Approved Routes
+      description: Returns List of StreetHGVRouteData
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/StreetHGVRouteData'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: USRN Details not found for HGV Approved Routes
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetMaintenance/{authCode}:
+    get:
+      tags:
+      - streetMaintenance
+      summary: Get Improvement Schedule level details and length details for Street Maintenance Responsibility
+      description: Returns StreetMaintenance
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetMaintenance'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street Maintenance details not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetMotorway/{authCode}:
+    get:
+      tags:
+      - streetMotorway
+      summary: Get Improvement Schedule level details and length details for Street Motorways
+      description: Returns StreetMotorway
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetMotorway'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street Motorway details not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetNcr/{authCode}:
+    get:
+      tags:
+      - streetNcr
+      summary: Get Improvement Schedule level details and length details for Street National Cycle Routes
+      description: Returns StreetNationalCycleRoutes
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetNationalCycleRoutes'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street National Cycle details not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetPedestrian/{authCode}:
+    get:
+      tags:
+      - streetPedestrian
+      summary: Get Improvement Schedule level details and length details for Street Pedestrian Crossing
+      description: Returns StreetPedestrianCrossing
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetPedestrianCrossing'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street Pedestrian Crossing details not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetPedestrian/usrnData/{authCode}:
+    get:
+      tags:
+      - streetPedestrian
+      summary: Retrieve the USRN details necessary for Pedestrian Crossing
+      description: Returns List of StreetPedestrianCrossingData
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/StreetPedestrianCrossingData'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: USRN Details not found for Street Pedestrian Crossing
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetProw/{authCode}:
+    get:
+      tags:
+      - streetProw
+      summary: Get Improvement Schedule level details and length details for Street Public Rights of Way
+      description: Returns StreetPublicRightsofWay
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetPublicRightsofWay'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street Public Rights of Way details not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetWinterRoute/{authCode}:
+    get:
+      tags:
+      - streetWinterRoute
+      summary: Get Improvement Schedule level details and length details for Street Winter Maintenance Routes
+      description: Returns StreetWinterRoute
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetWinterRoute'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street Winter Route details not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetWinterRoute/usrnData/{authCode}:
+    get:
+      tags:
+      - streetWinterRoute
+      summary: Retrieve the USRN details necessary for Winter Maintenance Routes
+      description: Returns List of StreetWinterRouteData
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/StreetWinterRouteData'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: USRN Details not found for Street Winter Routes
       security:
       - authorise:
         - has_street_roles
@@ -3908,3 +4249,101 @@ definitions:
         format: enum
         example: "N"
     description: refers WEB_STREET_ADDRESS_CUSTODIAN_V table
+  StreetComparisonData:
+    type: object
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      checkType:
+        type: string
+        example: PRIORITY
+      recordType:
+        type: string
+        example: "15"
+      queryCode:
+        type: string
+        example: NC6a
+      description:
+        type: string
+        example: Open Type 1 and 2 ASG street records that do not exist in the NSG
+      reccurringFlag:
+        type: string
+        format: enum
+        example: "N"
+      errorNextYearFlag:
+        type: string
+        format: enum
+        example: "N"
+      reference:
+        type: number
+        example: 4.7900068E7
+      dtfLine:
+        type: string
+        example: 15,"CALUFARIWD","","ODUTKRBPNU","CREBSLLNYD","ENG"
+    description: refers to WEB_STREET_COMPARISON_DATA_V
+  StreetHGVRouteData:
+    type: object
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      usrn:
+        type: number
+        example: 4353245.0
+      streetDescription:
+        type: string
+        example: BATH BRIDGE ROUNDABOUT
+      sequenceNumber:
+        type: number
+        example: 2.0
+      specialDesigDescription:
+        type: string
+        example: BATH BRIDGE ROUNDABOUT
+      usrnLength:
+        type: number
+        format: double
+        example: 67.55
+    description: refers to WEB_STREET_HGV_ROUTE_DATA_V
+  StreetPedestrianCrossingData:
+    type: object
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      usrn:
+        type: number
+        example: 4353245.0
+      streetDescription:
+        type: string
+        example: BATH BRIDGE ROUNDABOUT
+      sequenceNumber:
+        type: number
+        example: 22.0
+      specialDesigDescription:
+        type: string
+        example: BATH BRIDGE ROUNDABOUT
+    description: refers to WEB_STREET_PEDESTRIAN_DATA_V
+  StreetWinterRouteData:
+    type: object
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      usrn:
+        type: number
+        example: 4353245.0
+      streetDescription:
+        type: string
+        example: BATH BRIDGE ROUNDABOUT
+      sequenceNumber:
+        type: number
+        example: 2.0
+      specialDesigDescription:
+        type: string
+        example: BATH BRIDGE ROUNDABOUT
+      usrnLength:
+        type: number
+        format: double
+        example: 67.55
+    description: refers to WEB_STREET_WINTER_ROUTE_DATA_V
