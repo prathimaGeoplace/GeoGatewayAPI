@@ -849,7 +849,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/AddressHealthCheckErrors'
+              $ref: '#/definitions/AddressHealthCheckData'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -857,7 +857,7 @@ paths:
       security:
       - authorise:
         - has_roles
-  /api/ggw/addressHealthCheck/generateExceptionFile:
+  /api/ggw/addressHealthCheck/generateExceptionFile/{authCode}:
     post:
       tags:
       - addressHealthCheck
@@ -868,6 +868,11 @@ paths:
       produces:
       - text/plain
       parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
       - in: body
         name: body
         description: AddressExpDTO object to generate the text file
@@ -882,7 +887,7 @@ paths:
       security:
       - authorise:
         - has_roles
-  /api/ggw/addressHealthCheck/submitExceptions:
+  /api/ggw/addressHealthCheck/submitExceptions/{authCode}:
     post:
       tags:
       - addressHealthCheck
@@ -891,6 +896,11 @@ paths:
       consumes:
       - application/json
       parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
       - in: body
         name: body
         description: AddressExpDTO object to generate the text file
@@ -932,7 +942,7 @@ paths:
       tags:
       - addressHealthCheck
       summary: Get Error, Warning and Recurring Error Counts for each distinct error code for Address Data Consistency Landing Page
-      description: Returns AddressHealthCheckSummaryCountsDTO
+      description: Returns AddressHCErrorsPerRecordTypeDTO
       produces:
       - application/json
       parameters:
@@ -952,7 +962,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/AddressHealthCheckSummaryCountsDTO'
+              $ref: '#/definitions/AddressHCErrorsPerRecordTypeDTO'
         "400":
           description: Invalid AuthCode supplied
         "404":
@@ -3166,7 +3176,7 @@ definitions:
         type: string
         example: "8100554"
     description: refers to Address_Errors table
-  AddressHealthCheckSummaryCountsDTO:
+  AddressHCErrorsPerRecordTypeDTO:
     type: object
     properties:
       errorCode:
@@ -3192,6 +3202,40 @@ definitions:
         format: int64
         example: 12
     description: dto object to hold the address health check counts for each error code
+  AddressHealthCheckData:
+    type: object
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      errorType:
+        type: string
+        example: E
+      recordType:
+        type: integer
+        format: int32
+        example: 21
+      errrorCode:
+        type: string
+        example: AAU24.28
+      description:
+        type: string
+        example: This LPI does not belong to the UPRN
+      recurringFlag:
+        type: string
+        format: enum
+        example: "N"
+      errorNextYearFlag:
+        type: string
+        format: enum
+        example: "N"
+      referenceKey:
+        type: string
+        example: "110000000738"
+      dtfLine:
+        type: string
+        example: 24,"I","25","110000000738","0905L000000624","ENG","1","2020-02-10","","2020-02-10","2020-02-10","","","","","","","","","","POATEXT","300516","","L","PL26 8EH","ST AUSTELL","C","","",""
+    description: refers the WEB_ADDRESS_HEALTH_DATA_V
   AddressExpDTO:
     type: object
     properties:
@@ -3207,7 +3251,7 @@ definitions:
         example: 0905L000000624
       expMessage:
         type: string
-        example: this LPI does not belong to the UPRN
+        example: This LPI does not belong to the UPRN
       dtfLine:
         type: string
         example: 24,"I","25","110000000738","0905L000000624","ENG","1","2020-02-10","","2020-02-10","2020-02-10","","","","","","","","","","POATEXT","300516","","L","PL26 8EH","ST AUSTELL","C","","",""
