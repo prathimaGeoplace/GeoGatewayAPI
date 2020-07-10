@@ -1491,7 +1491,7 @@ paths:
       tags:
       - streetPrn
       summary: Retrieve the USRN details necessary for Primary Route Network
-      description: Returns List of StreetPrimaryRouteNetworks
+      description: Returns List of StreetPrnData
       produces:
       - application/json
       parameters:
@@ -1511,6 +1511,32 @@ paths:
           description: Invalid AuthCode supplied
         "404":
           description: USRN Details not found for Primary Route Network
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetComparison/{authCode}:
+    get:
+      tags:
+      - streetComparison
+      summary: Retrieve the Improvement schedule level details for Street Comparison
+      description: Returns StreetComparison
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetComparison'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Street Comparison Details not found
       security:
       - authorise:
         - has_street_roles
@@ -1613,6 +1639,34 @@ paths:
       security:
       - authorise:
         - has_street_roles
+  /api/ggw/streetEsu/esuData/{authCode}:
+    get:
+      tags:
+      - streetEsu
+      summary: Retrieve the Street health check errors belonging to the 'SPESU001' error code for that authority
+      description: Returns List of StreetHealthCheckData
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/StreetHealthCheckData'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Street Health check errors not found for ESU extremity points
+      security:
+      - authorise:
+        - has_street_roles
   /api/ggw/streetHgvRoute/{authCode}:
     get:
       tags:
@@ -1686,6 +1740,34 @@ paths:
           description: Invalid Input parameters supplied
         "404":
           description: Street Maintenance details not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetMaintenance/usrnData/{authCode}:
+    get:
+      tags:
+      - streetMaintenance
+      summary: Retrieve the USRN details necessary for Street Maintenance
+      description: Returns List of StreetMaintenanceData
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/StreetMaintenanceData'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: USRN Details not found for Street Maintenance
       security:
       - authorise:
         - has_street_roles
@@ -2522,7 +2604,7 @@ definitions:
         example: one.two@domain.com
       updatedDate:
         type: string
-        format: date in dd/MM/yyyy
+        format: date in dd/MM/yyyy hh:mm:ss
         example: 01/05/2020
     description: refers MESSAGES table
   AuthorityMessage:
@@ -2555,18 +2637,18 @@ definitions:
         $ref: '#/definitions/AuthorityRoles'
       startDate:
         type: string
-        format: date in dd/MM/yyyy
+        format: date in dd/MM/yyyy hh:mm:ss
         example: 01/05/2020
       endDate:
         type: string
-        format: date in dd/MM/yyyy
+        format: date in dd/MM/yyyy hh:mm:ss
         example: 01/06/2020
       updatedBy:
         type: string
         example: one.two@domain.com
       updatedDate:
         type: string
-        format: date in dd/MM/yyyy
+        format: date in dd/MM/yyyy hh:mm:ss
         example: 01/06/2020
       disabledFlag:
         type: string
@@ -2716,11 +2798,11 @@ definitions:
         example: Meeting with Geoplace on Address Submission
       startDate:
         type: string
-        format: date in dd/MM/yyyy
+        format: date in dd/MM/yyyy hh:mm:ss
         example: 20/05/2020
       endDate:
         type: string
-        format: date in dd/MM/yyyy
+        format: date in dd/MM/yyyy hh:mm:ss
         example: 20/05/2020
       eventCategory:
         type: string
@@ -2733,7 +2815,7 @@ definitions:
         example: abc@geoplace.co.uk
       updatedDate:
         type: string
-        format: date in dd/MM/yyyy
+        format: date in dd/MM/yyyy hh:mm:ss
         example: 01/05/2020
     description: refers CALENDAR_EVENTS table
   StreetHealthCheckCodes:
@@ -4347,3 +4429,19 @@ definitions:
         format: double
         example: 67.55
     description: refers to WEB_STREET_WINTER_ROUTE_DATA_V
+  StreetMaintenanceData:
+    type: object
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      usrn:
+        type: number
+        example: 4353245.0
+      name:
+        type: string
+        example: text
+      localityAndTown:
+        type: string
+        example: Victoria,London
+    description: refers to WEB_STREET_MAINTENANCE_DATA_V
