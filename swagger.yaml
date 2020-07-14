@@ -2224,7 +2224,7 @@ definitions:
         example: 8
       lastResyncDate:
         type: string
-        format: date in dd/mm/yyyy
+        format: date in dd/MM/yyyy
         example: 06/12/2018
       submissionRating:
         type: string
@@ -2252,7 +2252,7 @@ definitions:
         example: 114.0
       priorityObjectDate:
         type: string
-        format: date in dd/mm/yyyy
+        format: date in dd/MM/yyyy
         example: 09/06/2020
       priorityObjectRating:
         type: number
@@ -2267,7 +2267,7 @@ definitions:
         example: 612
       newVoaPafDate:
         type: string
-        format: date in dd/mm/yyyy
+        format: date in dd/MM/yyyy
         example: 09/06/2020
       newVoaPafUnlinked:
         type: integer
@@ -2286,7 +2286,7 @@ definitions:
         example: 612
       ndrDate:
         type: string
-        format: date in dd/mm/yyyy
+        format: date in dd/MM/yyyy
         example: 09/06/2020
       ndrRating:
         type: number
@@ -2301,7 +2301,7 @@ definitions:
         example: 76
       pafDate:
         type: string
-        format: date in dd/mm/yyyy
+        format: date in dd/MM/yyyy
         example: 09/06/2020
       pafRating:
         type: number
@@ -2316,7 +2316,7 @@ definitions:
         example: 544
       ctaxDate:
         type: string
-        format: date in dd/mm/yyyy
+        format: date in dd/MM/yyyy
         example: 09/06/2020
       ctaxRating:
         type: number
@@ -2583,6 +2583,54 @@ definitions:
       regionalChairEmail:
         type: string
         example: ccoelho@oxford.gov.uk
+      coordinateDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 04/02/2020
+      coordinate2Date:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 04/02/2020
+      healthCheckDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 04/02/2020
+      tertiaryClassDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 01/08/2019
+      priorityObjectDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/06/2020
+      newVoaPafDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/06/2020
+      ndrDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/06/2020
+      pafDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/06/2020
+      ctaxDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 09/06/2020
+      submissionDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 01/08/2019
+      comparisonDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 04/02/2020
+      candidateDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 01/08/2019
     description: dto object that holds the landing page info
   Message:
     type: object
