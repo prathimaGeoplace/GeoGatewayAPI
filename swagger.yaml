@@ -434,7 +434,7 @@ paths:
       tags:
       - addressCoordinates
       summary: Generate Coordinates Report for Authority
-      description: Generates Coordinates report as a excel based on the data fetched from V_COORDINATES
+      description: Generates Coordinates report as a excel based on the data fetched from AddressCoordinatesReportData and AddressCoordinates
       produces:
       - text/plain
       parameters:
@@ -2154,6 +2154,104 @@ definitions:
         format: date in dd/MM/yyyy
         example: 04/02/2020
     description: refers Web_Address_Coordinate_V view
+  AddressCoordinatesReportData:
+    type: object
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      analysisName:
+        type: string
+        example: Coordinates1
+      baRef:
+        type: string
+        example: abc
+      blpuAddress:
+        type: string
+        example: 4, CERUTTI CLOSE, PAULTON, BRISTOL, BS39 7AY
+      blpuPoint:
+        type: number
+        format: Point
+        example: ""
+      dateAdded:
+        type: string
+        format: date in dd-mon-yyyy
+        example: 01-May-2020
+      distance:
+        type: number
+        format: double
+        example: 23434.0
+      logicalStatusCode:
+        type: integer
+        format: int32
+        example: 1
+      mastermapDescription:
+        type: string
+        example: This is just an example
+      mastermapFid:
+        type: string
+        example: fid
+      ndPrimaryDescription:
+        type: string
+        example: ND primary description
+      pafAddress:
+        type: string
+        example: 4, CERUTTI CLOSE, PAULTON, BRISTOL, BS39 7AY
+      parentUprn:
+        type: number
+        example: 2432343.0
+      proposedPoint:
+        type: number
+        format: Point
+        example: ""
+      proposedXCoordinate:
+        type: number
+        format: double
+        example: 36492.53,
+      proposedYCoordinate:
+        type: number
+        format: double
+        example: 15691.97
+      rpc:
+        type: integer
+        format: int32
+        example: 1
+      source:
+        type: string
+      stateCode:
+        type: integer
+        format: int32
+        example: 2
+      stateDate:
+        type: string
+        format: date in dd-mon-yyyy
+        example: 01-May-2020
+      uarn:
+        type: number
+        example: 34324.0
+      udprn:
+        type: number
+        example: 2.3423423E7
+      uprn:
+        type: number
+        example: 3.42343432E8
+      usrn:
+        type: number
+        example: 3.2432423E7
+      voaAddress:
+        type: string
+      xref:
+        type: string
+        example: 234235342X2342
+      xCoordinate:
+        type: number
+        format: double
+        example: 322334.43
+      yCoordinate:
+        type: number
+        format: double
+        example: 45678.94
+    description: refers Coordinate_vw view in DATA_ANALYSIS schema
   AddressHealthCheck:
     type: object
     required:
