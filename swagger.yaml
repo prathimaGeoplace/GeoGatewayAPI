@@ -2385,6 +2385,27 @@ paths:
       security:
       - authorise:
         - has_ace_roles
+  /api/ggw/aceDetails/reviewEcf:
+    post:
+      tags:
+      - aceDetails
+      summary: Updates the ACE actions which includes approval/rejection and dismissing the ECF forms submitted by authorities.
+      operationId: reviewEcf
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: NonContributors object
+        required: true
+        schema:
+          $ref: '#/definitions/ACENonContributorDTO'
+      responses:
+        "200":
+          description: Exceptional Circumstance form is updated
+      security:
+      - authorise:
+        - has_ace_roles
   /api/ggw/expCircumstances/{authCode}:
     get:
       tags:
@@ -2413,7 +2434,7 @@ paths:
     post:
       tags:
       - expCircumstances
-      summary: Updated the ECF action plans, submitter details, confirmer details and the approval details. The API should validate that the submitter and confirmer should not be the same person.
+      summary: Updated the ECF action plans, submitter details, confirmer details. The API should validate that the submitter and confirmer should not be the same person.
       operationId: submitEcf
       consumes:
       - application/json
@@ -2423,9 +2444,7 @@ paths:
         description: NonContributors object
         required: true
         schema:
-          type: array
-          items:
-            $ref: '#/definitions/NonContributor'
+          $ref: '#/definitions/NonContributor'
       responses:
         "200":
           description: Exceptional Circumstance form is updated
@@ -5196,3 +5215,24 @@ definitions:
       ecfActions:
         $ref: '#/definitions/EcfActionPlans'
     description: refers to NON_CONTRIBUTORS
+  ACENonContributorDTO:
+    type: object
+    required:
+    - nonContributorId
+    properties:
+      nonContributorId:
+        type: integer
+        format: int64
+        example: 1
+      ecfApprovalFlag:
+        type: string
+        format: enum
+        example: "Y"
+      ecfDismissedFlag:
+        type: string
+        format: enum
+        example: "N"
+      ecfApproverComments:
+        type: string
+        example: Approved this form
+    description: refers to dto object that will be received from the ACE ui page
