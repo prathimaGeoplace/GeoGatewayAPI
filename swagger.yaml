@@ -62,6 +62,12 @@ tags:
   description: Controller for Street Public Rights of Way
 - name: streetWinterRoute
   description: Controller for Street Winter Route
+- name: regionalChair
+  description: Controller for Regional Address and Street Chair
+- name: expCircumstances
+  description: Controller for Exceptional Circumstances
+- name: aceDetails
+  description: Controller for ACE UI Page
 schemes:
 - https
 paths:
@@ -831,7 +837,7 @@ paths:
         in: formData
         required: false
         type: string
-      - name: type
+      - name: errorType
         in: formData
         required: false
         type: string
@@ -1957,6 +1963,475 @@ paths:
       security:
       - authorise:
         - has_street_roles
+  /api/ggw/regionalChair/addressRegion/{authCode}:
+    get:
+      tags:
+      - regionalChair
+      summary: Get Region Details for Address
+      description: Returns Region Details that includes the region name, number of authorities and number of non contributers in that region.
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Region details not found
+      security:
+      - authorise:
+        - has_address_rc_roles
+  /api/ggw/regionalChair/addressRegionOverview/{authCode}:
+    get:
+      tags:
+      - regionalChair
+      summary: Get Regional Overview Details for Address
+      description: Returns Regional Overview Details that includes levels, ratings and other details for all Address Criterion. accourdingly
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Region Overview details not found
+      security:
+      - authorise:
+        - has_address_rc_roles
+  /api/ggw/regionalChair/addressCriteria/{authCode}:
+    get:
+      tags:
+      - regionalChair
+      summary: Get Region Address Criteria Details
+      description: Returns Region Address Criteria Details that includes levels, ratings and other details for all address criteria.
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Address Criteria details not found
+      security:
+      - authorise:
+        - has_address_rc_roles
+  /api/ggw/regionalChair/addressIndicators/{authCode}:
+    get:
+      tags:
+      - regionalChair
+      summary: Get Region Address Indicator Details
+      description: Returns Region Address Indicator Details that includes levels, ratings and other details for all address indicator.
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Address Indicator details not found
+      security:
+      - authorise:
+        - has_address_rc_roles
+  /api/ggw/regionalChair/addressContacts/{authCode}:
+    get:
+      tags:
+      - regionalChair
+      summary: Get Contact details of Address Custodians
+      description: Returns Contact details of Address Custodians that includes full name, email address of all Custodains and Additional Custodians.
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Address Custodian details not found
+      security:
+      - authorise:
+        - has_address_rc_roles
+  /api/ggw/regionalChair/addressPreBenchmark/{authCode}:
+    get:
+      tags:
+      - regionalChair
+      summary: Get Address Pre-Benchmark details
+      description: Returns Address Pre-Benchmark details that levels and ratings.
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Address Pre Benchmark details not found
+      security:
+      - authorise:
+        - has_address_rc_roles
+  /api/ggw/regionalChair/streetRegion/{authCode}:
+    get:
+      tags:
+      - regionalChair
+      summary: Get Region Details for Street
+      description: Returns Region Details that includes the region name, number of authorities and number of non contributers in that region.
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Region details not found
+      security:
+      - authorise:
+        - has_street_rc_roles
+  /api/ggw/regionalChair/streetRegionOverview/{authCode}:
+    get:
+      tags:
+      - regionalChair
+      summary: Get Regional Overview Details for Street
+      description: Returns Regional Overview Details that includes levels, ratings and other details for all Street Criterion.
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Region Overview details not found
+      security:
+      - authorise:
+        - has_street_rc_roles
+  /api/ggw/regionalChair/streetCriteria/{authCode}:
+    get:
+      tags:
+      - regionalChair
+      summary: Get Region Street Criteria Details
+      description: Returns Region Street Criteria Details that includes levels, ratings and other details for all street criteria.
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street Criteria details not found
+      security:
+      - authorise:
+        - has_street_rc_roles
+  /api/ggw/regionalChair/streetIndicators/{authCode}:
+    get:
+      tags:
+      - regionalChair
+      summary: Get Region Street Indicator Details
+      description: Returns Region Street Indicator Details that includes levels, ratings and other details for all street indicator.
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street Indicator details not found
+      security:
+      - authorise:
+        - has_street_rc_roles
+  /api/ggw/regionalChair/streetContacts/{authCode}:
+    get:
+      tags:
+      - regionalChair
+      summary: Get Contact details of Street Custodians
+      description: Returns Contact details of Street Custodians that includes full name, email address of all Custodains and Additional Custodians.
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street Custodian details not found
+      security:
+      - authorise:
+        - has_street_rc_roles
+  /api/ggw/regionalChair/streetPreBenchmark/{authCode}:
+    get:
+      tags:
+      - regionalChair
+      summary: Get Street Pre-Benchmark details
+      description: Returns Street Pre-Benchmark details that levels and ratings.
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street Pre Benchmark details not found
+      security:
+      - authorise:
+        - has_street_rc_roles
+  /api/ggw/regionalChair/adressReport/{authCode}:
+    get:
+      tags:
+      - regionalChair
+      summary: Downloads the Address RC report from Objectstore
+      description: Downloads the Address Regional Chair excel report from the objectstore
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: Downloads the report successfully
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Address Regional Chair report not found
+      security:
+      - authorise:
+        - has_address_rc_roles
+  /api/ggw/regionalChair/streetReport/{authCode}:
+    get:
+      tags:
+      - regionalChair
+      summary: Downloads the Street RC report from Objectstore
+      description: Downloads the Street Regional Chair excel report from the objectstore
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: Downloads the report successfully
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street Regional Chair report not found
+      security:
+      - authorise:
+        - has_street_rc_roles
+  /api/ggw/regionalChair/addressCustodianReport/{authCode}:
+    get:
+      tags:
+      - regionalChair
+      summary: Generates the Address Custodian report
+      description: Generates a csv report that contains the contact details of all address custodians
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: Downloads the report successfully
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Address Custodian details not found
+      security:
+      - authorise:
+        - has_street_rc_roles
+  /api/ggw/regionalChair/streetCustodianReport/{authCode}:
+    get:
+      tags:
+      - regionalChair
+      summary: Generates the Street Custodian report
+      description: Generates a csv report that contains the contact details of all street custodians
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: Downloads the report successfully
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street Custodian details not found
+      security:
+      - authorise:
+        - has_street_rc_roles
+  /api/ggw/aceDetails/{authCode}:
+    get:
+      tags:
+      - aceDetails
+      summary: Returns the ECF for all Non Contributors
+      description: Returns a list of NonContributor objects that hold the submitted and non submitted form details
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successfull operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/NonContributor'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Exceptional Circumstances form details not found
+      security:
+      - authorise:
+        - has_ace_roles
+  /api/ggw/expCircumstances/{authCode}:
+    get:
+      tags:
+      - expCircumstances
+      summary: Returns the form details for that authority
+      description: Returns latest entry of the NonContributors for that authority that has not been approved yet.
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successfull operation
+          schema:
+            $ref: '#/definitions/NonContributor'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Exceptional Circumstances form details not found
+      security:
+      - authorise:
+        - has_custodian_roles
+  /api/ggw/expCircumstances:
+    post:
+      tags:
+      - expCircumstances
+      summary: Updated the ECF action plans, submitter details, confirmer details and the approval details. The API should validate that the submitter and confirmer should not be the same person.
+      operationId: submitEcf
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: NonContributors object
+        required: true
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/NonContributor'
+      responses:
+        "200":
+          description: Exceptional Circumstance form is updated
+      security:
+      - authorise:
+        - has_custodian_roles
 securityDefinitions:
   authorise:
     type: oauth2
@@ -1966,6 +2441,10 @@ securityDefinitions:
       has_roles: super_user, authority_address_custodian, additional_authority_address_custodian, dca_authority_principal_contact
       has_super_admin_only: super_user
       has_street_roles: super_user, authority_street_custodian, additional_authority_street_custodian, dca_authority_principal_contact
+      has_address_rc_roles: super_user, regional_address_chair, regional_deputy_address_chair
+      has_street_rc_roles: super_user, regional_street_chair, regional_deputy_street_chair
+      has_ace_roles: super_user, ace_role
+      has_custodian_roles: super_user, authority_address_custodian, additional_authority_address_custodian, authority_street_custodian, additional_authority_street_custodian, dca_authority_principal_contact, ace_role
 definitions:
   AddressOverall:
     type: object
@@ -3484,10 +3963,6 @@ definitions:
         type: integer
         format: int64
         example: 232
-      healthCheckRecurring:
-        type: integer
-        format: int64
-        example: 65
       healthCheckRating:
         type: number
         format: double
@@ -3514,10 +3989,6 @@ definitions:
         type: integer
         format: int64
         example: 232
-      healthCheck2Recurring:
-        type: integer
-        format: int64
-        example: 65
       healthCheck2Rating:
         type: number
         format: double
@@ -4029,7 +4500,7 @@ definitions:
       pedestrianCrossingLevel:
         type: string
         example: Gold
-    description: refers to WEB_STREET_PEDESTRIAN_CROSSING_V table
+    description: refers to WEB_STREET_PEDESTRIAN_V table
   StreetESUExtremityPoint:
     type: object
     required:
@@ -4057,7 +4528,7 @@ definitions:
       esuExtremityPointLevel:
         type: string
         example: Silver
-    description: refers to WEB_STREET_ESU_EXTREMITY_POINT_V table
+    description: refers to WEB_STREET_ESU_EXTREMITY_V table
   StreetToNextLevelStats:
     type: object
     required:
@@ -4216,7 +4687,7 @@ definitions:
       newContentLevel:
         type: string
         example: Gold
-    description: refers to WEB_STREET_TO_LEVEL_V table
+    description: refers to WEB_STREET_TREND_V table
   StreetLandingPageDTO:
     type: object
     properties:
@@ -4635,3 +5106,93 @@ definitions:
         type: string
         example: Victoria,London
     description: refers to WEB_STREET_MAINTENANCE_DATA_V
+  EcfActionPlans:
+    type: object
+    required:
+    - measureId
+    - nonContributorId
+    properties:
+      nonContributorId:
+        type: integer
+        format: int64
+        example: 1
+      measureId:
+        type: integer
+        format: int32
+        example: 2
+      ecfActionPlanText:
+        type: string
+        example: Data to be submitted within this week
+      ecfActionPlanDate:
+        type: string
+        format: date in DD/MM/YYYY
+        example: 22/07/2020
+    description: refers to ECF_ACTION_PLANS
+  NonContributor:
+    type: object
+    required:
+    - nonContributorId
+    properties:
+      nonContributorId:
+        type: integer
+        format: int64
+        example: 1
+      periodYear:
+        type: number
+        example: 2020.0
+      reportMonth:
+        type: string
+        format: date in dd/MM/yyyy format
+        example: 22/07/2020
+      authCode:
+        type: number
+        example: 114.0
+      gazetteerId:
+        type: integer
+        format: int32
+        example: 1
+      formSubmissionFlag:
+        type: string
+        format: enum
+        example: "N"
+      formOtherCriteriaFlag:
+        type: string
+        format: enum
+        example: "N"
+      ecfSubmitterComments:
+        type: string
+      ecfSubmittedBy:
+        type: string
+        example: John Smith
+      ecfSubmittedDate:
+        type: string
+        format: date in dd/MM/yyyy format
+        example: 20/07/2020
+      ecfConfirmedBy:
+        type: string
+        example: Will Johnson
+      ecfConfirmationDate:
+        type: string
+        format: date in dd/MM/yyyy format
+        example: 04/08/2020
+      ecfApprovalDate:
+        type: string
+        format: date in dd/MM/yyyy format
+        example: 04/08/2020
+      ecfApprovalFlag:
+        type: string
+        format: enum
+        example: "Y"
+      ecfDismissedFlag:
+        type: string
+        format: enum
+        example: "N"
+      ecfConfirmerComments:
+        type: string
+        example: Confirming the above filled form
+      ecfApproverComments:
+        type: string
+        example: Approved this form
+      ecfActions:
+        $ref: '#/definitions/EcfActionPlans'
+    description: refers to NON_CONTRIBUTORS
