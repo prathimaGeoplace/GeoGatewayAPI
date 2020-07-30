@@ -1250,22 +1250,22 @@ paths:
     post:
       tags:
       - streetLifeCycle
-      summary: Creates a salesforce case to log exceptions
-      operationId: submitStreetExceptions
+      summary: Generates Missing Exceptions file and send a mail to support@geoplace.co.uk
+      operationId: submitMissingStreetExceptions
       consumes:
       - application/json
       parameters:
       - in: body
         name: body
-        description: List of StreetsHealthCheckData objects
+        description: List of  MissingStreetExceptionsDTO objects
         required: true
         schema:
           type: array
           items:
-            $ref: '#/definitions/StreetHealthCheckData'
+            $ref: '#/definitions/MissingStreetExceptionsDTO'
       responses:
         "200":
-          description: Salesforce case created.
+          description: Missing Street Exceptions sent
       security:
       - authorise:
         - has_street_roles
@@ -1449,6 +1449,29 @@ paths:
           description: Invalid Input parameters supplied
         "404":
           description: Street Health Check Error Counts not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetHealthCheck/submitExceptions:
+    post:
+      tags:
+      - streetHealthCheck
+      summary: Generates Street HC Exceptions file and send a mail to support@geoplace.co.uk
+      operationId: submitStreetHcExceptions
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: List of  StreetExceptionDTO objects
+        required: true
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/StreetExceptionDTO'
+      responses:
+        "200":
+          description: Street Health Check Exceptions sent
       security:
       - authorise:
         - has_street_roles
@@ -4266,6 +4289,9 @@ definitions:
         type: integer
         format: int64
         example: 876
+      latestTestSubmissionDate:
+        type: string
+        format: date in dd/MM/yyyy
       latestTestSubmissionStatus:
         type: string
         example: Success
@@ -5236,3 +5262,41 @@ definitions:
         type: string
         example: Approved this form
     description: refers to dto object that will be received from the ACE ui page
+  MissingStreetExceptionsDTO:
+    type: object
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      roadLink:
+        type: integer
+        format: int64
+        example: 53322434234234
+      queryCode:
+        type: string
+        example: SD123
+      reason:
+        type: string
+        example: This Road Link is invalid
+    description: refers to dto object that will be received for the Missing Street Exceptions
+  StreetExceptionDTO:
+    type: object
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      usrn:
+        type: integer
+        format: int64
+        example: 2423432
+      recordType:
+        type: integer
+        format: int32
+        example: 15
+      queryCode:
+        type: string
+        example: SD123
+      reason:
+        type: string
+        example: This USRN is invalid
+    description: refers to dto object that will be received for the Street Health check Exceptions
