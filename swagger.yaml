@@ -2002,7 +2002,7 @@ paths:
         "200":
           description: successful operation
           schema:
-            $ref: '#/definitions/'
+            $ref: '#/definitions/AddressRegion'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -2010,12 +2010,12 @@ paths:
       security:
       - authorise:
         - has_address_rc_roles
-  /api/ggw/regionalChair/addressRegionOverview/{authCode}:
+  /api/ggw/regionalChair/addressRegionRank/{authCode}:
     get:
       tags:
       - regionalChair
-      summary: Get Regional Overview Details for Address
-      description: Returns Regional Overview Details that includes levels, ratings and other details for all Address Criterion. accourdingly
+      summary: Get Regional Rank Details for Address
+      description: Returns Regional Rank Details that includes levels, ratings and other details for all Address Criterion. accourdingly
       parameters:
       - name: authCode
         in: path
@@ -2026,13 +2026,11 @@ paths:
         "200":
           description: successful operation
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/'
+            $ref: '#/definitions/AddressRegionRank'
         "400":
           description: Invalid Input parameters supplied
         "404":
-          description: Region Overview details not found
+          description: Region Rank details not found
       security:
       - authorise:
         - has_address_rc_roles
@@ -2052,9 +2050,7 @@ paths:
         "200":
           description: successful operation
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/'
+            $ref: '#/definitions/AddressRegionCriteria'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -2078,9 +2074,7 @@ paths:
         "200":
           description: successful operation
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/'
+            $ref: '#/definitions/AddressRegionIndicator'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -2104,9 +2098,7 @@ paths:
         "200":
           description: successful operation
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/'
+            $ref: '#/definitions/AddressRegionContacts'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -2130,9 +2122,7 @@ paths:
         "200":
           description: successful operation
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/'
+            $ref: '#/definitions/AddressRegionPreBenchmark'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -2156,7 +2146,7 @@ paths:
         "200":
           description: successful operation
           schema:
-            $ref: '#/definitions/'
+            $ref: '#/definitions/StreetRegion'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -2164,12 +2154,12 @@ paths:
       security:
       - authorise:
         - has_street_rc_roles
-  /api/ggw/regionalChair/streetRegionOverview/{authCode}:
+  /api/ggw/regionalChair/streetRegionRank/{authCode}:
     get:
       tags:
       - regionalChair
-      summary: Get Regional Overview Details for Street
-      description: Returns Regional Overview Details that includes levels, ratings and other details for all Street Criterion.
+      summary: Get Regional Rank Details for Street
+      description: Returns Regional Rank Details that includes levels, ratings and other details for all Street Criterion.
       parameters:
       - name: authCode
         in: path
@@ -2180,13 +2170,11 @@ paths:
         "200":
           description: successful operation
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/'
+            $ref: '#/definitions/StreetRegionRank'
         "400":
           description: Invalid Input parameters supplied
         "404":
-          description: Region Overview details not found
+          description: Region Rank details not found
       security:
       - authorise:
         - has_street_rc_roles
@@ -2206,9 +2194,7 @@ paths:
         "200":
           description: successful operation
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/'
+            $ref: '#/definitions/StreetRegionCriteria'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -2232,9 +2218,7 @@ paths:
         "200":
           description: successful operation
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/'
+            $ref: '#/definitions/StreetRegionIndicator'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -2258,9 +2242,7 @@ paths:
         "200":
           description: successful operation
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/'
+            $ref: '#/definitions/StreetRegionContacts'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -2284,9 +2266,7 @@ paths:
         "200":
           description: successful operation
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/'
+            $ref: '#/definitions/StreetRegionPreBenchmark'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -5300,3 +5280,1099 @@ definitions:
         type: string
         example: This USRN is invalid
     description: refers to dto object that will be received for the Street Health check Exceptions
+  AddressRegion:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      authorities:
+        type: integer
+        format: int32
+        example: 30
+      nonContributors:
+        type: integer
+        format: int32
+        example: 2
+      regionId:
+        type: integer
+        format: int32
+        example: 7
+      regionName:
+        type: string
+        example: South West
+    description: refers to WEB_ADDRESS_REGION_MAIN_V
+  AddressRegionRank:
+    type: object
+    required:
+    - regionId
+    properties:
+      regionId:
+        type: integer
+        format: int32
+        example: 1
+      coordinatePoints:
+        type: string
+        example: 69.978%
+      coordinateRank:
+        type: integer
+        format: int32
+        example: 2
+      healthCheckPoints:
+        type: string
+        example: 69.978%
+      healthCheckRank:
+        type: integer
+        format: int32
+        example: 4
+      tertiaryClassPoints:
+        type: string
+        example: 69.978%
+      tertiaryClassRank:
+        type: integer
+        format: int32
+        example: 2
+      priorityObjectPoints:
+        type: string
+        example: 69.978%
+      priorityObjectRank:
+        type: integer
+        format: int32
+        example: 6
+      coordinate2Points:
+        type: string
+        example: 69.978%
+      coordinate2Rank:
+        type: integer
+        format: int32
+        example: 3
+      newVoaPafPoints:
+        type: string
+        example: 69.978%
+      newVoaPafRank:
+        type: integer
+        format: int32
+        example: 2
+      submissionPoints:
+        type: string
+        example: 69.978%
+      submissionRank:
+        type: integer
+        format: int32
+        example: 4
+      comparisonPoints:
+        type: string
+        example: 69.978%
+      comparisonRank:
+        type: integer
+        format: int32
+        example: 4
+      ndrPoints:
+        type: string
+        example: 69.978%
+      ndrRank:
+        type: integer
+        format: int32
+        example: 4
+      pafPoints:
+        type: string
+        example: 69.978%
+      pafRank:
+        type: integer
+        format: int32
+        example: 4
+      ctaxPoints:
+        type: string
+        example: 69.978%
+      ctaxRank:
+        type: integer
+        format: int32
+        example: 4
+      overallLevelPoints:
+        type: string
+        example: 69.978%
+      overallLevelRank:
+        type: integer
+        format: int32
+        example: 4
+    description: refers to WEB_ADDRESS_REGION_RANK_V
+  AddressRegionCriteria:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      regionId:
+        type: integer
+        format: int32
+        example: 7
+      authorityName:
+        type: string
+        example: Bath and North East Somerset Council
+      nonContributorFlag:
+        type: string
+        format: enum
+        example: "N"
+      addressSharedFlag:
+        type: string
+        format: enum
+        example: "Y"
+      streetNumber:
+        type: integer
+        format: int64
+        example: 4545
+      OverallLevel:
+        type: string
+        example: Gold
+      PledgeLevel:
+        type: string
+        example: Gold
+      MonthsAtBns:
+        type: integer
+        format: int32
+        example: 3
+      criteriaAtBns:
+        type: integer
+        format: int32
+        example: 5
+      coordinateRating:
+        type: number
+        format: double
+        example: 0.99985
+      coordinateLevel:
+        type: string
+        example: Silver
+      coordinateToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      healthCheckRating:
+        type: number
+        format: double
+        example: 0.99985
+      healthCheckLevel:
+        type: string
+        example: Silver
+      healthCheckToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      tertiaryClassRating:
+        type: number
+        format: double
+        example: 0.99985
+      tertiaryClassLevel:
+        type: string
+        example: Silver
+      tertiaryClassToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      priorityObjectRating:
+        type: number
+        format: double
+        example: 0.99985
+      priorityObjectLevel:
+        type: string
+        example: Silver
+      priorityObjectToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      coordinate2Rating:
+        type: number
+        format: double
+        example: 0.99985
+      coordinate2Level:
+        type: string
+        example: Silver
+      coordinate2ToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      newVoaPafRating:
+        type: number
+        format: double
+        example: 0.99985
+      newVoaPafLevel:
+        type: string
+        example: Silver
+      newVoaPafToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      newVoaPafUnlinked:
+        type: number
+        format: double
+        example: 0.99985
+      remainingAllowance:
+        type: integer
+        format: int64
+        example: 456
+      lastResyncDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 30/07/2020
+      submissionRating:
+        type: number
+        format: double
+        example: 0.99985
+      submissionLevel:
+        type: string
+        example: Silver
+      submissionToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      comparisonRating:
+        type: number
+        format: double
+        example: 0.99985
+      comparisonLevel:
+        type: string
+        example: Silver
+      comparisonToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      ndrRating:
+        type: number
+        format: double
+        example: 0.99985
+      ndrLevel:
+        type: string
+        example: Silver
+      ndrToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      pafRating:
+        type: number
+        format: double
+        example: 0.99985
+      pafLevel:
+        type: string
+        example: Silver
+      pafToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      ctaxRating:
+        type: number
+        format: double
+        example: 0.99985
+      ctaxLevel:
+        type: string
+        example: Silver
+      ctaxToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+    description: refers to WEB_ADDRESS_REGION_CRITERION_V
+  AddressRegionIndicator:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      regionId:
+        type: integer
+        format: int32
+        example: 7
+      authorityName:
+        type: string
+        example: Bath and North East Somerset Council
+      candidateRating:
+        type: number
+        format: double
+        example: 0.99985
+      candidateLevel:
+        type: string
+        example: Silver
+    description: refers to WEB_ADDRESS_REGION_INDICATOR_V
+  AddressRegionContacts:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      regionId:
+        type: integer
+        format: int32
+        example: 7
+      authorityName:
+        type: string
+        example: Bath and North East Somerset Council
+      custodianName:
+        type: string
+        example: Martin Laker
+      custodianEmail:
+        type: string
+        example: martin_laker@bathnes.gov.uk
+      custodianPhone:
+        type: string
+        example: 01225 394344
+      additionalCustodianName:
+        type: string
+        example: Martin Laker
+      additionalCustodianEmail:
+        type: string
+        example: martin_laker@bathnes.gov.uk
+      additionalCustodianPhone:
+        type: string
+        example: 01225 394344
+      additionalCustodian2Name:
+        type: string
+        example: Martin Laker
+      additionalCustodian2Email:
+        type: string
+        example: martin_laker@bathnes.gov.uk
+      additionalCustodian2Phone:
+        type: string
+        example: 01225 394344
+      snnOfficerName:
+        type: string
+        example: Martin Laker
+      snnOfficerEmail:
+        type: string
+        example: martin_laker@bathnes.gov.uk
+      snnOfficerPhone:
+        type: string
+        example: 01225 394344
+      snnOfficer2Name:
+        type: string
+        example: Martin Laker
+      snnOfficer2Email:
+        type: string
+        example: martin_laker@bathnes.gov.uk
+      snnOfficer2Phone:
+        type: string
+        example: 01225 394344
+    description: refers to WEB_ADDRESS_REGION_CONTACT_V
+  AddressContactDetails:
+    type: object
+    required:
+    - authCode
+    - contactName
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      regionId:
+        type: integer
+        format: int32
+        example: 7
+      authorityName:
+        type: string
+        example: Bath and North East Somerset Council
+      regionName:
+        type: string
+        example: South West
+      contactType:
+        type: string
+        example: Additional Authority Address Custodian
+      contactName:
+        type: string
+        example: Alison Szajdzicka
+      contactEmail:
+        type: string
+        example: alison_ka@bathnes.gov.uk
+      contactPhone:
+        type: string
+        example: 01225 39321
+    description: refers to WEB_ADDRESS_CONTACT_DETAILS_V
+  AddressRegionPreBenchmark:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      regionId:
+        type: integer
+        format: int32
+        example: 7
+      authorityName:
+        type: string
+        example: Bath and North East Somerset Council
+      OverallLevel:
+        type: string
+        example: Gold
+      criteriaAtBns:
+        type: integer
+        format: int32
+        example: 5
+      coordinateRating:
+        type: number
+        format: double
+        example: 0.99985
+      coordinateLevel:
+        type: string
+        example: Silver
+      coordinateToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      healthCheckRating:
+        type: number
+        format: double
+        example: 0.99985
+      healthCheckLevel:
+        type: string
+        example: Silver
+      healthCheckToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      priorityHealthCheckRating:
+        type: number
+        format: double
+        example: 0.99985
+      priorityHealthCheckLevel:
+        type: string
+        example: Silver
+      priorityHealthCheckToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      tertiaryClassRating:
+        type: number
+        format: double
+        example: 0.99985
+      tertiaryClassLevel:
+        type: string
+        example: Silver
+      tertiaryClassToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      priorityObjectRating:
+        type: number
+        format: double
+        example: 0.99985
+      priorityObjectLevel:
+        type: string
+        example: Silver
+      priorityObjectToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      coordinate2Rating:
+        type: number
+        format: double
+        example: 0.99985
+      coordinate2Level:
+        type: string
+        example: Silver
+      coordinate2ToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      candidateRating:
+        type: number
+        format: double
+        example: 0.99985
+      candidateLevel:
+        type: string
+        example: Silver
+      candidateToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      candidate2Rating:
+        type: number
+        format: double
+        example: 0.99985
+      candidate2Level:
+        type: string
+        example: Silver
+      candidate2ToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      newVoaPafRating:
+        type: number
+        format: double
+        example: 0.99985
+      newVoaPafLevel:
+        type: string
+        example: Silver
+      newVoaPafToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      newVoaPafUnlinked:
+        type: number
+        format: double
+        example: 0.99985
+      submissionRating:
+        type: number
+        format: double
+        example: 0.99985
+      submissionLevel:
+        type: string
+        example: Silver
+      submissionToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      comparisonRating:
+        type: number
+        format: double
+        example: 0.99985
+      comparisonLevel:
+        type: string
+        example: Silver
+      comparisonToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      ndrRating:
+        type: number
+        format: double
+        example: 0.99985
+      ndrLevel:
+        type: string
+        example: Silver
+      ndrToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      pafRating:
+        type: number
+        format: double
+        example: 0.99985
+      pafLevel:
+        type: string
+        example: Silver
+      pafToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      ctaxRating:
+        type: number
+        format: double
+        example: 0.99985
+      ctaxLevel:
+        type: string
+        example: Silver
+      ctaxToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+    description: refers to WEB_ADDRESS_REGION_BENCHMARK_V
+  StreetRegion:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      authorities:
+        type: integer
+        format: int32
+        example: 30
+      nonContributors:
+        type: integer
+        format: int32
+        example: 2
+      regionId:
+        type: integer
+        format: int32
+        example: 7
+      regionName:
+        type: string
+        example: South West
+    description: refers to WEB_STREET_REGION_MAIN_V
+  StreetRegionRank:
+    type: object
+    required:
+    - regionId
+    properties:
+      regionId:
+        type: integer
+        format: int32
+        example: 1
+      healthCheckPoints:
+        type: string
+        example: 73.216%
+      healthCheckRank:
+        type: integer
+        format: int32
+        example: 2
+      prnPoints:
+        type: string
+        example: "0.089"
+      prnRank:
+        type: integer
+        format: int32
+        example: 3
+      underConstructionPoints:
+        type: string
+        example: "0.089"
+      underConstructionRank:
+        type: integer
+        format: int32
+        example: 3
+      missingStreetPoints:
+        type: string
+        example: "0.089"
+      missingStreetRank:
+        type: integer
+        format: int32
+        example: 3
+      comparisonPoints:
+        type: string
+        example: "0.089"
+      comparisonRank:
+        type: integer
+        format: int32
+        example: 3
+      classifiedNetworkPoints:
+        type: string
+        example: "0.089"
+      classifiedNetworkRank:
+        type: integer
+        format: int32
+        example: 3
+      sedStructurePoints:
+        type: string
+        example: "0.089"
+      sedStructureRank:
+        type: integer
+        format: int32
+        example: 3
+      submissionPoints:
+        type: string
+        example: "0.089"
+      submissionRank:
+        type: integer
+        format: int32
+        example: 3
+      newContentPoints:
+        type: string
+        example: "0.089"
+      newContentRank:
+        type: integer
+        format: int32
+        example: 3
+      overallLevelPoints:
+        type: string
+        example: "0.089"
+      overallLevelRank:
+        type: integer
+        format: int32
+        example: 3
+    description: refers to WEB_STREET_REGION_RANK_V
+  StreetRegionCriteria:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      regionId:
+        type: integer
+        format: int32
+        example: 7
+      authorityName:
+        type: string
+        example: Bath and North East Somerset Council
+      nonContributorFlag:
+        type: string
+        format: enum
+        example: "N"
+      streetSharedFlag:
+        type: string
+        format: enum
+        example: "Y"
+      streets:
+        type: integer
+        format: int64
+        example: 4545
+      OverallLevel:
+        type: string
+        example: Gold
+      PledgeLevel:
+        type: string
+        example: Gold
+      MonthsAtBns:
+        type: integer
+        format: int32
+        example: 3
+      criteriaAtBns:
+        type: integer
+        format: int32
+        example: 5
+      healthCheckRating:
+        type: number
+        format: double
+        example: 0.99985
+      healthCheckLevel:
+        type: string
+        example: Silver
+      healthCheckToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      prnRating:
+        type: number
+        format: double
+        example: 0.99985
+      prnLevel:
+        type: string
+        example: Silver
+      underConstructionRating:
+        type: number
+        format: double
+        example: 0.99985
+      underConstructionLevel:
+        type: string
+        example: Silver
+      underConstructionToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      missingStreetRating:
+        type: number
+        format: double
+        example: 0.99985
+      missingStreetLevel:
+        type: string
+        example: Silver
+      missingStreetToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      comparisonRating:
+        type: number
+        format: double
+        example: 0.99985
+      comparisonLevel:
+        type: string
+        example: Silver
+      comparisonToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      aRoadLevel:
+        type: string
+        example: Silver
+      bRoadLevel:
+        type: string
+        example: Silver
+      cRoadLevel:
+        type: string
+        example: Silver
+      classifiedNetworkLevel:
+        type: string
+        example: Silver
+      sedStructureRating:
+        type: number
+        format: double
+        example: 0.99985
+      sedStructureLevel:
+        type: string
+        example: Silver
+      submissionRating:
+        type: number
+        format: double
+        example: 0.99985
+      submissionLevel:
+        type: string
+        example: Silver
+      newContentRating:
+        type: number
+        format: double
+        example: 0.99985
+      newContentLevel:
+        type: string
+        example: Silver
+    description: refers to WEB_STREET_REGION_CRITERION_V
+  StreetRegionIndicator:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      regionId:
+        type: integer
+        format: int32
+        example: 7
+      authorityName:
+        type: string
+        example: Bath and North East Somerset Council
+      indicatorsAtLevel1:
+        type: integer
+        format: int32
+        example: 4
+      motorwayRating:
+        type: number
+        format: double
+        example: 0.99985
+      motorwayLevel:
+        type: string
+        example: Silver
+      healthCheck2Rating:
+        type: number
+        format: double
+        example: 0.99985
+      healthCheck2Level:
+        type: string
+        example: Silver
+      maintenanceRating:
+        type: number
+        format: double
+        example: 0.99985
+      maintenanceLevel:
+        type: string
+        example: Silver
+      prowRating:
+        type: number
+        format: double
+        example: 0.99985
+      prowLevel:
+        type: string
+        example: Silver
+      ncrRating:
+        type: number
+        format: double
+        example: 0.99985
+      ncrLevel:
+        type: string
+        example: Silver
+      hgvRouteRating:
+        type: number
+        format: double
+        example: 0.99985
+      hgvRouteLevel:
+        type: string
+        example: Silver
+      winterRouteRating:
+        type: number
+        format: double
+        example: 0.99985
+      winterRouteLevel:
+        type: string
+        example: Silver
+      pedestrianCrossingRating:
+        type: number
+        format: double
+        example: 0.99985
+      pedestrianCrossingLevel:
+        type: string
+        example: Silver
+      esuExtremityPointsRating:
+        type: number
+        format: double
+        example: 0.99985
+      esuExtremityPointsLevel:
+        type: string
+        example: Silver
+    description: refers to WEB_STREET_REGION_INDICATOR_V
+  StreetRegionContacts:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      regionId:
+        type: integer
+        format: int32
+        example: 7
+      authorityName:
+        type: string
+        example: Bath and North East Somerset Council
+      custodianName:
+        type: string
+        example: Martin Laker
+      custodianEmail:
+        type: string
+        example: martin_laker@bathnes.gov.uk
+      custodianPhone:
+        type: string
+        example: 01225 394344
+      additionalCustodianName:
+        type: string
+        example: Martin Laker
+      additionalCustodianEmail:
+        type: string
+        example: martin_laker@bathnes.gov.uk
+      additionalCustodianPhone:
+        type: string
+        example: 01225 394344
+      additionalCustodian2Name:
+        type: string
+        example: Martin Laker
+      additionalCustodian2Email:
+        type: string
+        example: martin_laker@bathnes.gov.uk
+      additionalCustodian2Phone:
+        type: string
+        example: 01225 394344
+    description: refers to WEB_STREET_REGION_CONTACT_V
+  StreetContactDetails:
+    type: object
+    required:
+    - authCode
+    - contactName
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      regionId:
+        type: integer
+        format: int32
+        example: 7
+      authorityName:
+        type: string
+        example: Bath and North East Somerset Council
+      regionName:
+        type: string
+        example: South West
+      contactType:
+        type: string
+        example: Additional Street Address Custodian
+      contactName:
+        type: string
+        example: Alison Szajdzicka
+      contactEmail:
+        type: string
+        example: alison_ka@bathnes.gov.uk
+      contactPhone:
+        type: string
+        example: 01225 39321
+    description: refers to WEB_STREET_CONTACT_DETAILS_V
+  StreetRegionPreBenchmark:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      regionId:
+        type: integer
+        format: int32
+        example: 7
+      authorityName:
+        type: string
+        example: Bath and North East Somerset Council
+      OverallLevel:
+        type: string
+        example: Gold
+      criteriaAtBns:
+        type: integer
+        format: int32
+        example: 5
+      healthCheckRating:
+        type: number
+        format: double
+        example: 0.99985
+      healthCheckLevel:
+        type: string
+        example: Silver
+      healthCheckToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      prnRating:
+        type: number
+        format: double
+        example: 0.99985
+      prnLevel:
+        type: string
+        example: Silver
+      underConstructionRating:
+        type: number
+        format: double
+        example: 0.99985
+      underConstructionLevel:
+        type: string
+        example: Silver
+      underConstructionToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      missingStreetRating:
+        type: number
+        format: double
+        example: 0.99985
+      missingStreetLevel:
+        type: string
+        example: Silver
+      missingStreetToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      esuExtremityPointsRating:
+        type: number
+        format: double
+        example: 0.99985
+      esuExtremityPointsLevel:
+        type: string
+        example: Silver
+      esuExtremityPointsToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      comparisonRating:
+        type: number
+        format: double
+        example: 0.99985
+      comparisonLevel:
+        type: string
+        example: Silver
+      comparisonToNextLevel:
+        type: integer
+        format: int64
+        example: 456
+      aRoadGapLevel:
+        type: string
+        example: Silver
+      bRoadGapLevel:
+        type: string
+        example: Silver
+      cRoadGapLevel:
+        type: string
+        example: Silver
+      classifiedNetworkGapLevel:
+        type: string
+        example: Silver
+      sedStructureRating:
+        type: number
+        format: double
+        example: 0.99985
+      sedStructureLevel:
+        type: string
+        example: Silver
+      submissionRating:
+        type: number
+        format: double
+        example: 0.99985
+      submissionLevel:
+        type: string
+        example: Silver
+      newContentRating:
+        type: number
+        format: double
+        example: 0.99985
+      newContentLevel:
+        type: string
+        example: Silver
+    description: refers to WEB_STREET_REGION_BENCHMARK_V
