@@ -2015,7 +2015,7 @@ paths:
       tags:
       - regionalChair
       summary: Get Regional Rank Details for Address
-      description: Returns Regional Rank Details that includes levels, ratings and other details for all Address Criterion. accourdingly
+      description: Returns Regional Rank Details that includes levels, ratings and other details for all Address Criterion.
       parameters:
       - name: authCode
         in: path
@@ -2039,7 +2039,7 @@ paths:
       tags:
       - regionalChair
       summary: Get Region Address Criteria Details
-      description: Returns Region Address Criteria Details that includes levels, ratings and other details for all address criteria.
+      description: Returns list of Region Address Criteria Details that includes levels, ratings and other details for all address criteria.
       parameters:
       - name: authCode
         in: path
@@ -2050,7 +2050,9 @@ paths:
         "200":
           description: successful operation
           schema:
-            $ref: '#/definitions/AddressRegionCriteria'
+            type: array
+            items:
+              $ref: '#/definitions/AddressRegionCriteria'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -2063,7 +2065,7 @@ paths:
       tags:
       - regionalChair
       summary: Get Region Address Indicator Details
-      description: Returns Region Address Indicator Details that includes levels, ratings and other details for all address indicator.
+      description: Returns list of Region Address Indicator Details that includes levels, ratings and other details for all address indicator.
       parameters:
       - name: authCode
         in: path
@@ -2074,7 +2076,9 @@ paths:
         "200":
           description: successful operation
           schema:
-            $ref: '#/definitions/AddressRegionIndicator'
+            type: array
+            items:
+              $ref: '#/definitions/AddressRegionIndicator'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -2087,7 +2091,7 @@ paths:
       tags:
       - regionalChair
       summary: Get Contact details of Address Custodians
-      description: Returns Contact details of Address Custodians that includes full name, email address of all Custodains and Additional Custodians.
+      description: Returns list of Contact details of Address Custodians that includes full name, email address of all Custodains and Additional Custodians.
       parameters:
       - name: authCode
         in: path
@@ -2098,7 +2102,9 @@ paths:
         "200":
           description: successful operation
           schema:
-            $ref: '#/definitions/AddressRegionContacts'
+            type: array
+            items:
+              $ref: '#/definitions/AddressRegionContacts'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -2111,7 +2117,7 @@ paths:
       tags:
       - regionalChair
       summary: Get Address Pre-Benchmark details
-      description: Returns Address Pre-Benchmark details that levels and ratings.
+      description: Returns list of Address Pre-Benchmark details that levels and ratings.
       parameters:
       - name: authCode
         in: path
@@ -2122,7 +2128,9 @@ paths:
         "200":
           description: successful operation
           schema:
-            $ref: '#/definitions/AddressRegionPreBenchmark'
+            type: array
+            items:
+              $ref: '#/definitions/AddressRegionPreBenchmark'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -2183,7 +2191,7 @@ paths:
       tags:
       - regionalChair
       summary: Get Region Street Criteria Details
-      description: Returns Region Street Criteria Details that includes levels, ratings and other details for all street criteria.
+      description: Returns list of Region Street Criteria Details that includes levels, ratings and other details for all street criteria.
       parameters:
       - name: authCode
         in: path
@@ -2194,7 +2202,9 @@ paths:
         "200":
           description: successful operation
           schema:
-            $ref: '#/definitions/StreetRegionCriteria'
+            type: array
+            items:
+              $ref: '#/definitions/StreetRegionCriteria'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -2207,7 +2217,7 @@ paths:
       tags:
       - regionalChair
       summary: Get Region Street Indicator Details
-      description: Returns Region Street Indicator Details that includes levels, ratings and other details for all street indicator.
+      description: Returns list of Region Street Indicator Details that includes levels, ratings and other details for all street indicator.
       parameters:
       - name: authCode
         in: path
@@ -2218,7 +2228,9 @@ paths:
         "200":
           description: successful operation
           schema:
-            $ref: '#/definitions/StreetRegionIndicator'
+            type: array
+            items:
+              $ref: '#/definitions/StreetRegionIndicator'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -2231,7 +2243,7 @@ paths:
       tags:
       - regionalChair
       summary: Get Contact details of Street Custodians
-      description: Returns Contact details of Street Custodians that includes full name, email address of all Custodains and Additional Custodians.
+      description: Returns list of Contact details of Street Custodians that includes full name, email address of all Custodians and Additional Custodians.
       parameters:
       - name: authCode
         in: path
@@ -2242,7 +2254,9 @@ paths:
         "200":
           description: successful operation
           schema:
-            $ref: '#/definitions/StreetRegionContacts'
+            type: array
+            items:
+              $ref: '#/definitions/StreetRegionContacts'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -2255,7 +2269,7 @@ paths:
       tags:
       - regionalChair
       summary: Get Street Pre-Benchmark details
-      description: Returns Street Pre-Benchmark details that levels and ratings.
+      description: Returns list of Street Pre-Benchmark details that levels and ratings.
       parameters:
       - name: authCode
         in: path
@@ -2266,7 +2280,9 @@ paths:
         "200":
           description: successful operation
           schema:
-            $ref: '#/definitions/StreetRegionPreBenchmark'
+            type: array
+            items:
+              $ref: '#/definitions/StreetRegionPreBenchmark'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -2948,6 +2964,9 @@ definitions:
       coordinateLevel:
         type: string
         example: Gold
+      coordinateRating:
+        type: number
+        example: 0.87
       healthCheckLevel:
         type: string
         example: Gold
@@ -2987,6 +3006,10 @@ definitions:
       candidateLevel:
         type: string
         example: Gold
+      streets:
+        type: integer
+        format: int64
+        example: 10524
     description: refers Web_Address_Trend_V view
   AddressCandidates:
     type: object
