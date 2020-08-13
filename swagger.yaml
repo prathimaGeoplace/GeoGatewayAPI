@@ -2591,6 +2591,14 @@ definitions:
         type: integer
         format: int64
         example: 109
+      addressSubmissionDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 30/07/2020
+      streetSubmissionDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 30/07/2020
     description: refers Web_Address_Comparison_V View
   AddressCoordinates:
     type: object
@@ -4143,6 +4151,10 @@ definitions:
         type: integer
         format: int64
         example: 209
+      streetSubmissionDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 08/08/2020
     description: refers to WEB_STREET_COMPARISON_V table
   StreetPrimaryRouteNetworks:
     type: object
@@ -5039,6 +5051,10 @@ definitions:
         type: string
         format: enum
         example: "N"
+      addressSubmissionDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 30/07/2020
     description: refers WEB_STREET_ADDRESS_CUSTODIAN_V table
   StreetComparisonData:
     type: object
@@ -5243,6 +5259,14 @@ definitions:
         example: Approved this form
       ecfActions:
         $ref: '#/definitions/EcfActionPlans'
+      caseNumber:
+        type: integer
+        format: int64
+        example: 2343423423
+      ecfApproverTrafficLight:
+        type: string
+        format: enum with values R, A, G
+        example: A
     description: refers to NON_CONTRIBUTORS
   ACENonContributorDTO:
     type: object
