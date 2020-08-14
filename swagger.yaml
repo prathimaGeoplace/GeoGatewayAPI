@@ -30,10 +30,16 @@ tags:
   description: Controller for Street Comparision on Address
 - name: addressHealthCheck
   description: Controller for Address Data Consistency
+- name: priorityHealthCheck
+  description: Controller for Priority Health Check
+- name: addressUnresolvedCandidates
+  description: Controller for Unresolved Candidates
 - name: streets
   description: Controller for Street Home Page
 - name: streetClassifiedNetworks
   description: Controller for Street Classified Network
+- name: streetClassifiedGap
+  description: Controller for Street Classified Network Gap
 - name: streetSubmission
   description: Controller for Street New Content and Street Update Timeliness
 - name: streetHealthCheck
@@ -533,7 +539,7 @@ paths:
         "400":
           description: Invalid AuthCode supplied
         "404":
-          description: Address Candidate Details not in db
+          description: Address Candidate Details not found
       security:
       - authorise:
         - has_roles
@@ -976,6 +982,58 @@ paths:
       security:
       - authorise:
         - has_roles
+  /api/ggw/priorityHealthCheck/{authCode}:
+    get:
+      tags:
+      - priorityHealthCheck
+      summary: Get All Details for Priority Health Check Landing Page
+      description: Returns PriorityHealthCheck
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/PriorityHealthCheck'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Priority Health Check Details not found
+      security:
+      - authorise:
+        - has_roles
+  /api/ggw/addressUnresolvedCandidates/{authCode}:
+    get:
+      tags:
+      - addressUnresolvedCandidates
+      summary: Get All Details for Unresolved Candidates Landing Page
+      description: Returns AddressCandidates
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AddressUnresolvedCandidates'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Address Unresolved Candidate Details not found
+      security:
+      - authorise:
+        - has_roles
   /api/ggw/streets/summary/{authCode}:
     get:
       tags:
@@ -1165,6 +1223,32 @@ paths:
           description: Invalid AuthCode supplied
         "404":
           description: Street Classified Networks Details not found
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetClassifiedGap/{authCode}:
+    get:
+      tags:
+      - streetClassifiedGap
+      summary: Retrieve all the Improvement schedule levels and other declaration details for Classified Networks Gap page
+      description: Returns StreetClassifiedGap
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetClassifiedGap'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Street Classified Network Gap Details not found
       security:
       - authorise:
         - has_street_roles
@@ -2396,7 +2480,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/NonContributor'
+              $ref: '#/definitions/ACEDetails'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -3059,6 +3143,74 @@ definitions:
         type: string
         example: Level 1
     description: refers Web_Address_Candidate_V view
+  AddressUnresolvedCandidates:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      unresolvedCandidateDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 01/08/2019
+      unresolvedCandidateTotal:
+        type: integer
+        format: int32
+        example: 3
+      unresolvedCandidateProcessedOnTime:
+        type: integer
+        format: int32
+        example: 4
+      unresolvedCandidateRating:
+        type: number
+        format: double
+        example: 0.333
+      unresolvedCandidateProcessRatingChange:
+        type: number
+        format: double
+        example: 0.333
+      unresolvedCandidateLevel:
+        type: string
+        example: Level 1
+      unresolvedCandidateToNextLevel:
+        type: integer
+        format: int64
+        example: 975
+    description: refers WEB_ADDRESS_CANDIDATE_2_V view
+  PriorityHealthCheck:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      priorityHealthCheckDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 04/02/2020
+      priorityHealthCheckTotal:
+        type: integer
+        format: int64
+        example: 65
+      priorityHealthCheckRating:
+        type: integer
+        format: int64
+        example: 173
+      priorityHealthCheckRatingChange:
+        type: integer
+        format: int64
+        example: 24
+      priorityHealthCheckLevel:
+        type: string
+        example: Gold
+      priorityHealthCheckToNextLevel:
+        type: integer
+        format: int64
+        example: 591
+    description: refers WEB_ADDRESS_PRIORITY_HEALTH_V view
   AddressLandingPageDTO:
     type: object
     properties:
@@ -3107,6 +3259,17 @@ definitions:
         type: string
         example: Gold
       healthCheckToNextLevel:
+        type: integer
+        format: int64
+        example: 591
+      priorityHealthCheckRating:
+        type: integer
+        format: int64
+        example: 173
+      priorityHealthCheckLevel:
+        type: string
+        example: Gold
+      priorityHealthCheckToNextLevel:
         type: integer
         format: int64
         example: 591
@@ -4251,6 +4414,10 @@ definitions:
       aRoadLevel:
         type: string
         example: Silver
+      aRoadRating:
+        type: number
+        format: double
+        example: 0.9
       bRoadIncludedLength:
         type: number
         format: double
@@ -4262,6 +4429,10 @@ definitions:
       bRoadLevel:
         type: string
         example: Silver
+      bRoadRating:
+        type: number
+        format: double
+        example: 0.9
       cRoadIncludedLength:
         type: number
         format: double
@@ -4273,10 +4444,75 @@ definitions:
       cRoadLevel:
         type: string
         example: Silver
+      cRoadRating:
+        type: number
+        format: double
+        example: 0.9
       classifiedNetworkLevel:
         type: string
         example: Silver
     description: refers to WEB_STREET_CLASSIFIED_NETWORK_V table
+  StreetClassifiedGap:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      classifiedNetworkGapDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 15/06/2020
+      aRoadGapIncludedLength:
+        type: number
+        format: double
+        example: 22.45
+      aRoadGapDeclaredLength:
+        type: number
+        format: double
+        example: 65.9
+      aRoadGapRating:
+        type: number
+        format: double
+        example: 0.9
+      aRoadGapLevel:
+        type: string
+        example: Silver
+      bRoadGapIncludedLength:
+        type: number
+        format: double
+        example: 22.45
+      bRoadGapDeclaredLength:
+        type: number
+        format: double
+        example: 65.9
+      bRoadGapLevel:
+        type: string
+        example: Silver
+      bRoadGapRating:
+        type: number
+        format: double
+        example: 0.9
+      cRoadGapIncludedLength:
+        type: number
+        format: double
+        example: 22.45
+      cRoadGapDeclaredLength:
+        type: number
+        format: double
+        example: 65.9
+      cRoadGapLevel:
+        type: string
+        example: Silver
+      cRoadGapRating:
+        type: number
+        format: double
+        example: 0.9
+      classifiedNetworkGapLevel:
+        type: string
+        example: Silver
+    description: refers to WEB_STREET_CLASSIFIED_GAP_V table
   StreetSubmission:
     type: object
     required:
@@ -5288,7 +5524,61 @@ definitions:
       ecfApproverComments:
         type: string
         example: Approved this form
+      ecfApproverTrafficLights:
+        type: string
+        example: A
     description: refers to dto object that will be received from the ACE ui page
+  ACEDetails:
+    type: object
+    properties:
+      gazetteerId:
+        type: number
+        example: 1.0
+      reportMonth:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 07/08/2020
+      authorityName:
+        type: string
+        example: Bath and North East Somerset Council
+      authCode:
+        type: number
+        example: 114.0
+      regionName:
+        type: string
+        example: South East
+      custodianName:
+        type: string
+        example: John Smith
+      custodianEmail:
+        type: string
+        example: john.smith@email.com
+      additionalCustodianFlag:
+        type: string
+        format: enum
+        example: "Y"
+      curentStatus:
+        type: string
+        example: Submitted
+      monthsNonContributing:
+        type: string
+        example: "2"
+      CriteriaList:
+        type: string
+        example: criteria list
+      ecfSubmittedFlag:
+        type: string
+        example: "Y"
+      ecfApproverComments:
+        type: string
+        example: form is verified and ace is happy
+      ecfApprovalFlag:
+        type: string
+        example: "Y"
+      ecfApproverTrafficLight:
+        type: string
+        example: A
+    description: refers to WEB_ACE_MAIN_V
   MissingStreetExceptionsDTO:
     type: object
     properties:
@@ -5360,90 +5650,36 @@ definitions:
         type: integer
         format: int32
         example: 1
-      coordinatePoints:
+      measure:
         type: string
-        example: 69.978%
-      coordinateRank:
+        example: Coordinates
+      goldTotalCount:
+        type: integer
+        format: int64
+        example: 23
+      silverTotalCount:
+        type: integer
+        format: int64
+        example: 76
+      bronze:
+        type: integer
+        format: int64
+        example: 22
+      ans:
+        type: integer
+        format: int64
+        example: 22
+      bns:
+        type: integer
+        format: int64
+        example: 22
+      regionPoints:
+        type: string
+        example: "5.75"
+      regionRank:
         type: integer
         format: int32
         example: 2
-      healthCheckPoints:
-        type: string
-        example: 69.978%
-      healthCheckRank:
-        type: integer
-        format: int32
-        example: 4
-      tertiaryClassPoints:
-        type: string
-        example: 69.978%
-      tertiaryClassRank:
-        type: integer
-        format: int32
-        example: 2
-      priorityObjectPoints:
-        type: string
-        example: 69.978%
-      priorityObjectRank:
-        type: integer
-        format: int32
-        example: 6
-      coordinate2Points:
-        type: string
-        example: 69.978%
-      coordinate2Rank:
-        type: integer
-        format: int32
-        example: 3
-      newVoaPafPoints:
-        type: string
-        example: 69.978%
-      newVoaPafRank:
-        type: integer
-        format: int32
-        example: 2
-      submissionPoints:
-        type: string
-        example: 69.978%
-      submissionRank:
-        type: integer
-        format: int32
-        example: 4
-      comparisonPoints:
-        type: string
-        example: 69.978%
-      comparisonRank:
-        type: integer
-        format: int32
-        example: 4
-      ndrPoints:
-        type: string
-        example: 69.978%
-      ndrRank:
-        type: integer
-        format: int32
-        example: 4
-      pafPoints:
-        type: string
-        example: 69.978%
-      pafRank:
-        type: integer
-        format: int32
-        example: 4
-      ctaxPoints:
-        type: string
-        example: 69.978%
-      ctaxRank:
-        type: integer
-        format: int32
-        example: 4
-      overallLevelPoints:
-        type: string
-        example: 69.978%
-      overallLevelRank:
-        type: integer
-        format: int32
-        example: 4
     description: refers to WEB_ADDRESS_REGION_RANK_V
   AddressRegionCriteria:
     type: object
@@ -5944,82 +6180,43 @@ definitions:
   StreetRegionRank:
     type: object
     required:
+    - measure
     - regionId
     properties:
       regionId:
         type: integer
         format: int32
         example: 1
-      healthCheckPoints:
+      measure:
         type: string
-        example: 73.216%
-      healthCheckRank:
+        example: Health Check 1
+      goldTotalCount:
+        type: integer
+        format: int64
+        example: 23
+      silverTotalCount:
+        type: integer
+        format: int64
+        example: 76
+      bronze:
+        type: integer
+        format: int64
+        example: 22
+      ans:
+        type: integer
+        format: int64
+        example: 22
+      bns:
+        type: integer
+        format: int64
+        example: 22
+      regionPoints:
+        type: string
+        example: "5.75"
+      regionRank:
         type: integer
         format: int32
         example: 2
-      prnPoints:
-        type: string
-        example: "0.089"
-      prnRank:
-        type: integer
-        format: int32
-        example: 3
-      underConstructionPoints:
-        type: string
-        example: "0.089"
-      underConstructionRank:
-        type: integer
-        format: int32
-        example: 3
-      missingStreetPoints:
-        type: string
-        example: "0.089"
-      missingStreetRank:
-        type: integer
-        format: int32
-        example: 3
-      comparisonPoints:
-        type: string
-        example: "0.089"
-      comparisonRank:
-        type: integer
-        format: int32
-        example: 3
-      classifiedNetworkPoints:
-        type: string
-        example: "0.089"
-      classifiedNetworkRank:
-        type: integer
-        format: int32
-        example: 3
-      sedStructurePoints:
-        type: string
-        example: "0.089"
-      sedStructureRank:
-        type: integer
-        format: int32
-        example: 3
-      submissionPoints:
-        type: string
-        example: "0.089"
-      submissionRank:
-        type: integer
-        format: int32
-        example: 3
-      newContentPoints:
-        type: string
-        example: "0.089"
-      newContentRank:
-        type: integer
-        format: int32
-        example: 3
-      overallLevelPoints:
-        type: string
-        example: "0.089"
-      overallLevelRank:
-        type: integer
-        format: int32
-        example: 3
     description: refers to WEB_STREET_REGION_RANK_V
   StreetRegionCriteria:
     type: object
