@@ -2110,7 +2110,9 @@ paths:
         "200":
           description: successful operation
           schema:
-            $ref: '#/definitions/AddressRegionRank'
+            type: array
+            items:
+              $ref: '#/definitions/AddressRegionRank'
         "400":
           description: Invalid Input parameters supplied
         "404":
@@ -2262,7 +2264,9 @@ paths:
         "200":
           description: successful operation
           schema:
-            $ref: '#/definitions/StreetRegionRank'
+            type: array
+            items:
+              $ref: '#/definitions/StreetRegionRank'
         "400":
           description: Invalid Input parameters supplied
         "404":
