@@ -2569,7 +2569,7 @@ paths:
       security:
       - authorise:
         - has_street_rc_roles
-  /api/ggw/regionalChair/adressReport:
+  /api/ggw/regionalChair/addressReport:
     get:
       tags:
       - regionalChair
