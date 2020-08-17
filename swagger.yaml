@@ -10,7 +10,6 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 host: services-ui.dev.geoplace.co.uk
-basePath: /api/ggw/
 tags:
 - name: address
   description: Controller for Address Home Page
@@ -2070,17 +2069,24 @@ paths:
       security:
       - authorise:
         - has_street_roles
-  /api/ggw/regionalChair/addressRegion/{authCode}:
+  /api/ggw/regionalChair/addressRegion:
     get:
       tags:
       - regionalChair
       summary: Get Region Details for Address
       description: Returns Region Details that includes the region name, number of authorities and number of non contributers in that region.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2094,17 +2100,24 @@ paths:
       security:
       - authorise:
         - has_address_rc_roles
-  /api/ggw/regionalChair/addressRegionRank/{authCode}:
+  /api/ggw/regionalChair/addressRegionRank:
     get:
       tags:
       - regionalChair
       summary: Get Regional Rank Details for Address
-      description: Returns Regional Rank Details that includes levels, ratings and other details for all Address Criterion.
+      description: Returns list of Regional Rank Details that includes levels, ratings and other details for all Address Criterion.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2120,17 +2133,24 @@ paths:
       security:
       - authorise:
         - has_address_rc_roles
-  /api/ggw/regionalChair/addressCriteria/{authCode}:
+  /api/ggw/regionalChair/addressCriteria:
     get:
       tags:
       - regionalChair
       summary: Get Region Address Criteria Details
       description: Returns list of Region Address Criteria Details that includes levels, ratings and other details for all address criteria.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2146,17 +2166,24 @@ paths:
       security:
       - authorise:
         - has_address_rc_roles
-  /api/ggw/regionalChair/addressIndicators/{authCode}:
+  /api/ggw/regionalChair/addressIndicators:
     get:
       tags:
       - regionalChair
       summary: Get Region Address Indicator Details
       description: Returns list of Region Address Indicator Details that includes levels, ratings and other details for all address indicator.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2172,17 +2199,24 @@ paths:
       security:
       - authorise:
         - has_address_rc_roles
-  /api/ggw/regionalChair/addressContacts/{authCode}:
+  /api/ggw/regionalChair/addressContacts:
     get:
       tags:
       - regionalChair
       summary: Get Contact details of Address Custodians
       description: Returns list of Contact details of Address Custodians that includes full name, email address of all Custodains and Additional Custodians.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2198,17 +2232,24 @@ paths:
       security:
       - authorise:
         - has_address_rc_roles
-  /api/ggw/regionalChair/addressPreBenchmark/{authCode}:
+  /api/ggw/regionalChair/addressPreBenchmark:
     get:
       tags:
       - regionalChair
       summary: Get Address Pre-Benchmark details
       description: Returns list of Address Pre-Benchmark details that levels and ratings.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2224,17 +2265,24 @@ paths:
       security:
       - authorise:
         - has_address_rc_roles
-  /api/ggw/regionalChair/streetRegion/{authCode}:
+  /api/ggw/regionalChair/streetRegion:
     get:
       tags:
       - regionalChair
       summary: Get Region Details for Street
       description: Returns Region Details that includes the region name, number of authorities and number of non contributers in that region.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2248,17 +2296,24 @@ paths:
       security:
       - authorise:
         - has_street_rc_roles
-  /api/ggw/regionalChair/streetRegionRank/{authCode}:
+  /api/ggw/regionalChair/streetRegionRank:
     get:
       tags:
       - regionalChair
       summary: Get Regional Rank Details for Street
       description: Returns Regional Rank Details that includes levels, ratings and other details for all Street Criterion.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2274,17 +2329,24 @@ paths:
       security:
       - authorise:
         - has_street_rc_roles
-  /api/ggw/regionalChair/streetCriteria/{authCode}:
+  /api/ggw/regionalChair/streetCriteria:
     get:
       tags:
       - regionalChair
       summary: Get Region Street Criteria Details
-      description: Returns list of Region Street Criteria Details that includes levels, ratings and other details for all street criteria.
+      description: Returns list of Region Street Criteria Details that includes levels, ratings and other details for all street criteria
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2300,17 +2362,24 @@ paths:
       security:
       - authorise:
         - has_street_rc_roles
-  /api/ggw/regionalChair/streetIndicators/{authCode}:
+  /api/ggw/regionalChair/streetIndicators:
     get:
       tags:
       - regionalChair
       summary: Get Region Street Indicator Details
       description: Returns list of Region Street Indicator Details that includes levels, ratings and other details for all street indicator.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2326,17 +2395,24 @@ paths:
       security:
       - authorise:
         - has_street_rc_roles
-  /api/ggw/regionalChair/streetContacts/{authCode}:
+  /api/ggw/regionalChair/streetContacts:
     get:
       tags:
       - regionalChair
       summary: Get Contact details of Street Custodians
       description: Returns list of Contact details of Street Custodians that includes full name, email address of all Custodians and Additional Custodians.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2352,17 +2428,24 @@ paths:
       security:
       - authorise:
         - has_street_rc_roles
-  /api/ggw/regionalChair/streetPreBenchmark/{authCode}:
+  /api/ggw/regionalChair/streetPreBenchmark:
     get:
       tags:
       - regionalChair
       summary: Get Street Pre-Benchmark details
       description: Returns list of Street Pre-Benchmark details that levels and ratings.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2567,8 +2650,8 @@ securityDefinitions:
       has_roles: super_user, authority_address_custodian, additional_authority_address_custodian, dca_authority_principal_contact
       has_super_admin_only: super_user
       has_street_roles: super_user, authority_street_custodian, additional_authority_street_custodian, dca_authority_principal_contact
-      has_address_rc_roles: super_user, regional_address_chair, regional_deputy_address_chair
-      has_street_rc_roles: super_user, regional_street_chair, regional_deputy_street_chair
+      has_address_rc_roles: super_user, regional_address_chair, regional_deputy_address_chair, ace_role
+      has_street_rc_roles: super_user, regional_street_chair, regional_deputy_street_chair, ace_role
       has_ace_roles: super_user, ace_role
       has_custodian_roles: super_user, authority_address_custodian, additional_authority_address_custodian, authority_street_custodian, additional_authority_street_custodian, dca_authority_principal_contact, ace_role
 definitions:
