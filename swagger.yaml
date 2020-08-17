@@ -10,7 +10,6 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 host: services-ui.dev.geoplace.co.uk
-basePath: /api/ggw/
 tags:
 - name: address
   description: Controller for Address Home Page
@@ -1005,6 +1004,114 @@ paths:
           description: Invalid AuthCode supplied
         "404":
           description: Priority Health Check Details not found
+      security:
+      - authorise:
+        - has_roles
+  /api/ggw/priorityHealthCheck/errors:
+    get:
+      tags:
+      - priorityHealthCheck
+      summary: Get All Address Priority Health Check errors
+      description: Returns all the errors, warning from PriorityHealthCheckErrorData based on the filter criteria to populate on the Priority Health check UI. This should include sorting and pagination
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: formData
+        required: true
+        type: number
+      - name: recordType
+        in: formData
+        required: false
+        type: number
+      - name: errorCode
+        in: formData
+        required: false
+        type: string
+      - name: errorType
+        in: formData
+        required: false
+        type: string
+      - name: recurring
+        in: formData
+        required: false
+        type: string
+      - name: errorsNextYear
+        in: formData
+        required: false
+        type: string
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PriorityHealthCheckErrorData'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Priority Health Check errors not found
+      security:
+      - authorise:
+        - has_roles
+  /api/ggw/priorityHealthCheck/getErrorCounts/{authCode}:
+    get:
+      tags:
+      - priorityHealthCheck
+      summary: Get Error, Warning and Recurring Error Counts for AddressPriority errors Landing Page
+      description: Returns PriorityHealthCheckErrorCountsDTO
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/PriorityHealthCheckErrorCountsDTO'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Priority Health Check Error Counts not found
+      security:
+      - authorise:
+        - has_roles
+  /api/ggw/priorityHealthCheck/summaryCounts/{authCode}/{recordType}:
+    get:
+      tags:
+      - priorityHealthCheck
+      summary: Get Error, Warning and Recurring Error Counts for each distinct error code for Priority Errors Landing Page
+      description: Returns PriorityErrorsPerRecordTypeDTO
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      - name: recordType
+        in: path
+        description: Record Type
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PriorityErrorsPerRecordTypeDTO'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Priority Health Check Summary Counts not found
       security:
       - authorise:
         - has_roles
@@ -2070,17 +2177,24 @@ paths:
       security:
       - authorise:
         - has_street_roles
-  /api/ggw/regionalChair/addressRegion/{authCode}:
+  /api/ggw/regionalChair/addressRegion:
     get:
       tags:
       - regionalChair
       summary: Get Region Details for Address
       description: Returns Region Details that includes the region name, number of authorities and number of non contributers in that region.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2094,17 +2208,24 @@ paths:
       security:
       - authorise:
         - has_address_rc_roles
-  /api/ggw/regionalChair/addressRegionRank/{authCode}:
+  /api/ggw/regionalChair/addressRegionRank:
     get:
       tags:
       - regionalChair
       summary: Get Regional Rank Details for Address
-      description: Returns Regional Rank Details that includes levels, ratings and other details for all Address Criterion.
+      description: Returns list of Regional Rank Details that includes levels, ratings and other details for all Address Criterion.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2120,17 +2241,24 @@ paths:
       security:
       - authorise:
         - has_address_rc_roles
-  /api/ggw/regionalChair/addressCriteria/{authCode}:
+  /api/ggw/regionalChair/addressCriteria:
     get:
       tags:
       - regionalChair
       summary: Get Region Address Criteria Details
       description: Returns list of Region Address Criteria Details that includes levels, ratings and other details for all address criteria.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2146,17 +2274,24 @@ paths:
       security:
       - authorise:
         - has_address_rc_roles
-  /api/ggw/regionalChair/addressIndicators/{authCode}:
+  /api/ggw/regionalChair/addressIndicators:
     get:
       tags:
       - regionalChair
       summary: Get Region Address Indicator Details
       description: Returns list of Region Address Indicator Details that includes levels, ratings and other details for all address indicator.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2172,17 +2307,24 @@ paths:
       security:
       - authorise:
         - has_address_rc_roles
-  /api/ggw/regionalChair/addressContacts/{authCode}:
+  /api/ggw/regionalChair/addressContacts:
     get:
       tags:
       - regionalChair
       summary: Get Contact details of Address Custodians
       description: Returns list of Contact details of Address Custodians that includes full name, email address of all Custodains and Additional Custodians.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2198,17 +2340,24 @@ paths:
       security:
       - authorise:
         - has_address_rc_roles
-  /api/ggw/regionalChair/addressPreBenchmark/{authCode}:
+  /api/ggw/regionalChair/addressPreBenchmark:
     get:
       tags:
       - regionalChair
       summary: Get Address Pre-Benchmark details
       description: Returns list of Address Pre-Benchmark details that levels and ratings.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2224,17 +2373,24 @@ paths:
       security:
       - authorise:
         - has_address_rc_roles
-  /api/ggw/regionalChair/streetRegion/{authCode}:
+  /api/ggw/regionalChair/streetRegion:
     get:
       tags:
       - regionalChair
       summary: Get Region Details for Street
       description: Returns Region Details that includes the region name, number of authorities and number of non contributers in that region.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2248,17 +2404,24 @@ paths:
       security:
       - authorise:
         - has_street_rc_roles
-  /api/ggw/regionalChair/streetRegionRank/{authCode}:
+  /api/ggw/regionalChair/streetRegionRank:
     get:
       tags:
       - regionalChair
       summary: Get Regional Rank Details for Street
       description: Returns Regional Rank Details that includes levels, ratings and other details for all Street Criterion.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2274,17 +2437,24 @@ paths:
       security:
       - authorise:
         - has_street_rc_roles
-  /api/ggw/regionalChair/streetCriteria/{authCode}:
+  /api/ggw/regionalChair/streetCriteria:
     get:
       tags:
       - regionalChair
       summary: Get Region Street Criteria Details
-      description: Returns list of Region Street Criteria Details that includes levels, ratings and other details for all street criteria.
+      description: Returns list of Region Street Criteria Details that includes levels, ratings and other details for all street criteria
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2300,17 +2470,24 @@ paths:
       security:
       - authorise:
         - has_street_rc_roles
-  /api/ggw/regionalChair/streetIndicators/{authCode}:
+  /api/ggw/regionalChair/streetIndicators:
     get:
       tags:
       - regionalChair
       summary: Get Region Street Indicator Details
       description: Returns list of Region Street Indicator Details that includes levels, ratings and other details for all street indicator.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2326,17 +2503,24 @@ paths:
       security:
       - authorise:
         - has_street_rc_roles
-  /api/ggw/regionalChair/streetContacts/{authCode}:
+  /api/ggw/regionalChair/streetContacts:
     get:
       tags:
       - regionalChair
       summary: Get Contact details of Street Custodians
       description: Returns list of Contact details of Street Custodians that includes full name, email address of all Custodians and Additional Custodians.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2352,17 +2536,24 @@ paths:
       security:
       - authorise:
         - has_street_rc_roles
-  /api/ggw/regionalChair/streetPreBenchmark/{authCode}:
+  /api/ggw/regionalChair/streetPreBenchmark:
     get:
       tags:
       - regionalChair
       summary: Get Street Pre-Benchmark details
       description: Returns list of Street Pre-Benchmark details that levels and ratings.
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2378,17 +2569,24 @@ paths:
       security:
       - authorise:
         - has_street_rc_roles
-  /api/ggw/regionalChair/adressReport/{authCode}:
+  /api/ggw/regionalChair/addressReport:
     get:
       tags:
       - regionalChair
       summary: Downloads the Address RC report from Objectstore
       description: Downloads the Address Regional Chair excel report from the objectstore
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2400,17 +2598,24 @@ paths:
       security:
       - authorise:
         - has_address_rc_roles
-  /api/ggw/regionalChair/streetReport/{authCode}:
+  /api/ggw/regionalChair/streetReport:
     get:
       tags:
       - regionalChair
       summary: Downloads the Street RC report from Objectstore
       description: Downloads the Street Regional Chair excel report from the objectstore
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2422,17 +2627,24 @@ paths:
       security:
       - authorise:
         - has_street_rc_roles
-  /api/ggw/regionalChair/addressCustodianReport/{authCode}:
+  /api/ggw/regionalChair/addressCustodianReport:
     get:
       tags:
       - regionalChair
       summary: Generates the Address Custodian report
       description: Generates a csv report that contains the contact details of all address custodians
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2444,17 +2656,24 @@ paths:
       security:
       - authorise:
         - has_street_rc_roles
-  /api/ggw/regionalChair/streetCustodianReport/{authCode}:
+  /api/ggw/regionalChair/streetCustodianReport:
     get:
       tags:
       - regionalChair
       summary: Generates the Street Custodian report
       description: Generates a csv report that contains the contact details of all street custodians
+      consumes:
+      - multipart/form-data
       parameters:
       - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
+        in: formData
+        description: authcode of the logged in user
+        required: false
+        type: number
+      - name: regionId
+        in: formData
+        description: RegionId of the selected region from the dropdown
+        required: false
         type: number
       responses:
         "200":
@@ -2567,8 +2786,8 @@ securityDefinitions:
       has_roles: super_user, authority_address_custodian, additional_authority_address_custodian, dca_authority_principal_contact
       has_super_admin_only: super_user
       has_street_roles: super_user, authority_street_custodian, additional_authority_street_custodian, dca_authority_principal_contact
-      has_address_rc_roles: super_user, regional_address_chair, regional_deputy_address_chair
-      has_street_rc_roles: super_user, regional_street_chair, regional_deputy_street_chair
+      has_address_rc_roles: super_user, regional_address_chair, regional_deputy_address_chair, ace_role
+      has_street_rc_roles: super_user, regional_street_chair, regional_deputy_street_chair, ace_role
       has_ace_roles: super_user, ace_role
       has_custodian_roles: super_user, authority_address_custodian, additional_authority_address_custodian, authority_street_custodian, additional_authority_street_custodian, dca_authority_principal_contact, ace_role
 definitions:
@@ -4081,6 +4300,130 @@ definitions:
         type: string
         example: 24,"I","25","110000000738","0905L000000624","ENG","1","2020-02-10","","2020-02-10","2020-02-10","","","","","","","","","","POATEXT","300516","","L","PL26 8EH","ST AUSTELL","C","","",""
     description: refers the WEB_ADDRESS_HEALTH_DATA_V
+  PriorityHealthCheckErrorData:
+    type: object
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      errorType:
+        type: string
+        example: E
+      recordType:
+        type: integer
+        format: int32
+        example: 21
+      errrorCode:
+        type: string
+        example: AAU24.28
+      description:
+        type: string
+        example: This LPI does not belong to the UPRN
+      recurringFlag:
+        type: string
+        format: enum
+        example: "N"
+      errorNextYearFlag:
+        type: string
+        format: enum
+        example: "N"
+      referenceKey:
+        type: string
+        example: "110000000738"
+      dtfLine:
+        type: string
+        example: 24,"I","25","110000000738","0905L000000624","ENG","1","2020-02-10","","2020-02-10","2020-02-10","","","","","","","","","","POATEXT","300516","","L","PL26 8EH","ST AUSTELL","C","","",""
+    description: refers the WEB_ADDRESS_PRIORITY_HEALTH_V
+  PriorityHealthCheckErrorCountsDTO:
+    type: object
+    properties:
+      streetErrorCount:
+        type: integer
+        format: int32
+        example: 21
+      streetWarningCount:
+        type: integer
+        format: int32
+        example: 2
+      streetRecurringErrorCount:
+        type: integer
+        format: int32
+        example: 5
+      streetDescriptorErrorCount:
+        type: integer
+        format: int32
+        example: 21
+      streetDescriptorWarningCount:
+        type: integer
+        format: int32
+        example: 2
+      streetDescriptorRecurringErrorCount:
+        type: integer
+        format: int32
+        example: 5
+      blpuErrorCount:
+        type: integer
+        format: int32
+        example: 21
+      blpuWarningCount:
+        type: integer
+        format: int32
+        example: 2
+      blpuRecurringErrorCount:
+        type: integer
+        format: int32
+        example: 5
+      lpiErrorCount:
+        type: integer
+        format: int32
+        example: 21
+      lpiWarningCount:
+        type: integer
+        format: int32
+        example: 2
+      lpiRecurringErrorCount:
+        type: integer
+        format: int32
+        example: 5
+      xrefErrorCount:
+        type: integer
+        format: int32
+        example: 21
+      xrefWarningCount:
+        type: integer
+        format: int32
+        example: 2
+      xrefRecurringErrorCount:
+        type: integer
+        format: int32
+        example: 5
+    description: dto object that holds all counts related to Priority Health Check errors, warnings and recurring errors
+  PriorityErrorsPerRecordTypeDTO:
+    type: object
+    properties:
+      errorCode:
+        type: string
+        example: AAU21.64
+      description:
+        type: string
+        example: Street on USRN {0} missing Street Only BLPU record
+      recordType:
+        type: integer
+        format: int32
+        example: 11
+      totalErrorCount:
+        type: integer
+        format: int64
+        example: 65
+      totalWarningCount:
+        type: integer
+        format: int64
+        example: 33
+      totalRecurringErrorCount:
+        type: integer
+        format: int64
+        example: 12
+    description: dto object to hold the priority health check counts for each error code
   AddressExpDTO:
     type: object
     properties:
