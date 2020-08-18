@@ -297,7 +297,7 @@ paths:
         description: AuthorityMessage object that has to be created or updated
         required: true
         schema:
-          $ref: '#/definitions/AuthorityMessage'
+          $ref: '#/definitions/AuthorityMessageDTO'
       responses:
         "200":
           description: successful operation
@@ -3692,7 +3692,7 @@ definitions:
     properties:
       authorityMessageId:
         type: integer
-        format: int32
+        format: int64
         example: 1
       messageId:
         $ref: '#/definitions/Message'
@@ -3733,6 +3733,49 @@ definitions:
         format: enum
         example: "Y"
     description: refers AUTHORITY_MESSAGES table
+  AuthorityMessageDTO:
+    type: object
+    properties:
+      messageType:
+        type: string
+        example: AuthCode
+        description: can have values like AuthCode, Region, BNS, NC, AccoutType
+      authorityMessageId:
+        type: integer
+        format: int64
+        example: 1
+      messageId:
+        $ref: '#/definitions/Message'
+      authCode:
+        type: string
+        example: 114,116
+      region:
+        type: integer
+        format: int32
+        example: 1
+      accountType:
+        type: integer
+        format: int32
+        example: 1
+      roleId:
+        $ref: '#/definitions/AuthorityRoles'
+      startDate:
+        type: string
+        format: date in dd/MM/yyyy hh:mm:ss
+        example: 01/05/2020
+      endDate:
+        type: string
+        format: date in dd/MM/yyyy hh:mm:ss
+        example: 01/06/2020
+      disabledFlag:
+        type: string
+        format: enum
+        example: "N"
+      closableFlag:
+        type: string
+        format: enum
+        example: "Y"
+    description: dto refers to the AuthorityMessage request
   AuthorityRoles:
     type: object
     required:
