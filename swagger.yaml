@@ -658,7 +658,7 @@ paths:
         "200":
           description: successful operation
           schema:
-            $ref: '#/definitions/AddressComparision'
+            $ref: '#/definitions/AddressComparison'
         "400":
           description: Invalid AuthCode supplied
         "404":
@@ -723,7 +723,7 @@ paths:
         in: formData
         required: false
         type: string
-      - name: errorsNextYear
+      - name: priorityNextYearFlag
         in: formData
         required: false
         type: string
@@ -2732,13 +2732,18 @@ paths:
       security:
       - authorise:
         - has_ace_roles
-  /api/ggw/expCircumstances/{authCode}:
+  /api/ggw/expCircumstances/{gazetteerId}/{authCode}:
     get:
       tags:
       - expCircumstances
       summary: Returns the form details for that authority
       description: Returns latest entry of the NonContributors for that authority that has not been approved yet.
       parameters:
+      - name: gazetteerId
+        in: path
+        description: gazetteerId to indicate Address or Street
+        required: true
+        type: number
       - name: authCode
         in: path
         description: Authcode of the logged in user
@@ -2863,7 +2868,7 @@ definitions:
         format: int64
         example: 128
     description: refers Web_Address_Class_V View
-  AddressComparision:
+  AddressComparison:
     type: object
     required:
     - authCode
@@ -3772,7 +3777,7 @@ definitions:
         type: integer
         format: int32
         example: 1
-      roleId:
+      roleIds:
         type: string
         example: 1,19,14
       startDate:
@@ -4870,11 +4875,11 @@ definitions:
         type: string
         format: date in dd/MM/yyyy
         example: 15/06/2020
-      aRoadGapIncludedLength:
+      aRoadGaps:
         type: number
         format: double
         example: 22.45
-      aRoadGapDeclaredLength:
+      aRoadGapStreets:
         type: number
         format: double
         example: 65.9
@@ -4882,39 +4887,63 @@ definitions:
         type: number
         format: double
         example: 0.9
+      aRoadGapRatingChange:
+        type: number
+        format: double
+        example: 0.9
       aRoadGapLevel:
         type: string
         example: Silver
-      bRoadGapIncludedLength:
+      aRoadToNextLevel:
+        type: integer
+        format: int64
+        example: 44
+      bRoadGaps:
         type: number
         format: double
         example: 22.45
-      bRoadGapDeclaredLength:
+      bRoadGapStreets:
         type: number
         format: double
         example: 65.9
-      bRoadGapLevel:
-        type: string
-        example: Silver
       bRoadGapRating:
         type: number
         format: double
         example: 0.9
-      cRoadGapIncludedLength:
+      bRoadGapRatingChange:
+        type: number
+        format: double
+        example: 0.9
+      bRoadGapLevel:
+        type: string
+        example: Silver
+      bRoadToNextLevel:
+        type: integer
+        format: int64
+        example: 44
+      cRoadGaps:
         type: number
         format: double
         example: 22.45
-      cRoadGapDeclaredLength:
+      cRoadGapStreets:
         type: number
         format: double
         example: 65.9
-      cRoadGapLevel:
-        type: string
-        example: Silver
       cRoadGapRating:
         type: number
         format: double
         example: 0.9
+      cRoadGapRatingChange:
+        type: number
+        format: double
+        example: 0.9
+      cRoadGapLevel:
+        type: string
+        example: Silver
+      cRoadToNextLevel:
+        type: integer
+        format: int64
+        example: 44
       classifiedNetworkGapLevel:
         type: string
         example: Silver
