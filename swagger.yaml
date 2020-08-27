@@ -2807,6 +2807,12 @@ definitions:
         type: string
         format: enum
         example: "N"
+      regionalDeputyChairName:
+        type: string
+        example: Craig Wilkins
+      regionalDeputyChairEmail:
+        type: string
+        example: craig.wilkins@sedgemoor.gov.uk
     description: refers Web_Address_Main_V View
   AddressTertiaryClassification:
     type: object
@@ -3643,6 +3649,12 @@ definitions:
         type: string
         format: date in dd/MM/yyyy
         example: 01/08/2019
+      regionalDeputyChairName:
+        type: string
+        example: Craig Wilkins
+      regionalDeputyChairEmail:
+        type: string
+        example: craig.wilkins@sedgemoor.gov.uk
     description: dto object that holds the landing page info
   Message:
     type: object
@@ -4549,6 +4561,12 @@ definitions:
         type: string
         format: enum
         example: "N"
+      regionalDeputyChairName:
+        type: string
+        example: Craig Wilkins
+      regionalDeputyChairEmail:
+        type: string
+        example: craig.wilkins@sedgemoor.gov.uk
     description: refers to WEB_STREET_MAIN_V table
   StreetHealthCheckDetails:
     type: object
@@ -5394,6 +5412,15 @@ definitions:
       newContentLevel:
         type: string
         example: Gold
+      aRoadLevel:
+        type: string
+        example: Gold
+      bRoadLevel:
+        type: string
+        example: Gold
+      cRoadLevel:
+        type: string
+        example: Gold
     description: refers to WEB_STREET_TREND_V table
   StreetLandingPageDTO:
     type: object
@@ -5638,6 +5665,18 @@ definitions:
       countdownLevel:
         type: string
         example: Silver
+      regionalChairName:
+        type: string
+        example: Craig Wilkins
+      regionalChairEmail:
+        type: string
+        example: craig.wilkins@sedgemoor.gov.uk
+      regionalDeputyChairName:
+        type: string
+        example: Craig Wilkins
+      regionalDeputyChairEmail:
+        type: string
+        example: craig.wilkins@sedgemoor.gov.uk
     description: dto object that holds the landing page info for Streets
   StreetHCErrorCountsDTO:
     type: object
