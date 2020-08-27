@@ -727,6 +727,10 @@ paths:
         in: formData
         required: false
         type: string
+      - name: referenceKey
+        in: formData
+        required: false
+        type: string
       responses:
         "200":
           description: successful operation
@@ -767,32 +771,6 @@ paths:
       security:
       - authorise:
         - has_roles
-  /api/ggw/addressHealthCheck/getAllCounts/{authCode}:
-    get:
-      tags:
-      - addressHealthCheck
-      summary: Get All Record Counts for Address Data Consistency Landing Page
-      description: Returns AddressHealthCheckCountsDTO
-      produces:
-      - application/json
-      parameters:
-      - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
-        type: number
-      responses:
-        "200":
-          description: successful operation
-          schema:
-            $ref: '#/definitions/AddressHealthCheckCountsDTO'
-        "400":
-          description: Invalid AuthCode supplied
-        "404":
-          description: Address Health Check Record Counts not found
-      security:
-      - authorise:
-        - has_roles
   /api/ggw/addressHealthCheck/getErrorCounts/{authCode}:
     get:
       tags:
@@ -824,7 +802,7 @@ paths:
       tags:
       - addressHealthCheck
       summary: Get All Address Health Check errors
-      description: Returns all the errors, warning from AddressHealthCheckErrors based on the filter criteria to populate on the Data Consistency Table. This should include sorting and pagination
+      description: Returns all the errors, warning from AddressHealthCheckData based on the filter criteria to populate on the Data Consistency Table. This should include sorting and pagination
       consumes:
       - multipart/form-data
       produces:
@@ -851,6 +829,10 @@ paths:
         required: false
         type: string
       - name: errorsNextYear
+        in: formData
+        required: false
+        type: string
+      - name: referenceKey
         in: formData
         required: false
         type: string
@@ -923,28 +905,6 @@ paths:
       responses:
         "200":
           description: Exception File submitted to Geoplace
-      security:
-      - authorise:
-        - has_roles
-  /api/ggw/addressHealthCheck/exceptionsReport/{authCode}:
-    get:
-      tags:
-      - addressHealthCheck
-      summary: Generates csv file for the submitted address exceptions by the authority until date
-      description: Returns csv file
-      produces:
-      - application/json
-      parameters:
-      - name: authCode
-        in: path
-        description: Authcode of the logged in user
-        required: true
-        type: number
-      responses:
-        "200":
-          description: Downloads the report successfully
-        "400":
-          description: Invalid AuthCode supplied
       security:
       - authorise:
         - has_roles
@@ -1039,6 +999,10 @@ paths:
         required: false
         type: string
       - name: errorsNextYear
+        in: formData
+        required: false
+        type: string
+      - name: referenceKey
         in: formData
         required: false
         type: string
@@ -1547,6 +1511,10 @@ paths:
         in: formData
         required: false
         type: string
+      - name: referenceKey
+        in: formData
+        required: false
+        type: string
       responses:
         "200":
           description: successful operation
@@ -1593,6 +1561,10 @@ paths:
         required: false
         type: string
       - name: errorsNextYear
+        in: formData
+        required: false
+        type: string
+      - name: referenceKey
         in: formData
         required: false
         type: string
@@ -1828,6 +1800,10 @@ paths:
         required: false
         type: string
       - name: errorsNextYear
+        in: formData
+        required: false
+        type: string
+      - name: referenceKey
         in: formData
         required: false
         type: string
