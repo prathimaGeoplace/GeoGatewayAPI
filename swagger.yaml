@@ -29,6 +29,8 @@ tags:
   description: Controller for Street Comparision on Address
 - name: addressHealthCheck
   description: Controller for Address Data Consistency
+- name: addressStats
+  description: Controller for Address Statistics
 - name: priorityHealthCheck
   description: Controller for Priority Health Check
 - name: addressUnresolvedCandidates
@@ -938,6 +940,32 @@ paths:
           description: Invalid AuthCode supplied
         "404":
           description: Address Health Check Summary Counts not found
+      security:
+      - authorise:
+        - has_roles
+  /api/ggw/addressStats/{authCode}:
+    get:
+      tags:
+      - addressStats
+      summary: Get all counts related to Address Statistics for the Additional Information link on Data Consistency
+      description: Returns AddressStatistics
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: path
+        description: Authcode of the logged in user
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AddressStatistics'
+        "400":
+          description: Invalid AuthCode supplied
+        "404":
+          description: Address Statistics Details not found
       security:
       - authorise:
         - has_roles
@@ -3389,6 +3417,107 @@ definitions:
         format: int64
         example: 975
     description: refers WEB_ADDRESS_CANDIDATE_2_V view
+  AddressStatistics:
+    type: object
+    required:
+    - authCode
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      streetTotal:
+        type: integer
+        format: int64
+        example: 4
+      blpuTotal:
+        type: integer
+        format: int64
+        example: 5
+      xrefTotal:
+        type: integer
+        format: int64
+        example: 6
+      lpiTotal:
+        type: integer
+        format: int64
+        example: 6
+      blpuClassTotal:
+        type: integer
+        format: int64
+        example: 7
+      blpuClassC:
+        type: integer
+        format: int64
+        example: 7
+      blpuClassL:
+        type: integer
+        format: int64
+        example: 8
+      blpuClassM:
+        type: integer
+        format: int64
+        example: 55
+      blpuClassP:
+        type: integer
+        format: int64
+        example: 2
+      blpuClassR:
+        type: integer
+        format: int64
+        example: 2
+      blpuClassZ:
+        type: integer
+        format: int64
+        example: 6
+      blpuClassU:
+        type: integer
+        format: int64
+        example: 7
+      blpuClassUP:
+        type: integer
+        format: int64
+        example: 2
+      blpuRpc:
+        type: integer
+        format: int64
+        example: 66
+      blpuStateCode1:
+        type: integer
+        format: int64
+        example: 6
+      blpuStateCode2:
+        type: integer
+        format: int64
+        example: 6
+      blpuStateCode3:
+        type: integer
+        format: int64
+        example: 6
+      blpuStateCode4:
+        type: integer
+        format: int64
+        example: 6
+      blpuStateCode5:
+        type: integer
+        format: int64
+        example: 6
+      blpuStateCode6:
+        type: integer
+        format: int64
+        example: 6
+      blpuStateCode7:
+        type: integer
+        format: int64
+        example: 6
+      residentialWithoutCtax:
+        type: integer
+        format: int64
+        example: 0
+      commercialWithoutNdr:
+        type: integer
+        format: int64
+        example: 0
+    description: refers WEB_ADDRESS_STATS_V view
   PriorityHealthCheck:
     type: object
     required:
@@ -4070,105 +4199,6 @@ definitions:
         type: number
         example: 4.0800005E7
     description: refers STREET_HEALTH_DATA table
-  AddressHealthCheckCountsDTO:
-    type: object
-    properties:
-      streetRecordCount:
-        type: integer
-        format: int32
-        example: 21
-      blpuRecordCount:
-        type: integer
-        format: int32
-        example: 12
-      xrefRecordCount:
-        type: integer
-        format: int32
-        example: 5
-      lpiRecordCount:
-        type: integer
-        format: int32
-        example: 1
-      blpuClassC:
-        type: integer
-        format: int32
-        example: 6
-      blpuClassL:
-        type: integer
-        format: int32
-        example: 2
-      blpuClassM:
-        type: integer
-        format: int32
-        example: 0
-      blpuClassP:
-        type: integer
-        format: int32
-        example: 3
-      blpuClassR:
-        type: integer
-        format: int32
-        example: 1
-      blpuClassX:
-        type: integer
-        format: int32
-        example: 9
-      blpuClassZ:
-        type: integer
-        format: int32
-        example: 5
-      blpuClassU:
-        type: integer
-        format: int32
-        example: 3
-      blpuClassUP:
-        type: integer
-        format: int32
-        example: 2
-      unclassifiedLiveRecords:
-        type: number
-        example: 0.0
-      blpuCountWithRPC:
-        type: integer
-        format: int32
-        example: 1
-      blpuCountWhereStateCode1:
-        type: integer
-        format: int32
-        example: 0
-      blpuCountWhereStateCode2:
-        type: integer
-        format: int32
-        example: 0
-      blpuCountWhereStateCode3:
-        type: integer
-        format: int32
-        example: 0
-      blpuCountWhereStateCode4:
-        type: integer
-        format: int32
-        example: 0
-      blpuCountWhereStateCode5:
-        type: integer
-        format: int32
-        example: 0
-      blpuCountWhereStateCode6:
-        type: integer
-        format: int32
-        example: 0
-      blpuCountWhereStateCode7:
-        type: integer
-        format: int32
-        example: 0
-      blpuCountWithCtaxOrER:
-        type: integer
-        format: int32
-        example: 1
-      blpuCountWithNoNdr:
-        type: integer
-        format: int32
-        example: 0
-    description: dto object that holds all counts related to Address Health Check
   AddressHealthCheckErrorCountsDTO:
     type: object
     properties:
