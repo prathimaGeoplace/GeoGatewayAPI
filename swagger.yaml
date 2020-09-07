@@ -69,6 +69,8 @@ tags:
   description: Controller for Street Public Rights of Way
 - name: streetWinterRoute
   description: Controller for Street Winter Route
+- name: streetDeclaration
+  description: Controller for Update Street Declaration
 - name: regionalChair
   description: Controller for Regional Address and Street Chair
 - name: expCircumstances
@@ -2178,6 +2180,41 @@ paths:
           description: Invalid AuthCode supplied
         "404":
           description: USRN Details not found for Street Winter Routes
+      security:
+      - authorise:
+        - has_street_roles
+  /api/ggw/streetDeclaration:
+    put:
+      tags:
+      - streetDeclaration
+      summary: Upadte Street Declaration
+      description: Updates Street Declaration for the specified authority and measure
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      parameters:
+      - name: authCode
+        in: formData
+        required: true
+        type: number
+      - name: measure
+        in: formData
+        required: true
+        type: string
+      - name: declarationValue
+        in: formData
+        required: true
+        type: number
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StreetDeclarations'
+        "400":
+          description: Invalid Input parameters supplied
+        "404":
+          description: Street Declation not found
       security:
       - authorise:
         - has_street_roles
@@ -5893,6 +5930,37 @@ definitions:
         type: string
         example: Victoria,London
     description: refers to WEB_STREET_MAINTENANCE_DATA_V
+  StreetDeclarations:
+    type: object
+    required:
+    - authCode
+    - dataVersion
+    - declarationDate
+    - statisticTypeId
+    properties:
+      authCode:
+        type: number
+        example: 114.0
+      dataVersion:
+        type: integer
+        format: int64
+        example: 2019
+      statisticTypeId:
+        type: integer
+        format: int32
+        example: 101
+      declarationDate:
+        type: string
+        format: date in dd/MM/yyyy
+        example: 20/08/2020
+      declarationValue:
+        type: integer
+        format: int64
+        example: 100
+      updatedBy:
+        type: string
+        example: abc@xyz.co.uk
+    description: refers to STREET_DECLARATIONS
   EcfActionPlans:
     type: object
     required:
