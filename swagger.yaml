@@ -2184,7 +2184,7 @@ paths:
       - authorise:
         - has_street_roles
   /api/ggw/streetDeclaration:
-    put:
+    post:
       tags:
       - streetDeclaration
       summary: Upadte Street Declaration
