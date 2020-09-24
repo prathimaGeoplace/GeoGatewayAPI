@@ -932,6 +932,29 @@ paths:
       security:
       - authorise:
         - "has_roles"
+  /api/ggw/addressHealthCheck/exceptionsReport/{authCode}:
+    get:
+      tags:
+      - "addressHealthCheck"
+      summary: "Generates csv file for the submitted address exceptions by the authority\
+        \ until date"
+      description: "Returns csv file"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "authCode"
+        in: "path"
+        description: "Authcode of the logged in user"
+        required: true
+        type: "number"
+      responses:
+        "200":
+          description: "Downloads the report successfully"
+        "400":
+          description: "Invalid AuthCode supplied"
+      security:
+      - authorise:
+        - "has_roles"
   /api/ggw/addressHealthCheck/summaryCounts/{authCode}/{recordType}:
     get:
       tags:
@@ -1718,7 +1741,7 @@ paths:
       security:
       - authorise:
         - "has_street_roles"
-  /api/ggw/streetHealthCheck/generateExceptionFile/{authCode}:
+  /api/ggw/streetHealthCheck/generateExceptionFile:
     post:
       tags:
       - "streetHealthCheck"
@@ -1730,11 +1753,6 @@ paths:
       produces:
       - "text/plain"
       parameters:
-      - name: "authCode"
-        in: "path"
-        description: "Authcode of the logged in user"
-        required: true
-        type: "number"
       - in: "body"
         name: "body"
         description: "StreetExceptionDTO object to generate the text file"
@@ -6322,14 +6340,10 @@ definitions:
       authCode:
         type: "number"
         example: 114.0
-      usrn:
+      referenceKey:
         type: "integer"
         format: "int64"
         example: 2423432
-      recordType:
-        type: "integer"
-        format: "int32"
-        example: 15
       queryCode:
         type: "string"
         example: "SD123"
