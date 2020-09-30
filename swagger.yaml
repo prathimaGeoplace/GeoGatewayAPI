@@ -1438,8 +1438,7 @@ paths:
       tags:
       - "streetLifeCycle"
       summary: "Get All errors of the specified authCode for Missing Streets"
-      description: "Returns all the errors of the error code SR113 from the Street\
-        \ Health Check Data"
+      description: "Returns all the errors from MissingStreetData"
       parameters:
       - name: "authCode"
         in: "path"
@@ -1452,11 +1451,11 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/StreetHealthCheckData"
+              $ref: "#/definitions/MissingStreetData"
         "400":
           description: "Invalid Input parameters supplied"
         "404":
-          description: "Street Health check Errors for Missing Street not found"
+          description: "Missing Street Data not found"
       security:
       - authorise:
         - "has_street_roles"
@@ -1465,8 +1464,7 @@ paths:
       tags:
       - "streetLifeCycle"
       summary: "Get All errors of the specified authCode for Under Construction"
-      description: "Returns all the errors of the error code SR112 from the Street\
-        \ Health Check Data"
+      description: "Returns all the errors from StreetUnderConstructionData"
       parameters:
       - name: "authCode"
         in: "path"
@@ -1479,11 +1477,11 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/StreetHealthCheckData"
+              $ref: "#/definitions/StreetUnderConstructionData"
         "400":
           description: "Invalid Input parameters supplied"
         "404":
-          description: "Street Health check Errors for Under Construction not found"
+          description: "Street Under Construction Data not found"
       security:
       - authorise:
         - "has_street_roles"
@@ -6107,6 +6105,66 @@ definitions:
         type: "string"
         example: "Victoria,London"
     description: "refers to WEB_STREET_MAINTENANCE_DATA_V"
+  MissingStreetData:
+    type: "object"
+    properties:
+      authCode:
+        type: "number"
+        example: 114.0
+      roadLink:
+        type: "string"
+        example: "osgb234342343"
+      routeHierarchy:
+        type: "string"
+        example: "test"
+      nearByProperties:
+        type: "integer"
+        format: "int64"
+        example: 34
+      roadLength:
+        type: "integer"
+        format: "int64"
+        example: 442
+      recurringFlag:
+        type: "string"
+        format: "enum"
+        example: "N"
+      exceptionFlag:
+        type: "string"
+        format: "enum"
+        example: "N"
+    description: "refers to WEB_STREET_MISSING_DATA_V"
+  StreetUnderConstructionData:
+    type: "object"
+    properties:
+      authCode:
+        type: "number"
+        example: 114.0
+      usrn:
+        type: "integer"
+        format: "int64"
+        example: 4243343
+      streetDescription:
+        type: "string"
+        example: "test"
+      localityName:
+        type: "string"
+        example: "Victoria"
+      townName:
+        type: "string"
+        example: "London"
+      administrativeArea:
+        type: "string"
+        example: "test"
+      properties:
+        type: "integer"
+        format: "int64"
+        example: 62
+      recurringFlag:
+        type: "string"
+        format: "enum"
+        example: "N"
+    description: "refers to WEB_STREET_CONSTRUCTION_DATA_V"
   StreetDeclarations:
     type: "object"
     required:
