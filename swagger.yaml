@@ -2006,7 +2006,7 @@ paths:
       - "streetEsu"
       summary: "Retrieve the Street health check errors belonging to the 'SPESU001'\
         \ error code for that authority"
-      description: "Returns List of StreetHealthCheckData"
+      description: "Returns List of StreetEsuPointData"
       produces:
       - "application/json"
       parameters:
@@ -2021,11 +2021,11 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/StreetHealthCheckData"
+              $ref: "#/definitions/StreetEsuPointData"
         "400":
           description: "Invalid AuthCode supplied"
         "404":
-          description: "Street Health check errors not found for ESU extremity points"
+          description: "Street ESU Point Data not found"
       security:
       - authorise:
         - "has_street_roles"
@@ -6165,6 +6165,33 @@ definitions:
         format: "enum"
         example: "N"
     description: "refers to WEB_STREET_CONSTRUCTION_DATA_V"
+  StreetEsuPointData:
+    type: "object"
+    properties:
+      authCode:
+        type: "number"
+        example: 114.0
+      usrn:
+        type: "integer"
+        format: "int64"
+        example: 4243343
+      esuId:
+        type: "string"
+        example: "esu134131231"
+      streetDescription:
+        type: "string"
+        example: "test"
+      localityName:
+        type: "string"
+        example: "Victoria"
+      townName:
+        type: "string"
+        example: "London"
+      exceptionFlag:
+        type: "string"
+        format: "enum"
+        example: "N"
+    description: "refers to WEB_STREET_ESU_POINT_DATA_V"
   StreetDeclarations:
     type: "object"
     required:
@@ -6217,6 +6244,12 @@ definitions:
         type: "string"
         format: "date in DD/MM/YYYY"
         example: "22/07/2020"
+      measureTitle:
+        type: "string"
+        example: "Coordinates 1"
+      measureTnlText:
+        type: "string"
+        example: "fixed needed 123"
     description: "refers to ECF_ACTION_PLANS"
   NonContributor:
     type: "object"
@@ -6284,6 +6317,9 @@ definitions:
       ecfApproverComments:
         type: "string"
         example: "Approved this form"
+      echInternalComments:
+        type: "string"
+        example: "This form can be accepted"
       ecfActions:
         $ref: "#/definitions/EcfActionPlans"
       caseNumber:
