@@ -6351,6 +6351,9 @@ definitions:
       ecfApproverComments:
         type: "string"
         example: "Approved this form"
+      ecfInternalComments:
+        type: "string"
+        example: "This form looks good"
       ecfApproverTrafficLights:
         type: "string"
         example: "A"
@@ -6399,6 +6402,9 @@ definitions:
       ecfApproverComments:
         type: "string"
         example: "form is verified and ace is happy"
+      ecfInternalComments:
+        type: "string"
+        example: "This form looks good"
       ecfApprovalFlag:
         type: "string"
         example: "Y"
