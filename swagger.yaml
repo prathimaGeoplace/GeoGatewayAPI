@@ -1788,6 +1788,29 @@ paths:
       security:
       - authorise:
         - "has_street_roles"
+  /api/ggw/streetHealthCheck/exceptionsReport/{authCode}:
+    get:
+      tags:
+      - "streetHealthCheck"
+      summary: "Generates csv file for the submitted street exceptions by the authority\
+        \ until date"
+      description: "Returns csv file"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "authCode"
+        in: "path"
+        description: "Authcode of the logged in user"
+        required: true
+        type: "number"
+      responses:
+        "200":
+          description: "Downloads the report successfully"
+        "400":
+          description: "Invalid AuthCode supplied"
+      security:
+      - authorise:
+        - "has_street_roles"
   /api/ggw/streetSedStructure/{authCode}:
     get:
       tags:
