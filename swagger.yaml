@@ -1598,10 +1598,8 @@ paths:
       tags:
       - "streetHealthCheck"
       summary: "Get All errors of the specified authCode for Street Health Check 1"
-      description: "Returns all the errors, warning from StreetHealthCheck based on\
-        \ the filter criteria to populate on the Street Health Check 1. The errors\
-        \ should belong to the one of these error codes (CR502,CR503,CR504,CR505,CR506,CR507,ER307,HD804,HD805,HW701,HW702,HW703,HW704,IR406,IR413,IR414,IR415,IR416,IR417,IR418,IR419,OD901,SD203,SD211,SP604,SP605,SP608,SP609,SP610,SP611,SP612,SP613,SP614,SPSR001,SPSR002,SR108).\
-        \ This should include sorting and pagination"
+      description: "Returns all the errors, warning from StreetHealthCheck. This should\
+        \ include sorting and pagination"
       consumes:
       - "multipart/form-data"
       produces:
@@ -1623,15 +1621,11 @@ paths:
         in: "formData"
         required: false
         type: "string"
-      - name: "recurring"
-        in: "formData"
-        required: false
-        type: "string"
       - name: "errorsNextYear"
         in: "formData"
         required: false
         type: "string"
-      - name: "referenceKey"
+      - name: "usrn"
         in: "formData"
         required: false
         type: "string"
@@ -1654,10 +1648,8 @@ paths:
       tags:
       - "streetHealthCheck"
       summary: "Get All errors of the specified authCode for Street Health Check 2"
-      description: "Returns all the errors, warning from StreetHealthCheck based on\
-        \ the filter criteria to populate on the Street Health Check 2. The errors\
-        \ should belong to the one of these error codes (HD801,HD802,IR410,IR411,SD204,SD206,SD207,SD210,SD213).\
-        \ This should include sorting and pagination"
+      description: "Returns all the errors, warning from StreetHealthCheck. This should\
+        \ include sorting and pagination"
       consumes:
       - "multipart/form-data"
       produces:
@@ -1687,7 +1679,7 @@ paths:
         in: "formData"
         required: false
         type: "string"
-      - name: "referenceKey"
+      - name: "usrn"
         in: "formData"
         required: false
         type: "string"
@@ -1697,7 +1689,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/StreetHealthCheckData"
+              $ref: "#/definitions/StreetHealthCheck2Data"
         "400":
           description: "Invalid Input parameters supplied"
         "404":
@@ -4371,53 +4363,8 @@ definitions:
       isAdditionalCustodianFlag:
         type: "string"
         format: "enum"
-        example: "N"
+        example: "null"
     description: "refers WEB_ADDRESS_STREET_CUSTODIAN_V table"
-  StreetHealthCheckData:
-    type: "object"
-    required:
-    - "authCode"
-    - "description"
-    - "eventId"
-    - "fileId"
-    - "lastUpdatedTs"
-    - "outputData"
-    - "queryCategory"
-    - "queryCode"
-    - "recordType"
-    - "usrn"
-    properties:
-      authCode:
-        type: "number"
-        example: 114.0
-      description:
-        type: "string"
-        example: "Open ESUIDs which match an open ESUID in a different authority"
-      eventId:
-        type: "number"
-        example: 855720.0
-      fileId:
-        type: "number"
-        example: 909666.0
-      lastUpdatedTs:
-        type: "string"
-        format: "data in dd/MM/yyyy format"
-        example: "05/05/2020"
-      outputData:
-        type: "string"
-        example: "15,\"CALUFARIWD\",\"\",\"ODUTKRBPNU\",\"CREBSLLNYD\",\"ENG\""
-      queryCategory:
-        type: "string"
-        example: "NSG NLPG Comparison"
-      queryCode:
-        $ref: "#/definitions/StreetHealthCheckCodes"
-      recordType:
-        type: "string"
-        example: "15"
-      usrn:
-        type: "number"
-        example: 4.0800005E7
-    description: "refers STREET_HEALTH_DATA table"
   AddressHealthCheckErrorCountsDTO:
     type: "object"
     properties:
@@ -6215,6 +6162,82 @@ definitions:
         format: "enum"
         example: "N"
     description: "refers to WEB_STREET_ESU_POINT_DATA_V"
+  StreetHealthCheckData:
+    type: "object"
+    properties:
+      authCode:
+        type: "number"
+        example: 114.0
+      id:
+        type: "integer"
+        format: "int64"
+        example: 1
+      checkType:
+        type: "string"
+        example: "PRIORITY"
+      recordType:
+        type: "integer"
+        format: "int64"
+        example: 62
+      queryCode:
+        type: "string"
+        example: "CR504"
+      description:
+        type: "string"
+        example: "test"
+      priorityNextYearFlag:
+        type: "string"
+        format: "enum"
+        example: "N"
+      reference:
+        type: "number"
+        example: 4.7920684E7
+      outputData:
+        type: "string"
+        example: "62,47920684,47920684,\"BATH ROAD\",47950008,\"A368\",1"
+      exceptionFlag:
+        type: "string"
+        format: "enum"
+        example: "Y"
+    description: "refers to WEB_STREET_HEALTH_DATA_V"
+  StreetHealthCheck2Data:
+    type: "object"
+    properties:
+      authCode:
+        type: "number"
+        example: 114.0
+      id:
+        type: "integer"
+        format: "int64"
+        example: 1
+      checkType:
+        type: "string"
+        example: "PRIORITY"
+      recordType:
+        type: "integer"
+        format: "int64"
+        example: 62
+      queryCode:
+        type: "string"
+        example: "IR411"
+      description:
+        type: "string"
+        example: "test"
+      priorityNextYearFlag:
+        type: "string"
+        format: "enum"
+        example: "N"
+      reference:
+        type: "number"
+        example: 4.7920684E7
+      outputData:
+        type: "string"
+        example: "62,47920684,47920684,\"BATH ROAD\",47950008,\"A368\",1"
+      exceptionFlag:
+        type: "string"
+        format: "enum"
+        example: "Y"
+    description: "refers to WEB_STREET_HEALTH_DATA_2_V"
   StreetDeclarations:
     type: "object"
     required:
