@@ -6403,10 +6403,6 @@ definitions:
       ecfApproverTrafficLights:
         type: "string"
         example: "A"
-      caseNumber:
-        type: "integer"
-        format: "int64"
-        example: 2343423423
     description: "refers to dto object that will be received from the ACE ui page"
   ACEDetails:
     type: "object"
