@@ -2935,8 +2935,7 @@ paths:
           description: "Exceptional Circumstance form is updated"
       security:
       - authorise:
-        - "has_ace_roles"
-        
+        - "has_ace_roles"      
     /api/ggw/aceDetails/nonContributorForm/{nonContributorId}:
     get:
       tags:
