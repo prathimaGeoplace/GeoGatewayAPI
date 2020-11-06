@@ -989,6 +989,29 @@ paths:
       security:
       - authorise:
         - "has_roles"
+  /api/ggw/addressHealthCheck/requestNewHC/{authCode}:
+    post:
+      tags:
+      - "addressHealthCheck"
+      summary: "Sends mail requesting new health check to\
+        \ geoplace mail id \"support@geoplace.co.uk\""
+      operationId: "requestNewHC"
+      consumes:
+      - "application/json"
+      parameters:
+      - name: "authCode"
+        in: "path"
+        description: "Authcode of the logged in user"
+        required: true
+        type: "number"
+      responses:
+        "200":
+          description: "Request mail sent to Geoplace"
+        "400":
+          description: "Invalid AuthCode"
+      security:
+      - authorise:
+        - "has_roles"     
   /api/ggw/addressStats/{authCode}:
     get:
       tags:
