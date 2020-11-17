@@ -2910,19 +2910,13 @@ paths:
       security:
       - authorise:
         - "has_street_rc_roles"
-  /api/ggw/aceDetails/{authCode}:
+  /api/ggw/aceDetails:
     get:
       tags:
       - "aceDetails"
       summary: "Returns the ECF for all Non Contributors"
       description: "Returns a list of NonContributor objects that hold the submitted\
         \ and non submitted form details"
-      parameters:
-      - name: "authCode"
-        in: "path"
-        description: "Authcode of the logged in user"
-        required: true
-        type: "number"
       responses:
         "200":
           description: "successfull operation"
